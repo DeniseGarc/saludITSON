@@ -4,6 +4,8 @@
 
 package pruebas;
 
+import GUI.FrmRegistro;
+
 /**
  *
  * @author Alici
@@ -11,6 +13,6 @@ package pruebas;
 public class ClinicaPresentacion {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        FrmRegistro frm = new  FrmRegistro();
     }
 }
