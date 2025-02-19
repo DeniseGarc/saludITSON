@@ -4,18 +4,29 @@
  */
 package GUI;
 
+//import excepciones.NegocioException;
+import java.time.LocalDate;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  *
  * @author Alici
  */
 public class FrmRegistro extends javax.swing.JFrame {
 
+//    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+
     /**
      * Creates new form FrmRegistro
      */
     public FrmRegistro() {
         initComponents();
-        this.setLocationRelativeTo(null);
+        this.agregarListeners();
+        actualizarEstadoBoton();
     }
 
     /**
@@ -74,18 +85,6 @@ public class FrmRegistro extends javax.swing.JFrame {
 
         lblNombre.setText("Nombre");
 
-        txtApellidoPaterno.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtApellidoPaternoActionPerformed(evt);
-            }
-        });
-
-        txtNombre.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtNombreActionPerformed(evt);
-            }
-        });
-
         lblDireccion.setText("Dirección");
 
         lblCalle.setText("Calle");
@@ -100,12 +99,6 @@ public class FrmRegistro extends javax.swing.JFrame {
 
         lblTelefono.setText("Número de teléfono");
 
-        txtTelefono.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtTelefonoActionPerformed(evt);
-            }
-        });
-
         lblCorreo.setText("Correo electrónico");
 
         lblContrasena.setText("Contraseña");
@@ -115,9 +108,14 @@ public class FrmRegistro extends javax.swing.JFrame {
         btnRegistrarse.setBackground(new java.awt.Color(44, 44, 44));
         btnRegistrarse.setBorder(null);
         btnRegistrarse.setForeground(new java.awt.Color(255, 255, 255));
+        btnRegistrarse.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarseActionPerformed(evt);
+            }
+        });
 
         btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/flechaRegresar.png"))); // NOI18N
-        btnRegresar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
+        btnRegresar.setBorder(null);
         btnRegresar.setBorderPainted(false);
         btnRegresar.setPreferredSize(new java.awt.Dimension(591, 519));
         btnRegresar.addActionListener(new java.awt.event.ActionListener() {
@@ -180,7 +178,7 @@ public class FrmRegistro extends javax.swing.JFrame {
                         .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(btnRegistrarse, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtContrasena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtContrasena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 373, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         panelRedondoLayout.setVerticalGroup(
@@ -256,21 +254,13 @@ public class FrmRegistro extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtApellidoPaternoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtApellidoPaternoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtApellidoPaternoActionPerformed
-
-    private void txtNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtNombreActionPerformed
-
-    private void txtTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtTelefonoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtTelefonoActionPerformed
-
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
+        regresar();
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
+        registrarPaciente();
+    }//GEN-LAST:event_btnRegistrarseActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -306,6 +296,90 @@ public class FrmRegistro extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    // boton registrar paciente
+    private void registrarPaciente() {
+//        try {
+            String apellidoPaterno = txtApellidoPaterno.getText();
+            String apellidoMaterno = txtApellidoMaterno.getText();
+            String nombre = txtNombre.getText();
+            String calle = txtCalle.getText();
+            String numero = txtNumero.getText();
+            String colonia = txtColonia.getText();
+            String codigoPostal = txtCodigoPostal.getText();
+            LocalDate fechaNacimiento = dtPikrfechaNacimiento.getDate();
+            String telefono = txtTelefono.getText();
+            String correo = txtCorreo.getText();
+            String contrasena = txtContrasena.getText();
+
+//            PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO(apellidoPaterno, apellidoMaterno, nombre, calle, numero, colonia, codigoPostal, fechaNacimiento, telefono, correo, contrasena);
+//            boolean exito = pacienteBO.registrarPaciente(pacienteNuevo);
+//            if (exito) {
+                JOptionPane.showMessageDialog(this, "Se ha registrado correctamente");
+                regresar();
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Error al registrarse");
+//            }
+//        } catch (NegocioException e) {
+//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error inesperado", e);
+//            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado. Intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+    }
+
+    //boton regresar
+    private void regresar() {
+        FrmInicioSesion frmInicioSesion = new FrmInicioSesion();
+        frmInicioSesion.setVisible(true);
+        dispose();
+    }
+
+    private void actualizarEstadoBoton() {
+        boolean camposLlenos = !txtNombre.getText().trim().isEmpty()
+                && !txtApellidoPaterno.getText().trim().isEmpty()
+                && !txtApellidoMaterno.getText().trim().isEmpty()
+                && !txtNumero.getText().trim().isEmpty()
+                && !txtCorreo.getText().trim().isEmpty()
+                && !txtCodigoPostal.getText().trim().isEmpty()
+                && !txtCalle.getText().trim().isEmpty()
+                && !txtColonia.getText().trim().isEmpty()
+                && !txtTelefono.getText().trim().isEmpty()
+                && !txtContrasena.getText().trim().isEmpty()
+                && dtPikrfechaNacimiento.getDate() != null;
+
+        btnRegistrarse.setEnabled(camposLlenos);
+    }
+
+    // Listeners
+    private void agregarListeners() {
+        DocumentListener listener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                actualizarEstadoBoton();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                actualizarEstadoBoton();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                actualizarEstadoBoton();
+            }
+        };
+        txtNombre.getDocument().addDocumentListener(listener);
+        txtApellidoPaterno.getDocument().addDocumentListener(listener);
+        txtApellidoMaterno.getDocument().addDocumentListener(listener);
+        txtNumero.getDocument().addDocumentListener(listener);
+        txtCorreo.getDocument().addDocumentListener(listener);
+        txtCodigoPostal.getDocument().addDocumentListener(listener);
+        txtCalle.getDocument().addDocumentListener(listener);
+        txtColonia.getDocument().addDocumentListener(listener);
+        txtTelefono.getDocument().addDocumentListener(listener);
+        txtContrasena.getDocument().addDocumentListener(listener);
+        dtPikrfechaNacimiento.addDateChangeListener(e -> {
+            actualizarEstadoBoton();
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrarse;

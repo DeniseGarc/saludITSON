@@ -4,6 +4,8 @@
  */
 package GUI;
 
+import java.awt.Color;
+
 /**
  *
  * @author Alici
@@ -32,7 +34,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         lblContrasena = new javax.swing.JLabel();
         txtContrasena = new javax.swing.JPasswordField();
         btnIniciarSesion = new javax.swing.JButton();
-        btnRegistro = new javax.swing.JLabel();
+        lblRegistro = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -61,13 +63,16 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnIniciarSesion.setText("Iniciar Sesión");
 
-        btnRegistro.setText("<html><u>Registrarse como paciente</u></html>");
-        btnRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
+        lblRegistro.setText("<html><u>Registrarse como paciente</u></html>");
+        lblRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnRegistroMouseClicked(evt);
+                lblRegistroMouseClicked(evt);
             }
             public void mouseEntered(java.awt.event.MouseEvent evt) {
-                btnRegistroMouseEntered(evt);
+                lblRegistroMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblRegistroMouseExited(evt);
             }
         });
 
@@ -84,7 +89,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
                         .addComponent(txtUsuario)
                         .addComponent(txtContrasena)
                         .addComponent(btnIniciarSesion, javax.swing.GroupLayout.DEFAULT_SIZE, 335, Short.MAX_VALUE))
-                    .addComponent(btnRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(35, Short.MAX_VALUE))
         );
         panelRedondoLayout.setVerticalGroup(
@@ -101,7 +106,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
                 .addGap(43, 43, 43)
                 .addComponent(btnIniciarSesion)
                 .addGap(18, 18, 18)
-                .addComponent(btnRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(lblRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(27, Short.MAX_VALUE))
         );
 
@@ -138,13 +143,17 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
-    private void btnRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistroMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRegistroMouseClicked
+    private void lblRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistroMouseClicked
+        registroPaciente();
+    }//GEN-LAST:event_lblRegistroMouseClicked
 
-    private void btnRegistroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnRegistroMouseEntered
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnRegistroMouseEntered
+    private void lblRegistroMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistroMouseEntered
+        lblRegistro.setForeground(new Color(30, 98, 159));
+    }//GEN-LAST:event_lblRegistroMouseEntered
+
+    private void lblRegistroMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistroMouseExited
+        lblRegistro.setForeground(new Color(0, 0, 0));
+    }//GEN-LAST:event_lblRegistroMouseExited
 
 //    /**
 //     * @param args the command line arguments
@@ -180,12 +189,17 @@ public class FrmInicioSesion extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    private void registroPaciente() {
+        FrmRegistro frmRegistrarPaciente = new FrmRegistro();
+        frmRegistrarPaciente.setVisible(true);
+        dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
-    private javax.swing.JLabel btnRegistro;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel lblContrasena;
+    private javax.swing.JLabel lblRegistro;
     private javax.swing.JLabel lblUsuario;
     private GUI.PanelRound panelRedondo;
     private javax.swing.JPasswordField txtContrasena;
