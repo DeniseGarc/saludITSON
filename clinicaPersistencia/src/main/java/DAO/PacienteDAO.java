@@ -27,7 +27,7 @@ public class PacienteDAO implements IPacienteDAO{
     }
 @Override
 public Paciente registrarPaciente(Paciente paciente) throws PersistenciaException {
-    String procedimientoSQL = "{CALL registrar_paciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)}";
+    String procedimientoSQL = "CALL registrar_paciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     try (Connection con = conexion.crearConexion();
          CallableStatement cs = con.prepareCall(procedimientoSQL)) {
