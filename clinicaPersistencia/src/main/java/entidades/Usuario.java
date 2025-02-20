@@ -9,7 +9,7 @@ package entidades;
  * @author Alici
  */
 public class Usuario {
-     private int IDUsuario;
+    private int IDUsuario;
     private String nombreUsuario;
     private String contrasenaUsuario;
     

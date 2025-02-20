@@ -11,7 +11,6 @@ import java.util.List;
  * @author Alici
  */
 public class Medico extends Usuario{
-    private int IDMedico;
     private String nombresMedico;
     private String apellidoPaternoMedico;
     private String apellidoMaternoMedico;
@@ -22,12 +21,14 @@ public class Medico extends Usuario{
     //constructor vacio 
 
     public Medico() {
+        super();
     }
     
-    //constructor con todos los atributos 
+    //constructor con todos los atributos de la clase padre usuario y la clase hija Medico
 
-    public Medico(int IDMedico, String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String cedulaProfesional, String especialidad, String estado, List<Horario> horario) {
-        this.IDMedico = IDMedico;
+    public Medico(int IDUsuario, String contrasenaUsuario,String nombresMedico, String apellidoPaternoMedico,
+                  String apellidoMaternoMedico, String cedulaProfesional,String especialidad, String estado, List<Horario> horario) {
+        super(IDUsuario, cedulaProfesional, contrasenaUsuario); 
         this.nombresMedico = nombresMedico;
         this.apellidoPaternoMedico = apellidoPaternoMedico;
         this.apellidoMaternoMedico = apellidoMaternoMedico;
@@ -40,8 +41,10 @@ public class Medico extends Usuario{
     
    
     
-    //constructor con todos los atributos menos el IDMedico
-    public Medico(String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String cedulaProfesional, String especialidad, String estado, List<Horario> horario) {
+    //constructor con todos los atributos menos el IDUsuario
+    public Medico(String contrasenaUsuario,String nombresMedico, String apellidoPaternoMedico,
+                  String apellidoMaternoMedico, String cedulaProfesional,String especialidad, String estado, List<Horario> horario) {
+        super(cedulaProfesional, contrasenaUsuario); // nombreUsuario es la cédula
         this.nombresMedico = nombresMedico;
         this.apellidoPaternoMedico = apellidoPaternoMedico;
         this.apellidoMaternoMedico = apellidoMaternoMedico;
@@ -49,17 +52,9 @@ public class Medico extends Usuario{
         this.especialidad = especialidad;
         this.estado = estado;
         this.horario = horario;
-    }
 
-    //gets y sets
-    public int getIDMedico() {
-        return IDMedico;
     }
-
-    public void setIDMedico(int IDMedico) {
-        this.IDMedico = IDMedico;
-    }
-
+    //gets y sets   
     public String getNombresMedico() {
         return nombresMedico;
     }
@@ -116,14 +111,10 @@ public class Medico extends Usuario{
         this.horario = horario;
     }
 
-   
-    //toString 
-
     @Override
     public String toString() {
-        return "Medico{" + "IDMedico=" + IDMedico + ", nombresMedico=" + nombresMedico + ", apellidoPaternoMedico=" + apellidoPaternoMedico + ", apellidoMaternoMedico=" + apellidoMaternoMedico + ", cedulaProfesional=" + cedulaProfesional + ", especialidad=" + especialidad + ", estado=" + estado + ", horario=" + horario + '}';
+        return "Medico{" + "nombresMedico=" + nombresMedico + ", apellidoPaternoMedico=" + apellidoPaternoMedico + ", apellidoMaternoMedico=" + apellidoMaternoMedico + ", cedulaProfesional=" + cedulaProfesional + ", especialidad=" + especialidad + ", estado=" + estado + ", horario=" + horario + '}';
     }
-
     
     
     

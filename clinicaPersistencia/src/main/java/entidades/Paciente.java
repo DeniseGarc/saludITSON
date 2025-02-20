@@ -11,7 +11,6 @@ import java.time.LocalDate;
  * @author Alici
  */
 public class Paciente extends Usuario{
-    private int IDPaciente;
     private String nombresPaciente;
     private String apellidoPaternoPaciente; 
     private String apellidoMaternoPaciente;
@@ -22,12 +21,14 @@ public class Paciente extends Usuario{
 
     //Constructor vacio
     public Paciente() {
+        super();
     }
     
-    //constructor con todos los atributos 
+    //constructor con todos los atributos de su clase padre Usuario y de paciente 
 
-    public Paciente(int IDPaciente, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
-        this.IDPaciente = IDPaciente;
+   public Paciente(int IDUsuario, String contrasenaUsuario,String nombresPaciente, String apellidoPaternoPaciente, 
+                    String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
+        super(IDUsuario, correo, contrasenaUsuario); 
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
@@ -35,14 +36,15 @@ public class Paciente extends Usuario{
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.direccion = direccion;
-    }
 
-    
+   }
 
    
     
-    //constructor con todos los atributos menos el IDpaciente
-    public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
+    //constructor con todos los atributos menos el IDUsuario
+    public Paciente(String contrasenaUsuario, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, 
+                    String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
+        super(correo, contrasenaUsuario); 
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
@@ -53,13 +55,6 @@ public class Paciente extends Usuario{
     }
 
     //gets y sets
-    public int getIDPaciente() {
-        return IDPaciente;
-    }
-
-    public void setIDPaciente(int IDPaciente) {
-        this.IDPaciente = IDPaciente;
-    }
 
     public String getNombresPaciente() {
         return nombresPaciente;
@@ -116,13 +111,15 @@ public class Paciente extends Usuario{
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
+   
  
     //toString 
 
     @Override
     public String toString() {
-        return "Paciente{" + "IDPaciente=" + IDPaciente + ", nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + '}';
+        return "Paciente{" + "nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + '}';
     }
+    
 
    
     
