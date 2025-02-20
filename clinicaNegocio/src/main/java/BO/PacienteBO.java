@@ -44,7 +44,7 @@ public class PacienteBO {
      * false en caso contrario.
      * @throws NegocioException Si hay problemas en las capas.
      */
-    public boolean RegistrarPaciente(PacienteDTO pacienteNuevo) throws NegocioException {
+    public boolean registrarPaciente(PacienteDTO pacienteNuevo) throws NegocioException {
         // Validar que el paciente no sea nulo.
         if (pacienteNuevo == null ) {
             System.out.println("Error: El paciente es nulo");
@@ -55,7 +55,13 @@ public class PacienteBO {
                 || pacienteNuevo.getApellidoMaternoPaciente().isEmpty() || pacienteNuevo.getCorreo().isEmpty() || pacienteNuevo.getTelefono().isEmpty()
                 || pacienteNuevo.getDireccion().toString().isEmpty() || pacienteNuevo.getFechaNacimiento().toString().isEmpty()) {
             throw new NegocioException("Error: Campos Vacios");
+            
         }
+        
+        
+        
+        
+        
         // Uso de Mapper para convertir a Entidad y Encriptación de contraseña.
         Paciente paciente = mapperPaciente.ConvertirAEntidad(pacienteNuevo);
         String contrasenaEncriptada = encriptador.encriptar(pacienteNuevo.getContrasenaUsuario());
@@ -68,7 +74,7 @@ public class PacienteBO {
             // Registro de error con el logger
             logger.log(Level.SEVERE, "Error: error al guardar paciente en la base de datos", pe);
             // Muestra excepcion con un mensaje
-            throw new NegocioException("Error: No se pudo registrar el paciente");
+            throw new NegocioException("Error:"+pe.getMessage());
         }
     }
 

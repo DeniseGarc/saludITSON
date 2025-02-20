@@ -5,9 +5,14 @@
 package GUI;
 
 //import excepciones.NegocioException;
+import BO.PacienteBO;
+import DTO.DireccionDTO;
+import DTO.PacienteDTO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
 import java.time.LocalDate;
-//import java.util.logging.Level;
-//import java.util.logging.Logger;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -18,7 +23,7 @@ import javax.swing.event.DocumentListener;
  */
 public class FrmRegistro extends javax.swing.JFrame {
 
-//    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
 
     /**
      * Creates new form FrmRegistro
@@ -298,7 +303,7 @@ public class FrmRegistro extends javax.swing.JFrame {
 //    }
     // boton registrar paciente
     private void registrarPaciente() {
-//        try {
+        try {
             String apellidoPaterno = txtApellidoPaterno.getText();
             String apellidoMaterno = txtApellidoMaterno.getText();
             String nombre = txtNombre.getText();
@@ -310,19 +315,19 @@ public class FrmRegistro extends javax.swing.JFrame {
             String telefono = txtTelefono.getText();
             String correo = txtCorreo.getText();
             String contrasena = txtContrasena.getText();
-
-//            PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO(apellidoPaterno, apellidoMaterno, nombre, calle, numero, colonia, codigoPostal, fechaNacimiento, telefono, correo, contrasena);
-//            boolean exito = pacienteBO.registrarPaciente(pacienteNuevo);
-//            if (exito) {
+            DireccionDTO direccionPaciente = new DireccionDTO(calle, numero, colonia, codigoPostal);
+            PacienteDTO pacienteNuevo = new PacienteDTO(nombre, apellidoPaterno, apellidoMaterno, correo, telefono, fechaNacimiento, direccionPaciente, nombre, contrasena);
+            boolean exito = pacienteBO.registrarPaciente(pacienteNuevo);
+            if (exito) {
                 JOptionPane.showMessageDialog(this, "Se ha registrado correctamente");
                 regresar();
-//            } else {
-//                JOptionPane.showMessageDialog(this, "Error al registrarse");
-//            }
-//        } catch (NegocioException e) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error inesperado", e);
-//            JOptionPane.showMessageDialog(this, "Ocurrió un error inesperado. Intente nuevamente.", "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al registrarse");
+            }
+        } catch (NegocioException e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error inesperado", e);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     //boton regresar
