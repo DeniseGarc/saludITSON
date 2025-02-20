@@ -15,7 +15,7 @@ public class Horario {
     private LocalTime horaInicio; 
     private LocalTime horaFin;
     private int diaSemana;
-    private int idMedico;
+    private Medico medico;
     
    //constructor vacio
 
@@ -24,25 +24,26 @@ public class Horario {
     
     //constructor con todos los atributos 
 
-    public Horario(int IDHorario, LocalTime horaInicio, LocalTime horaFin, int diaSemana, int idMedico) {
+    public Horario(int IDHorario, LocalTime horaInicio, LocalTime horaFin, int diaSemana, Medico medico) {
         this.IDHorario = IDHorario;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.diaSemana = diaSemana;
-        this.idMedico = idMedico;
+        this.medico = medico;
     }
+
+    
     
     //constructor con todos los atributos menos el IDhorario
 
-    public Horario(LocalTime horaInicio, LocalTime horaFin, int diaSemana, int idMedico) {
+    public Horario(LocalTime horaInicio, LocalTime horaFin, int diaSemana, Medico medico) {
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
         this.diaSemana = diaSemana;
-        this.idMedico = idMedico;
+        this.medico = medico;
     }
-    
-    //gets y sets 
 
+    //gets y sets
     public int getIDHorario() {
         return IDHorario;
     }
@@ -75,19 +76,23 @@ public class Horario {
         this.diaSemana = diaSemana;
     }
 
-    public int getIdMedico() {
-        return idMedico;
+    public Medico getMedico() {
+        return medico;
     }
 
-    public void setIdMedico(int idMedico) {
-        this.idMedico = idMedico;
+    public void setMedico(Medico medico) {
+        this.medico = medico;
     }
+
+    
     
     //ToString
 
     @Override
     public String toString() {
-        return "Horario{" + "IDHorario=" + IDHorario + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", diaSemana=" + diaSemana + ", idMedico=" + idMedico + '}';
+        return "Horario{" + "IDHorario=" + IDHorario + ", horaInicio=" + horaInicio + ", horaFin=" + horaFin + ", diaSemana=" + diaSemana + ", medico=" + medico + '}';
     }
+
+    
     
 }

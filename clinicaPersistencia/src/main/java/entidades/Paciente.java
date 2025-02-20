@@ -18,7 +18,8 @@ public class Paciente {
     private String correo;
     private String telefono;
     private LocalDate fechaNacimiento; 
-    private int idDireccion;
+    private Direccion direccion;
+    private Usuario usuario;
 
     //Constructor vacio
     public Paciente() {
@@ -26,7 +27,7 @@ public class Paciente {
     
     //constructor con todos los atributos 
 
-    public Paciente(int IDPaciente, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, int idDireccion) {
+    public Paciente(int IDPaciente, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion, Usuario usuario) {
         this.IDPaciente = IDPaciente;
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
@@ -34,23 +35,27 @@ public class Paciente {
         this.correo = correo;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
-        this.idDireccion = idDireccion;
+        this.direccion = direccion;
+        this.usuario = usuario;
     }
+
+    
+
+   
     
     //constructor con todos los atributos menos el IDpaciente
-
-    public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, int idDireccion) {
+    public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion, Usuario usuario) {
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
         this.correo = correo;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
-        this.idDireccion = idDireccion;
+        this.direccion = direccion;
+        this.usuario = usuario;
     }
-    
-    //gets y sets 
 
+    //gets y sets
     public int getIDPaciente() {
         return IDPaciente;
     }
@@ -107,19 +112,29 @@ public class Paciente {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public int getIdDireccion() {
-        return idDireccion;
+    public Direccion getDireccion() {
+        return direccion;
     }
 
-    public void setIdDireccion(int idDireccion) {
-        this.idDireccion = idDireccion;
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
     }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+    
+    
     
     //toString 
 
     @Override
     public String toString() {
-        return "Paciente{" + "IDPaciente=" + IDPaciente + ", nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", idDireccion=" + idDireccion + '}';
+        return "Paciente{" + "IDPaciente=" + IDPaciente + ", nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + ", usuario=" + usuario + '}';
     }
     
 }

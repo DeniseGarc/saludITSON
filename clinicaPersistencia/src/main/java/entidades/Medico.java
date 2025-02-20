@@ -4,6 +4,8 @@
  */
 package entidades;
 
+import java.util.List;
+
 /**
  *
  * @author Alici
@@ -16,7 +18,8 @@ public class Medico {
     private String cedulaProfesional;
     private String especialidad;
     private String estado;
-    
+    private List<Horario> horario;
+    private Usuario usuario;
     //constructor vacio 
 
     public Medico() {
@@ -24,7 +27,7 @@ public class Medico {
     
     //constructor con todos los atributos 
 
-    public Medico(int IDMedico, String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String cedulaProfesional, String especialidad, String estado) {
+    public Medico(int IDMedico, String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String cedulaProfesional, String especialidad, String estado, List<Horario> horario, Usuario usuario) {
         this.IDMedico = IDMedico;
         this.nombresMedico = nombresMedico;
         this.apellidoPaternoMedico = apellidoPaternoMedico;
@@ -32,21 +35,26 @@ public class Medico {
         this.cedulaProfesional = cedulaProfesional;
         this.especialidad = especialidad;
         this.estado = estado;
+        this.horario = horario;
+        this.usuario = usuario;
     }
+
+    
+   
     
     //constructor con todos los atributos menos el IDMedico
-
-    public Medico(String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String cedulaProfesional, String especialidad, String estado) {
+    public Medico(String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String cedulaProfesional, String especialidad, String estado, List<Horario> horario, Usuario usuario) {
         this.nombresMedico = nombresMedico;
         this.apellidoPaternoMedico = apellidoPaternoMedico;
         this.apellidoMaternoMedico = apellidoMaternoMedico;
         this.cedulaProfesional = cedulaProfesional;
         this.especialidad = especialidad;
         this.estado = estado;
+        this.horario = horario;
+        this.usuario = usuario;
     }
-    
-    //gets y sets
 
+    //gets y sets
     public int getIDMedico() {
         return IDMedico;
     }
@@ -102,11 +110,30 @@ public class Medico {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
+    public List<Horario> getHorario() {
+        return horario;
+    }
+
+    public void setHorario(List<Horario> horario) {
+        this.horario = horario;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
     
-    //ToString 
+    
+    //toString 
 
     @Override
     public String toString() {
-        return "Medico{" + "IDMedico=" + IDMedico + ", nombresMedico=" + nombresMedico + ", apellidoPaternoMedico=" + apellidoPaternoMedico + ", apellidoMaternoMedico=" + apellidoMaternoMedico + ", cedulaProfesional=" + cedulaProfesional + ", especialidad=" + especialidad + ", estado=" + estado + '}';
+        return "Medico{" + "IDMedico=" + IDMedico + ", nombresMedico=" + nombresMedico + ", apellidoPaternoMedico=" + apellidoPaternoMedico + ", apellidoMaternoMedico=" + apellidoMaternoMedico + ", cedulaProfesional=" + cedulaProfesional + ", especialidad=" + especialidad + ", estado=" + estado + ", horario=" + horario + ", usuario=" + usuario + '}';
     }
+    
+    
 }

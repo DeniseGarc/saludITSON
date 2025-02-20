@@ -13,7 +13,7 @@ public class Consulta {
     private String diagnostico;
     private String tratamiento;
     private String observaciones;
-    private int idCita;
+    private Cita cita;
     
    
     //Constructor vacio
@@ -23,26 +23,26 @@ public class Consulta {
     
     //constructor con todos los atributos 
 
-    public Consulta(int IDConsulta, String diagnostico, String tratamiento, String observaciones, int idCita) {
+    public Consulta(int IDConsulta, String diagnostico, String tratamiento, String observaciones, Cita cita) {
         this.IDConsulta = IDConsulta;
         this.diagnostico = diagnostico;
         this.tratamiento = tratamiento;
         this.observaciones = observaciones;
-        this.idCita = idCita;
+        this.cita = cita;
     }
+
+    
     
     //constructor con todos los atributos menos IDConsulta
 
-    public Consulta(String diagnostico, String tratamiento, String observaciones, int idCita) {
+    public Consulta(String diagnostico, String tratamiento, String observaciones, Cita cita) {
         this.diagnostico = diagnostico;
         this.tratamiento = tratamiento;
         this.observaciones = observaciones;
-        this.idCita = idCita;
+        this.cita = cita;
     }
-    
-    
-    //gets y sets 
 
+    //gets y sets
     public int getIDConsulta() {
         return IDConsulta;
     }
@@ -75,20 +75,22 @@ public class Consulta {
         this.observaciones = observaciones;
     }
 
-    public int getIdCita() {
-        return idCita;
+    public Cita getIdCita() {
+        return cita;
     }
 
     public void setIdCita(int idCita) {
-        this.idCita = idCita;
+        this.cita = cita;
     }
     
     //toString 
 
     @Override
     public String toString() {
-        return "Consulta{" + "IDConsulta=" + IDConsulta + ", diagnostico=" + diagnostico + ", tratamiento=" + tratamiento + ", observaciones=" + observaciones + ", idCita=" + idCita + '}';
+        return "Consulta{" + "IDConsulta=" + IDConsulta + ", diagnostico=" + diagnostico + ", tratamiento=" + tratamiento + ", observaciones=" + observaciones + ", cita=" + cita + '}';
     }
+
+  
     
     
 }

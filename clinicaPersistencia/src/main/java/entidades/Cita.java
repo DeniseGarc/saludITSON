@@ -16,33 +16,30 @@ public class Cita {
     private String estadoCita;
     private String folioCita;
     private String tipo;
-    private int idMedico;
-    private int idPaciente;
+    private Medico medico;
+    private Paciente paciente;
     //constructor vacio
     public Cita() {
     }
-    //Constructor con todos Los atributos
 
-    public Cita(int IDCita, LocalDate fechaHora, String estadoCita, String folioCita, String tipo, int idMedico, int idPaciente) {
+    public Cita(int IDCita, LocalDate fechaHora, String estadoCita, String folioCita, String tipo, Medico medico, Paciente paciente) {
         this.IDCita = IDCita;
         this.fechaHora = fechaHora;
         this.estadoCita = estadoCita;
         this.folioCita = folioCita;
         this.tipo = tipo;
-        this.idMedico = idMedico;
-        this.idPaciente = idPaciente;
+        this.medico = medico;
+        this.paciente = paciente;
     }
-    //Constructor con todo menos IDCita
-    public Cita(LocalDate fechaHora, String estadoCita, String folioCita, String tipo, int idMedico, int idPaciente) {
+
+    public Cita(LocalDate fechaHora, String estadoCita, String folioCita, String tipo, Medico medico, Paciente paciente) {
         this.fechaHora = fechaHora;
         this.estadoCita = estadoCita;
         this.folioCita = folioCita;
         this.tipo = tipo;
-        this.idMedico = idMedico;
-        this.idPaciente = idPaciente;
+        this.medico = medico;
+        this.paciente = paciente;
     }
-    
-    //gets y sets 
 
     public int getIDCita() {
         return IDCita;
@@ -84,26 +81,28 @@ public class Cita {
         this.tipo = tipo;
     }
 
-    public int getIdMedico() {
-        return idMedico;
+    public Medico getMedico() {
+        return medico;
     }
 
-    public void setIdMedico(int idMedico) {
-        this.idMedico = idMedico;
+    public void setMedico(Medico medico) {
+        this.medico = medico;
     }
 
-    public int getIdPaciente() {
-        return idPaciente;
+    public Paciente getPaciente() {
+        return paciente;
     }
 
-    public void setIdPaciente(int idPaciente) {
-        this.idPaciente = idPaciente;
+    public void setPaciente(Paciente paciente) {
+        this.paciente = paciente;
     }
-    
-    //toString 
 
     @Override
     public String toString() {
-        return "Cita{" + "IDCita=" + IDCita + ", fechaHora=" + fechaHora + ", estadoCita=" + estadoCita + ", folioCita=" + folioCita + ", tipo=" + tipo + ", idMedico=" + idMedico + ", idPaciente=" + idPaciente + '}';
+        return "Cita{" + "IDCita=" + IDCita + ", fechaHora=" + fechaHora + ", estadoCita=" + estadoCita + ", folioCita=" + folioCita + ", tipo=" + tipo + ", medico=" + medico + ", paciente=" + paciente + '}';
     }
+
+
+    
+    
 }

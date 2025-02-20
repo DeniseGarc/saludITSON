@@ -9,7 +9,7 @@ package entidades;
  * @author Alici
  */
 public class Direccion {
-     private int IDDireccion;
+    private int IDDireccion;
     private String calle;
     private String numero;
     private String colonia;

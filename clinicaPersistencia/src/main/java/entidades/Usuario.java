@@ -10,8 +10,8 @@ package entidades;
  */
 public class Usuario {
      private int IDUsuario;
-    private int nombreUsuario;
-    private int contrasenaUsuario;
+    private String nombreUsuario;
+    private String contrasenaUsuario;
     
     //constructor vacio
 
@@ -20,7 +20,7 @@ public class Usuario {
     
     //constructor con todos los atributos 
 
-    public Usuario(int IDUsuario, int nombreUsuario, int contrasenaUsuario) {
+    public Usuario(int IDUsuario, String nombreUsuario, String contrasenaUsuario) {
         this.IDUsuario = IDUsuario;
         this.nombreUsuario = nombreUsuario;
         this.contrasenaUsuario = contrasenaUsuario;
@@ -28,7 +28,7 @@ public class Usuario {
     
     //constructor con todos los atributos menos el IDUsuario
 
-    public Usuario(int nombreUsuario, int contrasenaUsuario) {
+    public Usuario(String nombreUsuario, String contrasenaUsuario) {
         this.nombreUsuario = nombreUsuario;
         this.contrasenaUsuario = contrasenaUsuario;
     }
@@ -43,19 +43,19 @@ public class Usuario {
         this.IDUsuario = IDUsuario;
     }
 
-    public int getNombreUsuario() {
+    public String getNombreUsuario() {
         return nombreUsuario;
     }
 
-    public void setNombreUsuario(int nombreUsuario) {
+    public void setNombreUsuario(String nombreUsuario) {
         this.nombreUsuario = nombreUsuario;
     }
 
-    public int getContrasenaUsuario() {
+    public String getContrasenaUsuario() {
         return contrasenaUsuario;
     }
 
-    public void setContrasenaUsuario(int contrasenaUsuario) {
+    public void setContrasenaUsuario(String contrasenaUsuario) {
         this.contrasenaUsuario = contrasenaUsuario;
     }
     
