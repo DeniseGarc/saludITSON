@@ -5,13 +5,18 @@
 package DAO;
 
 import conexion.IConexion;
-import entidades.Horario;
 import entidades.Medico;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -56,6 +61,66 @@ public class MedicoDAO implements IMedicoDAO{
         } catch (SQLException e) {
             logger.log(Level.SEVERE, "Error al registrar médico", e);
             throw new PersistenciaException("Error al registrar el médico en la base de datos.", e);
+        }
+    }
+    
+    @Override
+    public List<Medico> consultarMedicosPorEspecialidad(String especialidad) throws PersistenciaException {
+        ArrayList<Medico> medicos = new ArrayList<>();
+        String senteciaSQL = "SELECT IDMedico, nombresMedico, apellidoPaternoMedico, apellidoMaternoMedico, cedulaProfesional, especialidad, estado FROM medicos WHERE especialidad LIKE ?";
+        try(Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(senteciaSQL);){
+            ps.setString(1, especialidad);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                Medico medico = new Medico(
+                        rs.getInt("IDMedico"), 
+                        rs.getString("nombresMedico"), 
+                        rs.getString("apellidoPaternoMedico"),
+                        rs.getString("apellidoMaternoMedico"),
+                        rs.getString("cedulaProfesional"), 
+                        rs.getString("especialidad"), 
+                        rs.getString("estado"),null,null);
+                medicos.add(medico);
+            }
+            return medicos;
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No fue posible recuperar los medicos de la especialidad");
+        }
+    }
+
+    @Override
+    public List<String> consultarEspecialidades() throws PersistenciaException {
+        ArrayList<String> especialidades = new ArrayList<>();
+        String sentenciaSQL = "SELECT especialidad FROM medicos GROUP BY especialidad";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);){
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {                
+                especialidades.add(rs.getString("especialidad"));
+            }
+            return especialidades;
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al intentar obtener las especialidades de los médicos");
+        }
+    }
+    
+    @Override
+    public List<LocalTime> obtenerHorariosCitas(Medico medico, LocalDate fecha) throws PersistenciaException{
+        ArrayList<LocalTime> horariosDisponibles = new ArrayList<>();
+        String sentenciaSQL = "CALL generarHorariosDisponibles(?,?)";
+        
+        try (Connection con = conexion.crearConexion(); CallableStatement cs = con.prepareCall(sentenciaSQL);) {
+            cs.setInt(1, medico.getIDMedico());
+            cs.setDate(2, Date.valueOf(fecha));
+            ResultSet resultados = cs.executeQuery();
+            while (resultados.next()) {                
+                horariosDisponibles.add(resultados.getTime(1,null).toLocalTime());
+            }
+            return horariosDisponibles;
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al intentar obtener horarios para citas");
         }
     }
 }

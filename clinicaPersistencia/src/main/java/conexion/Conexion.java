@@ -18,7 +18,7 @@ public class Conexion implements IConexion {
     /**
      * URL de la base de datos.
      */
-    final String URL = "jdbc:mysql//localhost:3306/clinicaPrivada";
+    final String URL = "jdbc:mysql://localhost:3306/clinicaprivada";
     /**
      * Usuario para la conexión a la base de datos.
      */
