@@ -43,7 +43,7 @@ public class MedicoDAO implements IMedicoDAO{
             cs.setString(3, medico.getApellidoMaternoMedico());
             cs.setString(4, medico.getCedulaProfesional());
             cs.setString(5, medico.getEspecialidad());
-            cs.setString(6, medico.getUsuario().getContrasenaUsuario()); // Contraseña
+            cs.setString(6, medico.getContrasenaUsuario()); // Contraseña
 
             // Enviar los horarios, cada uno en su correspondiente parámetro
 

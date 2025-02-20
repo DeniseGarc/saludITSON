@@ -10,7 +10,7 @@ import java.time.LocalDate;
  *
  * @author Alici
  */
-public class Paciente {
+public class Paciente extends Usuario{
     private int IDPaciente;
     private String nombresPaciente;
     private String apellidoPaternoPaciente; 
@@ -19,7 +19,6 @@ public class Paciente {
     private String telefono;
     private LocalDate fechaNacimiento; 
     private Direccion direccion;
-    private Usuario usuario;
 
     //Constructor vacio
     public Paciente() {
@@ -27,7 +26,7 @@ public class Paciente {
     
     //constructor con todos los atributos 
 
-    public Paciente(int IDPaciente, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion, Usuario usuario) {
+    public Paciente(int IDPaciente, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
         this.IDPaciente = IDPaciente;
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
@@ -36,7 +35,6 @@ public class Paciente {
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.direccion = direccion;
-        this.usuario = usuario;
     }
 
     
@@ -44,7 +42,7 @@ public class Paciente {
    
     
     //constructor con todos los atributos menos el IDpaciente
-    public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion, Usuario usuario) {
+    public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
@@ -52,7 +50,6 @@ public class Paciente {
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.direccion = direccion;
-        this.usuario = usuario;
     }
 
     //gets y sets
@@ -119,22 +116,14 @@ public class Paciente {
     public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-    
-    
-    
+ 
     //toString 
 
     @Override
     public String toString() {
-        return "Paciente{" + "IDPaciente=" + IDPaciente + ", nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + ", usuario=" + usuario + '}';
+        return "Paciente{" + "IDPaciente=" + IDPaciente + ", nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + '}';
     }
+
+   
     
 }

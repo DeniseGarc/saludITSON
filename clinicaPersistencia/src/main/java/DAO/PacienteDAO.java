@@ -43,7 +43,7 @@ public Paciente registrarPaciente(Paciente paciente) throws PersistenciaExceptio
         cs.setString(8, paciente.getDireccion().getNumero());
         cs.setString(9, paciente.getDireccion().getColonia());
         cs.setString(10, paciente.getDireccion().getCodigoPostal());
-        cs.setString(11,paciente.getUsuario().getContrasenaUsuario()); 
+        cs.setString(11,paciente.getContrasenaUsuario()); 
 
         // Ejecutar el procedimiento almacenado
         cs.executeUpdate();
