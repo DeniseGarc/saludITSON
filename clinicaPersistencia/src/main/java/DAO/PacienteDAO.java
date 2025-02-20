@@ -53,7 +53,7 @@ public Paciente registrarPaciente(Paciente paciente) throws PersistenciaExceptio
 
     } catch (SQLException e) {
         logger.log(Level.SEVERE, "Error al registrar paciente", e);
-        throw new PersistenciaException("Error al registrar el paciente", e);
+        throw new PersistenciaException(e.getMessage(), e);
     }
 }
 }

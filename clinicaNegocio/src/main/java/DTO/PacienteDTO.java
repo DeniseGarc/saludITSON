@@ -4,7 +4,6 @@
  */
 package DTO;
 
-import entidades.Direccion;
 import java.time.LocalDate;
 
 /**
@@ -19,7 +18,7 @@ public class PacienteDTO extends UsuarioDTO{
     private String correo;
     private String telefono;
     private LocalDate fechaNacimiento; 
-    private Direccion direccion;
+    private DireccionDTO direccion;
 
     //Constructor vacio.
     public PacienteDTO() {
@@ -27,7 +26,18 @@ public class PacienteDTO extends UsuarioDTO{
     
     //Constructor con atributos.
 
-    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
+    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, DireccionDTO direccion, String nombreUsuario, String contrasenaUsuario) {
+        super(nombreUsuario, contrasenaUsuario);
+        this.nombresPaciente = nombresPaciente;
+        this.apellidoPaternoPaciente = apellidoPaternoPaciente;
+        this.apellidoMaternoPaciente = apellidoMaternoPaciente;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
+        this.direccion = direccion;
+    }
+
+    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, DireccionDTO direccion) {
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
@@ -87,11 +97,11 @@ public class PacienteDTO extends UsuarioDTO{
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public Direccion getDireccion() {
+    public DireccionDTO getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(Direccion direccion) {
+    public void setDireccion(DireccionDTO direccion) {
         this.direccion = direccion;
     }
  

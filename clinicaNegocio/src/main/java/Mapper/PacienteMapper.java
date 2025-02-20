@@ -4,8 +4,10 @@
  */
 package Mapper;
 
+import DTO.DireccionDTO;
 import DTO.PacienteDTO;
 import entidades.Paciente;
+import entidades.Direccion;
 
 /**
  *
@@ -14,12 +16,17 @@ import entidades.Paciente;
 public class PacienteMapper {
 
     public Paciente ConvertirAEntidad(PacienteDTO pacienteNuevo) {
-        Paciente paciente = new Paciente(pacienteNuevo.getNombresPaciente(), pacienteNuevo.getApellidoPaternoPaciente(), pacienteNuevo.getApellidoMaternoPaciente(), pacienteNuevo.getCorreo(), pacienteNuevo.getTelefono(), pacienteNuevo.getFechaNacimiento(), pacienteNuevo.getDireccion());
+                DireccionMapper convertidor = new DireccionMapper();
+
+        Direccion direccion = convertidor.ConvertirAEntidad(pacienteNuevo.getDireccion());
+        Paciente paciente = new Paciente(pacienteNuevo.getNombresPaciente(), pacienteNuevo.getApellidoPaternoPaciente(), pacienteNuevo.getApellidoMaternoPaciente(), pacienteNuevo.getCorreo(), pacienteNuevo.getTelefono(), pacienteNuevo.getFechaNacimiento(), direccion);
         return paciente;
     }
-    
-    public PacienteDTO ConvertirADTO(Paciente paciente){
-        PacienteDTO pacienteDTO = new PacienteDTO(paciente.getNombresPaciente(), paciente.getApellidoPaternoPaciente(), paciente.getApellidoMaternoPaciente(), paciente.getCorreo(), paciente.getTelefono(), paciente.getFechaNacimiento(), paciente.getDireccion());
+
+    public PacienteDTO ConvertirADTO(Paciente paciente) {
+        DireccionMapper convertidor = new DireccionMapper();
+        DireccionDTO direccion = convertidor.ConvertirADTO(paciente.getDireccion());
+        PacienteDTO pacienteDTO = new PacienteDTO(paciente.getNombresPaciente(), paciente.getApellidoPaternoPaciente(), paciente.getApellidoMaternoPaciente(), paciente.getCorreo(), paciente.getTelefono(), paciente.getFechaNacimiento(), direccion);
         return pacienteDTO;
     }
 }
