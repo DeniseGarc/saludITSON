@@ -12,6 +12,8 @@ import excepciones.PersistenciaException;
  * @author benjy
  */
 public interface IUsuarioDAO {
+
     //metodo para registrar un usuario
-    public Usuario registrarUsuario(Usuario usuario) throws PersistenciaException;
+    //public Usuario registrarUsuario(Usuario usuario) throws PersistenciaException;
+    public Usuario consultarUsuarioPorCorreo(String correo) throws PersistenciaException;
 }

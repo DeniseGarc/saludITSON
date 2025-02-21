@@ -10,23 +10,24 @@ import java.time.LocalDate;
  *
  * @author joelr
  */
-public class PacienteDTO extends UsuarioDTO{
-    
+public class PacienteDTO extends UsuarioDTO {
+
     private String nombresPaciente;
-    private String apellidoPaternoPaciente; 
+    private String apellidoPaternoPaciente;
     private String apellidoMaternoPaciente;
     private String correo;
     private String telefono;
-    private LocalDate fechaNacimiento; 
-    private DireccionDTO direccion;
+    private LocalDate fechaNacimiento;
+    private String calle;
+    private String numero;
+    private String colonia;
+    private String codigoPostal;
 
     //Constructor vacio.
     public PacienteDTO() {
     }
-    
-    //Constructor con atributos.
 
-    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, DireccionDTO direccion, String nombreUsuario, String contrasenaUsuario) {
+    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, String calle, String numero, String colonia, String codigoPostal, String nombreUsuario, String contrasenaUsuario) {
         super(nombreUsuario, contrasenaUsuario);
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
@@ -34,19 +35,11 @@ public class PacienteDTO extends UsuarioDTO{
         this.correo = correo;
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
-        this.direccion = direccion;
+        this.calle = calle;
+        this.numero = numero;
+        this.colonia = colonia;
+        this.codigoPostal = codigoPostal;
     }
-
-    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, DireccionDTO direccion) {
-        this.nombresPaciente = nombresPaciente;
-        this.apellidoPaternoPaciente = apellidoPaternoPaciente;
-        this.apellidoMaternoPaciente = apellidoMaternoPaciente;
-        this.correo = correo;
-        this.telefono = telefono;
-        this.fechaNacimiento = fechaNacimiento;
-        this.direccion = direccion;
-    }
-
 
     //gets y sets
     public String getNombresPaciente() {
@@ -97,19 +90,41 @@ public class PacienteDTO extends UsuarioDTO{
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    public DireccionDTO getDireccion() {
-        return direccion;
+    public String getCalle() {
+        return calle;
     }
 
-    public void setDireccion(DireccionDTO direccion) {
-        this.direccion = direccion;
+    public void setCalle(String calle) {
+        this.calle = calle;
     }
- 
-    //toString 
+
+    public String getNumero() {
+        return numero;
+    }
+
+    public void setNumero(String numero) {
+        this.numero = numero;
+    }
+
+    public String getColonia() {
+        return colonia;
+    }
+
+    public void setColonia(String colonia) {
+        this.colonia = colonia;
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
+    }
 
     @Override
     public String toString() {
-        return "Paciente: " + ", nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + '}';
+        return "PacienteDTO{" + "nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", codigoPostal=" + codigoPostal + '}';
     }
 
 }

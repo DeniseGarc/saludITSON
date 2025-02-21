@@ -23,6 +23,16 @@ public class Paciente extends Usuario{
     public Paciente() {
         super();
     }
+
+    public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
+        this.nombresPaciente = nombresPaciente;
+        this.apellidoPaternoPaciente = apellidoPaternoPaciente;
+        this.apellidoMaternoPaciente = apellidoMaternoPaciente;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
+        this.direccion = direccion;
+    }
     
     //constructor con todos los atributos de su clase padre Usuario y de paciente 
 

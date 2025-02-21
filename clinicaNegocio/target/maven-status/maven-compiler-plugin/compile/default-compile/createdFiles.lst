@@ -1,13 +1,11 @@
+DTO\PacienteDTO.class
 DTO\UsuarioDTO.class
 Mapper\UsuarioMapper.class
 configuracion\DependencyInjector.class
+BO\UsuarioBO.class
 Encriptado\IEncriptador.class
 Encriptado\Encriptador.class
-DTO\DireccionDTO.class
 BO\PacienteBO.class
 excepciones\NegocioException.class
-DTO\PacienteDTO.class
-BO\UsuarioBO.class
-Mapper\DireccionMapper.class
 Mapper\PacienteMapper.class
 Pruebas\ClinicaNegocio.class

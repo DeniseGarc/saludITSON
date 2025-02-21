@@ -12,6 +12,9 @@ import excepciones.PersistenciaException;
  * @author benjy
  */
 public interface IPacienteDAO {
+
     //metodo para registrar usuario
     public Paciente registrarPaciente(Paciente paciente) throws PersistenciaException;
+
+    public boolean consultarPacientePorTelefono(String telefono) throws PersistenciaException;
 }

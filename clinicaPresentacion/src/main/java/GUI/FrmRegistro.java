@@ -6,7 +6,6 @@ package GUI;
 
 //import excepciones.NegocioException;
 import BO.PacienteBO;
-import DTO.DireccionDTO;
 import DTO.PacienteDTO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
@@ -315,14 +314,13 @@ public class FrmRegistro extends javax.swing.JFrame {
             String telefono = txtTelefono.getText();
             String correo = txtCorreo.getText();
             String contrasena = txtContrasena.getText();
-            DireccionDTO direccionPaciente = new DireccionDTO(calle, numero, colonia, codigoPostal);
-            PacienteDTO pacienteNuevo = new PacienteDTO(nombre, apellidoPaterno, apellidoMaterno, correo, telefono, fechaNacimiento, direccionPaciente, nombre, contrasena);
+            PacienteDTO pacienteNuevo = new PacienteDTO(nombre, apellidoPaterno, apellidoMaterno, correo, telefono, fechaNacimiento, calle, numero, colonia, codigoPostal, correo, contrasena);
             boolean exito = pacienteBO.registrarPaciente(pacienteNuevo);
             if (exito) {
                 JOptionPane.showMessageDialog(this, "Se ha registrado correctamente");
                 regresar();
             } else {
-                JOptionPane.showMessageDialog(this, "Error al registrarse");
+                JOptionPane.showMessageDialog(this, "Ha ocurrido un error al registrarse");
             }
         } catch (NegocioException e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error inesperado", e);

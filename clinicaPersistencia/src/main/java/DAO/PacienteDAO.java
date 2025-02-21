@@ -10,50 +10,67 @@ import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
 /**
- * 
+ *
  * @author benjy
  */
-public class PacienteDAO implements IPacienteDAO{
+public class PacienteDAO implements IPacienteDAO {
+
     IConexion conexion;
-     private static final Logger logger = Logger.getLogger(PacienteDAO.class.getName());
+    private static final Logger logger = Logger.getLogger(PacienteDAO.class.getName());
 
     public PacienteDAO(IConexion conexion) {
         this.conexion = conexion;
     }
-@Override
-public Paciente registrarPaciente(Paciente paciente) throws PersistenciaException {
-    String procedimientoSQL = "CALL registrar_paciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    try (Connection con = conexion.crearConexion();
-         CallableStatement cs = con.prepareCall(procedimientoSQL)) {
+    @Override
+    public Paciente registrarPaciente(Paciente paciente) throws PersistenciaException {
+        String procedimientoSQL = "CALL registrar_paciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        // Establecer los parámetros del procedimiento almacenado
-        cs.setString(1, paciente.getNombresPaciente());
-        cs.setString(2, paciente.getApellidoPaternoPaciente());
-        cs.setString(3, paciente.getApellidoMaternoPaciente());
-        cs.setString(4, paciente.getCorreo());
-        cs.setString(5, paciente.getTelefono());
-        cs.setDate(6, Date.valueOf(paciente.getFechaNacimiento()));
-        cs.setString(7, paciente.getDireccion().getCalle());
-        cs.setString(8, paciente.getDireccion().getNumero());
-        cs.setString(9, paciente.getDireccion().getColonia());
-        cs.setString(10, paciente.getDireccion().getCodigoPostal());
-        cs.setString(11,paciente.getContrasenaUsuario()); 
+        try (Connection con = conexion.crearConexion(); CallableStatement cs = con.prepareCall(procedimientoSQL)) {
 
-        // Ejecutar el procedimiento almacenado
-        cs.executeUpdate();
-        logger.info("Paciente registrado exitosamente.");
+            // Establecer los parámetros del procedimiento almacenado
+            cs.setString(1, paciente.getNombresPaciente());
+            cs.setString(2, paciente.getApellidoPaternoPaciente());
+            cs.setString(3, paciente.getApellidoMaternoPaciente());
+            cs.setString(4, paciente.getCorreo());
+            cs.setString(5, paciente.getTelefono());
+            cs.setDate(6, Date.valueOf(paciente.getFechaNacimiento()));
+            cs.setString(7, paciente.getDireccion().getCalle());
+            cs.setString(8, paciente.getDireccion().getNumero());
+            cs.setString(9, paciente.getDireccion().getColonia());
+            cs.setString(10, paciente.getDireccion().getCodigoPostal());
+            cs.setString(11, paciente.getContrasenaUsuario());
 
-        return paciente;
+            // Ejecutar el procedimiento almacenado
+            cs.executeUpdate();
+            logger.info("Paciente registrado exitosamente.");
 
-    } catch (SQLException e) {
-        logger.log(Level.SEVERE, "Error al registrar paciente", e);
-        throw new PersistenciaException(e.getMessage(), e);
+            return paciente;
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error al registrar paciente", e);
+            throw new PersistenciaException(e.getMessage(), e);
+        }
     }
-}
+
+    @Override
+    public boolean consultarPacientePorTelefono(String telefono) throws PersistenciaException {
+        String sentenciaSQL = "SELECT telefono FROM pacientes WHERE telefono = ?";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+            ps.setString(1, telefono);
+            ResultSet resultado = ps.executeQuery();
+            return resultado.next();
+        } catch (SQLException ex) {
+            Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al intentar consultar el telefono del paciente");
+        }
+    }
+
 }
