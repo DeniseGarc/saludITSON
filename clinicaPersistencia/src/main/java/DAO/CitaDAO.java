@@ -36,8 +36,8 @@ public class CitaDAO implements ICitaDAO {
         String sentenciaSQL = "CALL agendar_cita(?,?,?)";
         try (Connection con = conexion.crearConexion(); CallableStatement cs = con.prepareCall(sentenciaSQL);){
             cs.setTimestamp(1, Timestamp.valueOf(cita.getFechaHora()));
-            cs.setInt(2, cita.getMedico().getIDMedico());
-            cs.setInt(3, cita.getPaciente().getIDPaciente());
+            cs.setInt(2, cita.getMedico().getIDUsuario());
+            cs.setInt(3, cita.getPaciente().getIDUsuario());
             cs.execute();
             return true;
         } catch (SQLException ex) {

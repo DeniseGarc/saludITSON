@@ -111,7 +111,7 @@ public class MedicoDAO implements IMedicoDAO{
         String sentenciaSQL = "CALL generarHorariosDisponibles(?,?)";
         
         try (Connection con = conexion.crearConexion(); CallableStatement cs = con.prepareCall(sentenciaSQL);) {
-            cs.setInt(1, medico.getIDMedico());
+            cs.setInt(1, medico.getIDUsuario());
             cs.setDate(2, Date.valueOf(fecha));
             ResultSet resultados = cs.executeQuery();
             while (resultados.next()) {                
