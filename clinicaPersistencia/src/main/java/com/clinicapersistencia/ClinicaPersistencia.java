@@ -4,12 +4,14 @@
 
 package com.clinicapersistencia;
 
-import DAO.IPacienteDAO;
-import DAO.IUsuarioDAO;
-import DAO.PacienteDAO;
-import DAO.UsuarioDAO;
+import DAO.CitaDAO;
+import DAO.ICitaDAO;
+import DAO.IMedicoDAO;
+import DAO.MedicoDAO;
 import conexion.Conexion;
 import conexion.IConexion;
+import entidades.Medico;
+import entidades.Paciente;
 import excepciones.PersistenciaException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,15 +23,20 @@ import java.util.logging.Logger;
 public class ClinicaPersistencia {
 
     public static void main(String[] args) {
+        
         IConexion conexion = new Conexion();
-        IUsuarioDAO dao = new UsuarioDAO(conexion);
-        IPacienteDAO dao2 = new PacienteDAO(conexion);
+        ICitaDAO dao = new CitaDAO(conexion);
+                IMedicoDAO dao2 = new MedicoDAO(conexion);
+
+        Medico medico = new Medico(4, null, null, null, null, null, null, null, null);
+        Paciente paciente = new Paciente(1, null, null, null, null, null, null, null, null);
         try {
-                System.out.println(dao2.consultarPacientePorTelefono("0"));
+//            System.out.println(dao.agendarCita(LocalDateTime.of(2025, Month.MARCH, 04, 15, 00), medico, paciente));
+//            List<LocalTime> horariosDisponibles = dao.obtenerHorariosCitas(medico, LocalDateTime.of(2025, Month.MARCH, 04));
+//            System.out.println(horariosDisponibles);
+            System.out.println(dao2.consultarMedicosPorEspecialidad("CARDIoloGIA"));
         } catch (PersistenciaException ex) {
             Logger.getLogger(ClinicaPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
     }
 }

@@ -4,25 +4,27 @@
  */
 package entidades;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
  * @author Alici
  */
 public class Cita {
+
     private int IDCita;
-    private LocalDate fechaHora;
+    private LocalDateTime fechaHora;
     private String estadoCita;
     private String folioCita;
     private String tipo;
     private Medico medico;
     private Paciente paciente;
-    //constructor vacio
+
+//constructor vacio
     public Cita() {
     }
 
-    public Cita(int IDCita, LocalDate fechaHora, String estadoCita, String folioCita, String tipo, Medico medico, Paciente paciente) {
+    public Cita(int IDCita, LocalDateTime fechaHora, String estadoCita, String folioCita, String tipo, Medico medico, Paciente paciente) {
         this.IDCita = IDCita;
         this.fechaHora = fechaHora;
         this.estadoCita = estadoCita;
@@ -32,7 +34,7 @@ public class Cita {
         this.paciente = paciente;
     }
 
-    public Cita(LocalDate fechaHora, String estadoCita, String folioCita, String tipo, Medico medico, Paciente paciente) {
+    public Cita(LocalDateTime fechaHora, String estadoCita, String folioCita, String tipo, Medico medico, Paciente paciente) {
         this.fechaHora = fechaHora;
         this.estadoCita = estadoCita;
         this.folioCita = folioCita;
@@ -49,11 +51,11 @@ public class Cita {
         this.IDCita = IDCita;
     }
 
-    public LocalDate getFechaHora() {
+    public LocalDateTime getFechaHora() {
         return fechaHora;
     }
 
-    public void setFechaHora(LocalDate fechaHora) {
+    public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
     }
 
@@ -102,7 +104,4 @@ public class Cita {
         return "Cita{" + "IDCita=" + IDCita + ", fechaHora=" + fechaHora + ", estadoCita=" + estadoCita + ", folioCita=" + folioCita + ", tipo=" + tipo + ", medico=" + medico + ", paciente=" + paciente + '}';
     }
 
-
-    
-    
 }
