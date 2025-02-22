@@ -28,13 +28,13 @@ public class ClinicaPersistencia {
         ICitaDAO dao = new CitaDAO(conexion);
                 IMedicoDAO dao2 = new MedicoDAO(conexion);
 
-        Medico medico = new Medico(4, null, null, null, null, null, null, null, null);
+       // Medico medico = new Medico(4, null, null, null, null, null, null, null, null);
         Paciente paciente = new Paciente(1, null, null, null, null, null, null, null, null);
         try {
 //            System.out.println(dao.agendarCita(LocalDateTime.of(2025, Month.MARCH, 04, 15, 00), medico, paciente));
 //            List<LocalTime> horariosDisponibles = dao.obtenerHorariosCitas(medico, LocalDateTime.of(2025, Month.MARCH, 04));
 //            System.out.println(horariosDisponibles);
-            System.out.println(dao2.consultarMedicosPorEspecialidad("CARDIoloGIA"));
+            System.out.println(dao2.consultarMedicosPorEspecialidad("cardiologia"));
         } catch (PersistenciaException ex) {
             Logger.getLogger(ClinicaPersistencia.class.getName()).log(Level.SEVERE, null, ex);
         }

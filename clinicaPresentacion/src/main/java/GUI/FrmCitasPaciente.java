@@ -69,6 +69,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         btnCitas.setBackground(new java.awt.Color(30, 98, 159));
         btnCitas.setForeground(new java.awt.Color(255, 255, 255));
         btnCitas.setText("Citas");
+        btnCitas.setPreferredSize(new java.awt.Dimension(121, 23));
         btnCitas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCitasActionPerformed(evt);
@@ -107,7 +108,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addComponent(btnConsultaPrevia)
                 .addGap(18, 18, 18)
-                .addComponent(btnCitas)
+                .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
@@ -243,7 +244,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCitasActionPerformed
 
     private void btnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCitaActionPerformed
-        // TODO add your handling code here:
+        agendarCita();
     }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
     private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
@@ -285,6 +286,11 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    private void agendarCita() {
+        FrmAgendarCita frmAgendarCita = new FrmAgendarCita();
+        frmAgendarCita.setVisible(true);
+        dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgendarCita;

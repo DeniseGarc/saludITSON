@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package mapper;
+package Mapper;
 
 import DTO.MedicoDTO;
 import entidades.Medico;
@@ -14,14 +14,19 @@ import java.util.List;
  *
  * @author Alici
  */
-public class MedicoMapper {
+public class MapperMedico {
 
     public MedicoDTO convertirADTO(Medico medico) {
         return new MedicoDTO(String.valueOf(medico.getIDUsuario()), medico.getNombresMedico(), medico.getApellidoPaternoMedico(), medico.getApellidoMaternoMedico());
     }
 
-    public Medico convertirAEntidad(MedicoDTO medico) {
-        return new Medico(medico.getIDMedico(), null, medico.getNombresMedico(), medico.getApellidoPaternoMedico(), medico.getApellidoMaternoMedico(), null, null, null);
+    public Medico convertirAEntidad(MedicoDTO medicoDTO) {
+        Medico medico = new Medico();
+        medico.setIDUsuario(Integer.parseInt(medicoDTO.getIDMedico()));
+        medico.setNombresMedico(medicoDTO.getNombresMedico());
+        medico.setApellidoPaternoMedico(medicoDTO.getApellidoPaternoMedico());
+        medico.setApellidoMaternoMedico(medicoDTO.getApellidoMaternoMedico());
+        return medico;
     }
 
     public List<MedicoDTO> convertirADTO(List<Medico> medicos) {

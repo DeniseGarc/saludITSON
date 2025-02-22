@@ -8,24 +8,28 @@ package DTO;
  *
  * @author joelr
  */
-public class UsuarioDTO{
+public class UsuarioDTO {
 
+    private String IDUsuario;
     private String nombreUsuario;
     private String contrasenaUsuario;
-    
-    //Constructor vacio
 
+    //Constructor vacio
     public UsuarioDTO() {
-    }  
+    }
     //Constructor con Atributos
+    public UsuarioDTO(String IDUsuario, String nombreUsuario, String contrasenaUsuario) {
+        this.IDUsuario = IDUsuario;
+        this.nombreUsuario = nombreUsuario;
+        this.contrasenaUsuario = contrasenaUsuario;
+    }
 
     public UsuarioDTO(String nombreUsuario, String contrasenaUsuario) {
         this.nombreUsuario = nombreUsuario;
         this.contrasenaUsuario = contrasenaUsuario;
     }
-    
-    //gets y sets 
 
+    //gets y sets 
     public String getNombreUsuario() {
         return nombreUsuario;
     }
@@ -44,7 +48,7 @@ public class UsuarioDTO{
     //ToString
 
     @Override
-    
+
     public String toString() {
         return "UsuarioDTO: " + "nombreUsuario=" + nombreUsuario + ", contrasenaUsuario=" + contrasenaUsuario;
     }

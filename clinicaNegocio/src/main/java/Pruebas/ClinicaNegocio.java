@@ -4,7 +4,7 @@
 package Pruebas;
 
 import BO.PacienteBO;
-import DTO.PacienteDTO;
+import DTO.PacienteNuevoDTO;
 import conexion.Conexion;
 import conexion.IConexion;
 import entidades.Direccion;

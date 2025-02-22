@@ -6,7 +6,7 @@ package BO;
 
 import DAO.IPacienteDAO;
 import DAO.PacienteDAO;
-import DTO.PacienteDTO;
+import DTO.PacienteNuevoDTO;
 import Encriptado.Encriptador;
 import Encriptado.IEncriptador;
 import Mapper.PacienteMapper;
@@ -45,7 +45,7 @@ public class PacienteBO {
      * false en caso contrario.
      * @throws NegocioException Si hay problemas en las capas.
      */
-    public boolean registrarPaciente(PacienteDTO pacienteNuevo) throws NegocioException {
+    public boolean registrarPaciente(PacienteNuevoDTO pacienteNuevo) throws NegocioException {
         // Validar que el paciente no sea nulo.
         if (pacienteNuevo == null) {
             logger.severe("Error: El paciente es nulo");
@@ -57,7 +57,7 @@ public class PacienteBO {
             throw new NegocioException(mensaje);
         }
         // Uso de Mapper para convertir a Entidad y Encriptación de contraseña.
-        Paciente paciente = mapperPaciente.ConvertirAEntidad(pacienteNuevo);
+        Paciente paciente = mapperPaciente.convertirAEntidad(pacienteNuevo);
         String contrasenaEncriptada = encriptador.encriptar(pacienteNuevo.getContrasenaUsuario());
         paciente.setContrasenaUsuario(contrasenaEncriptada);
         // Registrar
@@ -72,7 +72,7 @@ public class PacienteBO {
         }
     }
 
-    private String validarDatosPaciente(PacienteDTO paciente) {
+    private String validarDatosPaciente(PacienteNuevoDTO paciente) {
         String nombresPaciente = paciente.getNombresPaciente();
         String apellidoPaternoPaciente = paciente.getApellidoPaternoPaciente();
         String apellidoMaternoPaciente = paciente.getApellidoMaternoPaciente();

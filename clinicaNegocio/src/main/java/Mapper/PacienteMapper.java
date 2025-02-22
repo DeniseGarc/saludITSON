@@ -4,7 +4,7 @@
  */
 package Mapper;
 
-import DTO.PacienteDTO;
+import DTO.PacienteNuevoDTO;
 import entidades.Paciente;
 import entidades.Direccion;
 
@@ -14,14 +14,14 @@ import entidades.Direccion;
  */
 public class PacienteMapper {
 
-    public Paciente ConvertirAEntidad(PacienteDTO pacienteNuevo) {
+    public Paciente convertirAEntidad(PacienteNuevoDTO pacienteNuevo) {
         Direccion direccion = new Direccion(pacienteNuevo.getCalle(),pacienteNuevo.getNumero(),pacienteNuevo.getColonia(),pacienteNuevo.getCodigoPostal());
         Paciente paciente = new Paciente(pacienteNuevo.getNombresPaciente(), pacienteNuevo.getApellidoPaternoPaciente(), pacienteNuevo.getApellidoMaternoPaciente(), pacienteNuevo.getCorreo(), pacienteNuevo.getTelefono(), pacienteNuevo.getFechaNacimiento(), direccion);
         return paciente;
     }
 
-    public PacienteDTO ConvertirADTO(Paciente paciente) {
-        PacienteDTO pacienteDTO = new PacienteDTO(paciente.getNombresPaciente(), paciente.getApellidoPaternoPaciente(), paciente.getApellidoMaternoPaciente(), paciente.getCorreo(), paciente.getTelefono(), paciente.getFechaNacimiento(), paciente.getDireccion().getCalle(), paciente.getDireccion().getNumero(), paciente.getDireccion().getColonia(), paciente.getDireccion().getCodigoPostal(), paciente.getNombreUsuario(), paciente.getContrasenaUsuario());
+    public PacienteNuevoDTO ConvertirADTO(Paciente paciente) {
+        PacienteNuevoDTO pacienteDTO = new PacienteNuevoDTO(paciente.getNombresPaciente(), paciente.getApellidoPaternoPaciente(), paciente.getApellidoMaternoPaciente(), paciente.getCorreo(), paciente.getTelefono(), paciente.getFechaNacimiento(), paciente.getDireccion().getCalle(), paciente.getDireccion().getNumero(), paciente.getDireccion().getColonia(), paciente.getDireccion().getCodigoPostal(), paciente.getNombreUsuario(), paciente.getContrasenaUsuario());
         return pacienteDTO;
     }
 }

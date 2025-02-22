@@ -4,7 +4,7 @@
 
 package pruebas;
 
-import GUI.FrmInicioSesion;
+import GUI.FrmAgendarCita;
 
 
 /**
@@ -14,7 +14,7 @@ import GUI.FrmInicioSesion;
 public class ClinicaPresentacion {
 
     public static void main(String[] args) {
-        FrmInicioSesion inicio = new FrmInicioSesion();
+        FrmAgendarCita inicio = new FrmAgendarCita();
         inicio.setVisible(true);
     }
 }

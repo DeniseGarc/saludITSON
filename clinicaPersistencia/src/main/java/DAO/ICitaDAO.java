@@ -6,6 +6,7 @@ package DAO;
 
 import entidades.Cita;
 import excepciones.PersistenciaException;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -15,4 +16,5 @@ public interface ICitaDAO {
 
     public boolean agendarCita(Cita cita) throws PersistenciaException;
 
+    public boolean consultarCitaPorFechaHora(LocalDateTime fechaHora, String idMedico) throws PersistenciaException;
 }

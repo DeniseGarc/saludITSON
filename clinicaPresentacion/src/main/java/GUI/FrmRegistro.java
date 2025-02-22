@@ -6,7 +6,7 @@ package GUI;
 
 //import excepciones.NegocioException;
 import BO.PacienteBO;
-import DTO.PacienteDTO;
+import DTO.PacienteNuevoDTO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
 import java.time.LocalDate;
@@ -28,9 +28,9 @@ public class FrmRegistro extends javax.swing.JFrame {
      * Creates new form FrmRegistro
      */
     public FrmRegistro() {
-        initComponents();
-        this.agregarListeners();
-        actualizarEstadoBoton();
+//        initComponents();
+//        this.agregarListeners();
+//        actualizarEstadoBoton();
     }
 
     /**
@@ -259,11 +259,11 @@ public class FrmRegistro extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        regresar();
+//        regresar();
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnRegistrarseActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarseActionPerformed
-        registrarPaciente();
+//        registrarPaciente();
     }//GEN-LAST:event_btnRegistrarseActionPerformed
 
 //    /**
@@ -300,89 +300,89 @@ public class FrmRegistro extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-    // boton registrar paciente
-    private void registrarPaciente() {
-        try {
-            String apellidoPaterno = txtApellidoPaterno.getText();
-            String apellidoMaterno = txtApellidoMaterno.getText();
-            String nombre = txtNombre.getText();
-            String calle = txtCalle.getText();
-            String numero = txtNumero.getText();
-            String colonia = txtColonia.getText();
-            String codigoPostal = txtCodigoPostal.getText();
-            LocalDate fechaNacimiento = dtPikrfechaNacimiento.getDate();
-            String telefono = txtTelefono.getText();
-            String correo = txtCorreo.getText();
-            String contrasena = txtContrasena.getText();
-            PacienteDTO pacienteNuevo = new PacienteDTO(nombre, apellidoPaterno, apellidoMaterno, correo, telefono, fechaNacimiento, calle, numero, colonia, codigoPostal, correo, contrasena);
-            boolean exito = pacienteBO.registrarPaciente(pacienteNuevo);
-            if (exito) {
-                JOptionPane.showMessageDialog(this, "Se ha registrado correctamente");
-                regresar();
-            } else {
-                JOptionPane.showMessageDialog(this, "Ha ocurrido un error al registrarse");
-            }
-        } catch (NegocioException e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error inesperado", e);
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    //boton regresar
-    private void regresar() {
-        FrmInicioSesion frmInicioSesion = new FrmInicioSesion();
-        frmInicioSesion.setVisible(true);
-        dispose();
-    }
-
-    private void actualizarEstadoBoton() {
-        boolean camposLlenos = !txtNombre.getText().trim().isEmpty()
-                && !txtApellidoPaterno.getText().trim().isEmpty()
-                && !txtApellidoMaterno.getText().trim().isEmpty()
-                && !txtNumero.getText().trim().isEmpty()
-                && !txtCorreo.getText().trim().isEmpty()
-                && !txtCodigoPostal.getText().trim().isEmpty()
-                && !txtCalle.getText().trim().isEmpty()
-                && !txtColonia.getText().trim().isEmpty()
-                && !txtTelefono.getText().trim().isEmpty()
-                && !txtContrasena.getText().trim().isEmpty()
-                && dtPikrfechaNacimiento.getDate() != null;
-
-        btnRegistrarse.setEnabled(camposLlenos);
-    }
-
-    // Listeners
-    private void agregarListeners() {
-        DocumentListener listener = new DocumentListener() {
-            @Override
-            public void insertUpdate(DocumentEvent e) {
-                actualizarEstadoBoton();
-            }
-
-            @Override
-            public void removeUpdate(DocumentEvent e) {
-                actualizarEstadoBoton();
-            }
-
-            @Override
-            public void changedUpdate(DocumentEvent e) {
-                actualizarEstadoBoton();
-            }
-        };
-        txtNombre.getDocument().addDocumentListener(listener);
-        txtApellidoPaterno.getDocument().addDocumentListener(listener);
-        txtApellidoMaterno.getDocument().addDocumentListener(listener);
-        txtNumero.getDocument().addDocumentListener(listener);
-        txtCorreo.getDocument().addDocumentListener(listener);
-        txtCodigoPostal.getDocument().addDocumentListener(listener);
-        txtCalle.getDocument().addDocumentListener(listener);
-        txtColonia.getDocument().addDocumentListener(listener);
-        txtTelefono.getDocument().addDocumentListener(listener);
-        txtContrasena.getDocument().addDocumentListener(listener);
-        dtPikrfechaNacimiento.addDateChangeListener(e -> {
-            actualizarEstadoBoton();
-        });
-    }
+//    // boton registrar paciente
+//    private void registrarPaciente() {
+//        try {
+//            String apellidoPaterno = txtApellidoPaterno.getText();
+//            String apellidoMaterno = txtApellidoMaterno.getText();
+//            String nombre = txtNombre.getText();
+//            String calle = txtCalle.getText();
+//            String numero = txtNumero.getText();
+//            String colonia = txtColonia.getText();
+//            String codigoPostal = txtCodigoPostal.getText();
+//            LocalDate fechaNacimiento = dtPikrfechaNacimiento.getDate();
+//            String telefono = txtTelefono.getText();
+//            String correo = txtCorreo.getText();
+//            String contrasena = txtContrasena.getText();
+//            PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO(nombre, apellidoPaterno, apellidoMaterno, correo, telefono, fechaNacimiento, calle, numero, colonia, codigoPostal, correo, contrasena);
+//            boolean exito = pacienteBO.registrarPaciente(pacienteNuevo);
+//            if (exito) {
+//                JOptionPane.showMessageDialog(this, "Se ha registrado correctamente");
+//                regresar();
+//            } else {
+//                JOptionPane.showMessageDialog(this, "Ha ocurrido un error al registrarse", "Error", JOptionPane.ERROR_MESSAGE);
+//            }
+//        } catch (NegocioException e) {
+//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error inesperado", e);
+//            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+//    }
+//
+//    //boton regresar
+//    private void regresar() {
+//        FrmInicioSesion frmInicioSesion = new FrmInicioSesion();
+//        frmInicioSesion.setVisible(true);
+//        dispose();
+//    }
+//
+//    private void actualizarEstadoBoton() {
+//        boolean camposLlenos = !txtNombre.getText().trim().isEmpty()
+//                && !txtApellidoPaterno.getText().trim().isEmpty()
+//                && !txtApellidoMaterno.getText().trim().isEmpty()
+//                && !txtNumero.getText().trim().isEmpty()
+//                && !txtCorreo.getText().trim().isEmpty()
+//                && !txtCodigoPostal.getText().trim().isEmpty()
+//                && !txtCalle.getText().trim().isEmpty()
+//                && !txtColonia.getText().trim().isEmpty()
+//                && !txtTelefono.getText().trim().isEmpty()
+//                && !txtContrasena.getText().trim().isEmpty()
+//                && dtPikrfechaNacimiento.getDate() != null;
+//
+//        btnRegistrarse.setEnabled(camposLlenos);
+//    }
+//
+//    // Listeners
+//    private void agregarListeners() {
+//        DocumentListener listener = new DocumentListener() {
+//            @Override
+//            public void insertUpdate(DocumentEvent e) {
+//                actualizarEstadoBoton();
+//            }
+//
+//            @Override
+//            public void removeUpdate(DocumentEvent e) {
+//                actualizarEstadoBoton();
+//            }
+//
+//            @Override
+//            public void changedUpdate(DocumentEvent e) {
+//                actualizarEstadoBoton();
+//            }
+//        };
+//        txtNombre.getDocument().addDocumentListener(listener);
+//        txtApellidoPaterno.getDocument().addDocumentListener(listener);
+//        txtApellidoMaterno.getDocument().addDocumentListener(listener);
+//        txtNumero.getDocument().addDocumentListener(listener);
+//        txtCorreo.getDocument().addDocumentListener(listener);
+//        txtCodigoPostal.getDocument().addDocumentListener(listener);
+//        txtCalle.getDocument().addDocumentListener(listener);
+//        txtColonia.getDocument().addDocumentListener(listener);
+//        txtTelefono.getDocument().addDocumentListener(listener);
+//        txtContrasena.getDocument().addDocumentListener(listener);
+//        dtPikrfechaNacimiento.addDateChangeListener(e -> {
+//            actualizarEstadoBoton();
+//        });
+//    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrarse;
