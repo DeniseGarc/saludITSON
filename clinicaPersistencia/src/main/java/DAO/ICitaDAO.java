@@ -17,4 +17,9 @@ public interface ICitaDAO {
     public boolean agendarCita(Cita cita) throws PersistenciaException;
 
     public boolean consultarCitaPorFechaHora(LocalDateTime fechaHora, String idMedico) throws PersistenciaException;
+
+    public boolean consultarCitaPorFolio(String folio) throws PersistenciaException;
+
+    public boolean generarCitaEmergencia(Cita cita) throws PersistenciaException;
+
 }

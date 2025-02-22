@@ -3,8 +3,7 @@
  */
 package Pruebas;
 
-import BO.PacienteBO;
-import DTO.PacienteNuevoDTO;
+import BO.CitaBO;
 import conexion.Conexion;
 import conexion.IConexion;
 import entidades.Direccion;
@@ -21,7 +20,11 @@ public class ClinicaNegocio {
     static Direccion direccion = new Direccion("asdsfa", "aasad", "sads", "as1ff");
 
     public static void main(String[] args) throws NegocioException {
-//        IConexion conexion = new Conexion();
+        IConexion conexion = new Conexion();
+        CitaBO cita = new CitaBO(conexion);
+
+        System.out.println(cita.asignarCitaEmergencia("Cardiologia", "6"));
+
 ////        PacienteDTO pacienteVacio = new PacienteDTO();
 ////        PacienteDTO paciente1 = new PacienteDTO("Metro2", "Mitro2", "Matro2", "Memimatro3@gmail.com", "643233345", fecha, direccion);
 ////        paciente1.setContrasenaUsuario("potrobes");

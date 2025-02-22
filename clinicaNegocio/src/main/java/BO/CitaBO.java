@@ -9,15 +9,23 @@ import DAO.ICitaDAO;
 import DAO.IMedicoDAO;
 import DAO.MedicoDAO;
 import DTO.CitaRegistroDTO;
+import DTO.CitaEmergenciaDTO;
 import DTO.MedicoDTO;
 import Mapper.CitaMapper;
 import Mapper.MapperMedico;
 import conexion.IConexion;
+import entidades.Medico;
+import entidades.Cita;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -83,6 +91,89 @@ public class CitaBO {
         } catch (PersistenciaException ex) {
             Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
             throw new NegocioException(ex.getMessage());
+        }
+    }
+
+    public String generarFolio() throws NegocioException {
+        Random random = new Random();
+        String folioEscrito = null;
+        try {
+            do {
+                int folio = 10000000 + random.nextInt(90000000);
+                folioEscrito = String.valueOf(folio);
+            } while (citaDAO.consultarCitaPorFolio(folioEscrito));
+            return folioEscrito;
+
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No fue posible generar un folio");
+        }
+    }
+
+    public CitaEmergenciaDTO asignarCitaEmergencia(String especialidad, String idPaciente) throws NegocioException {
+        if (especialidad == null || especialidad.isBlank()) {
+            throw new NegocioException("No se ha seleccionado una especialidad");
+        }
+        try {
+            LocalDateTime ahora = LocalDateTime.now();
+            // mapa donde se va a guardar al medico con su hora más cercana de atención
+            Map<Medico, LocalDateTime> medicoHorasCercanas = new HashMap<>();
+            // medicos por especialidad indicada
+            List<Medico> medicos = medicoDAO.consultarMedicosPorEspecialidad(especialidad);
+            
+            for (Medico medico : medicos) {
+                // lista de horas disponibles del medico
+               
+                List<LocalTime> horasDisponibles = obtenerHorasDisponiblesMedico(medico.getIDUsuario());
+                 if (horasDisponibles  == null) {
+                    throw new NegocioException("No hay horarios de atención disponibles");
+                }
+                // se utiliza optional para manejar la posible ausencia de horas disponibles
+                Optional<LocalDateTime> horaMasCercana 
+                        // se hace stream a las horas disponibles del medico
+                        = horasDisponibles.stream()
+                         // Combina las horas con la fecha actual
+                        .map(hora -> LocalDateTime.of(ahora.toLocalDate(), hora)) 
+                        // se filtran las fecha y hora que son anteriores a la fecha actual
+                        .filter(horaFecha -> !horaFecha.isBefore(ahora))
+                        // se ordena ascendentemente las fecha hora       
+                        .min((h1, h2) -> h1.compareTo(h2));
+                // si hay un valor obtenido en el stream anterior se agrega al mapa el medico con su hora 
+                horaMasCercana.ifPresent(hora -> medicoHorasCercanas.put(medico, hora)); // mete al mapa el medico y la hora 
+            }
+
+            // Encontrar la cita más cercana de todas
+            Optional<Map.Entry<Medico, LocalDateTime>> citaMasCercana
+                    // entrySet convierte el mapa en un flujo de entradas y con min.comparingByValue se obtiene el LocalDateTime más pequeño
+                    = medicoHorasCercanas.entrySet().stream().min(Map.Entry.comparingByValue());
+            // si es que existe una cita más cercana se agenda
+            if (citaMasCercana.isPresent()) {
+                // se guarda el par de Medico y fecha hora de la cita más cercana obtenida
+                Map.Entry<Medico, LocalDateTime> medicoHorarioCita = citaMasCercana.get();
+                MedicoDTO medicoCita = convertidorMedico.convertirADTO(medicoHorarioCita.getKey());
+                String folio;
+                folio = generarFolio();
+                CitaEmergenciaDTO citaEmergencia = new CitaEmergenciaDTO(medicoHorarioCita.getValue(), folio, medicoCita, idPaciente);
+                if (citaDAO.generarCitaEmergencia(convertidorCita.convertirAEntidad(citaEmergencia))) {
+                    return citaEmergencia;
+                }
+            }
+            throw new NegocioException("No hay horarios de atención disponibles");
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException(ex.getMessage());
+        }
+    }
+
+    private List<LocalTime> obtenerHorasDisponiblesMedico(int idMedico) {
+        // Tu implementación actual para obtener horas disponibles
+        Medico medico = new Medico();
+        medico.setIDUsuario(idMedico);
+        try {
+            return medicoDAO.obtenerHorariosCitas(medico, LocalDate.now());
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, "El médico no tiene horas disponibles", ex);
+            return null;
         }
     }
 

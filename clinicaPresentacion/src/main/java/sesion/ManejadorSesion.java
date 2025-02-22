@@ -10,7 +10,7 @@ package sesion;
  */
 public class ManejadorSesion {
 
-    private static String idUsuario = "4";
+    private static String idUsuario = "8";
     private static String tipo;
 
     public static String getIdUsuario() {

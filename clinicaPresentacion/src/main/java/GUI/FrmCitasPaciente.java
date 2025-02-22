@@ -69,6 +69,8 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         btnCitas.setBackground(new java.awt.Color(30, 98, 159));
         btnCitas.setForeground(new java.awt.Color(255, 255, 255));
         btnCitas.setText("Citas");
+        btnCitas.setMaximumSize(new java.awt.Dimension(121, 23));
+        btnCitas.setMinimumSize(new java.awt.Dimension(121, 23));
         btnCitas.setPreferredSize(new java.awt.Dimension(121, 23));
         btnCitas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -83,33 +85,34 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         panelBarraLateralLayout.setHorizontalGroup(
             panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                            .addGap(41, 41, 41)
-                            .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                            .addGap(10, 10, 10)
+                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelBarraLateralLayout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                 .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnGenerarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
-                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                .addComponent(btnGenerarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(btnCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(panelBarraLateralLayout.createSequentialGroup()
+                                .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(51, 51, 51))))
+                    .addGroup(panelBarraLateralLayout.createSequentialGroup()
+                        .addGap(43, 43, 43)
+                        .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
         panelBarraLateralLayout.setVerticalGroup(
             panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(19, 19, 19)
                 .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGap(30, 30, 30)
                 .addComponent(btnGenerarConsulta)
                 .addGap(18, 18, 18)
                 .addComponent(btnConsultaPrevia)
                 .addGap(18, 18, 18)
                 .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
                 .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -232,7 +235,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarConsultaActionPerformed
-        // TODO add your handling code here:
+        generarFolio();
     }//GEN-LAST:event_btnGenerarConsultaActionPerformed
 
     private void btnConsultaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPreviaActionPerformed
@@ -289,6 +292,12 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     private void agendarCita() {
         FrmAgendarCita frmAgendarCita = new FrmAgendarCita();
         frmAgendarCita.setVisible(true);
+        dispose();
+    }
+
+    private void generarFolio() {
+        FrmGenerarConsulta frmGenerarConsulta = new FrmGenerarConsulta();
+        frmGenerarConsulta.setVisible(true);
         dispose();
     }
 

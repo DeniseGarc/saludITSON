@@ -4,17 +4,33 @@
  */
 package GUI;
 
+import BO.CitaBO;
+import DTO.CitaEmergenciaDTO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
+import java.util.List;
+import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import sesion.ManejadorSesion;
+
 /**
  *
  * @author Alici
  */
 public class FrmGenerarConsulta extends javax.swing.JFrame {
 
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
+
     /**
      * Creates new form FrmGenerarConsulta
      */
     public FrmGenerarConsulta() {
         initComponents();
+        llenarComboEspecialidad();
+        btnGenerarFolio.setEnabled(false);
+        agregarListener();
     }
 
     /**
@@ -54,8 +70,6 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
 
         lblSeleccionEspecialidad.setText("Seleccione la especialidad en la que desea consultar");
 
-        cBoxEspecialidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         btnGenerarFolio.setBackground(new java.awt.Color(30, 98, 159));
         btnGenerarFolio.setForeground(new java.awt.Color(255, 255, 255));
         btnGenerarFolio.setText("Generar folio");
@@ -77,8 +91,6 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
         panelRedondoHora.setRoundBottomRight(30);
         panelRedondoHora.setRoundTopLeft(30);
         panelRedondoHora.setRoundTopRight(30);
-
-        lblHora.setText("Texto temporal");
 
         javax.swing.GroupLayout panelRedondoHoraLayout = new javax.swing.GroupLayout(panelRedondoHora);
         panelRedondoHora.setLayout(panelRedondoHoraLayout);
@@ -103,16 +115,14 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
         panelRedondoMedico.setRoundTopLeft(30);
         panelRedondoMedico.setRoundTopRight(30);
 
-        lblMedico.setText("Texto temporal");
-
         javax.swing.GroupLayout panelRedondoMedicoLayout = new javax.swing.GroupLayout(panelRedondoMedico);
         panelRedondoMedico.setLayout(panelRedondoMedicoLayout);
         panelRedondoMedicoLayout.setHorizontalGroup(
             panelRedondoMedicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelRedondoMedicoLayout.createSequentialGroup()
                 .addGap(20, 20, 20)
-                .addComponent(lblMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(lblMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         panelRedondoMedicoLayout.setVerticalGroup(
             panelRedondoMedicoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -125,6 +135,11 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
         btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/flechaRegresar.png"))); // NOI18N
         btnRegresar.setBorder(null);
         btnRegresar.setBorderPainted(false);
+        btnRegresar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegresarActionPerformed(evt);
+            }
+        });
 
         lblInfo2.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblInfo2.setText("Su folio de atención es el siguiente:");
@@ -137,7 +152,6 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
 
         lblFolio.setFont(new java.awt.Font("Segoe UI", 0, 24)); // NOI18N
         lblFolio.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblFolio.setText("Texto temporal");
 
         javax.swing.GroupLayout panelRedondoFolioLayout = new javax.swing.GroupLayout(panelRedondoFolio);
         panelRedondoFolio.setLayout(panelRedondoFolioLayout);
@@ -174,13 +188,13 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
                         .addComponent(cBoxEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGroup(panelRedondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelRedondoLayout.createSequentialGroup()
-                                .addGap(32, 32, 32)
-                                .addComponent(btnGenerarFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 103, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelRedondoLayout.createSequentialGroup()
                                 .addGap(82, 82, 82)
                                 .addGroup(panelRedondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(panelRedondoHora, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(lblHoraTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                    .addComponent(lblHoraTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(panelRedondoLayout.createSequentialGroup()
+                                .addGap(32, 32, 32)
+                                .addComponent(btnGenerarFolio, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addComponent(panelRedondoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblInfo2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(48, Short.MAX_VALUE))
@@ -233,7 +247,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(50, 50, 50)
                 .addComponent(panelRedondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(50, Short.MAX_VALUE))
+                .addContainerGap(98, Short.MAX_VALUE))
         );
 
         pack();
@@ -241,8 +255,12 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGenerarFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarFolioActionPerformed
-        // TODO add your handling code here:
+        generarFolio();
     }//GEN-LAST:event_btnGenerarFolioActionPerformed
+
+    private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
+        regresar();
+    }//GEN-LAST:event_btnRegresarActionPerformed
 
 //    /**
 //     * @param args the command line arguments
@@ -278,6 +296,53 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    private void generarFolio() {
+        try {
+            CitaEmergenciaDTO cita = citaBO.asignarCitaEmergencia(cBoxEspecialidad.getSelectedItem().toString(), ManejadorSesion.getIdUsuario());
+            lblMedico.setText(cita.getMedicoDTO().getNombresMedico()+" "+cita.getMedicoDTO().getApellidoPaternoMedico()+" "+cita.getMedicoDTO().getApellidoMaternoMedico());
+            lblHora.setText("Fecha: "+cita.getFechaHora().toLocalDate().toString()+" Hora: "+cita.getFechaHora().toLocalTime().toString());
+            lblFolio.setText(cita.getFolioCita());
+            btnRegresar.setEnabled(false);
+            btnGenerarFolio.setEnabled(false);
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmGenerarConsulta.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void agregarListener() {
+        // Listener para cBoxEspecialidad
+        cBoxEspecialidad.addItemListener(e -> {
+            if (cBoxEspecialidad.getSelectedIndex() != -1) {
+                btnGenerarFolio.setEnabled(true);
+            } else {
+                btnGenerarFolio.setEnabled(false);
+            }
+        });
+
+    }
+
+    private void llenarComboEspecialidad() {
+        try {
+            List<String> listaEspecialidades = citaBO.especialidadesMedicos();
+
+            if (listaEspecialidades.isEmpty()) {
+                throw new NegocioException("No hay especialidades disponibles");
+            }
+            for (String especialidad : listaEspecialidades) {
+                cBoxEspecialidad.addItem(especialidad);
+            }
+            cBoxEspecialidad.setSelectedIndex(-1);
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    private void regresar() {
+        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
+        frmCitasPaciente.setVisible(true);
+        dispose();
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarFolio;

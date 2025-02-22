@@ -4,7 +4,8 @@
 
 package pruebas;
 
-import GUI.FrmRegistro;
+import GUI.FrmCitasPaciente;
+//import GUI.FrmRegistro;
 
 
 /**
@@ -14,7 +15,7 @@ import GUI.FrmRegistro;
 public class ClinicaPresentacion {
 
     public static void main(String[] args) {
-        FrmRegistro inicio = new FrmRegistro();
+        FrmCitasPaciente inicio = new FrmCitasPaciente();
         inicio.setVisible(true);
     }
 }
