@@ -5,7 +5,9 @@
 package BO;
 
 import DAO.IPacienteDAO;
+import DAO.IUsuarioDAO;
 import DAO.PacienteDAO;
+import DAO.UsuarioDAO;
 import DTO.PacienteNuevoDTO;
 import Encriptado.Encriptador;
 import Encriptado.IEncriptador;
@@ -28,11 +30,13 @@ public class PacienteBO {
     private final IEncriptador encriptador = new Encriptador();
     private static final Logger logger = Logger.getLogger(PacienteBO.class.getName());
     private final IPacienteDAO pacienteDAO;
+    private final IUsuarioDAO usuarioDAO;
     private final PacienteMapper mapperPaciente = new PacienteMapper();
     private final UsuarioMapper mapperUsuario = new UsuarioMapper();
 
     public PacienteBO(IConexion conexion) {
         this.pacienteDAO = new PacienteDAO(conexion);
+        this.usuarioDAO = new UsuarioDAO(conexion);
     }
 
     /**
@@ -56,12 +60,23 @@ public class PacienteBO {
         if (!mensaje.equals("validos")) {
             throw new NegocioException(mensaje);
         }
-        // Uso de Mapper para convertir a Entidad y Encriptación de contraseña.
-        Paciente paciente = mapperPaciente.convertirAEntidad(pacienteNuevo);
-        String contrasenaEncriptada = encriptador.encriptar(pacienteNuevo.getContrasenaUsuario());
-        paciente.setContrasenaUsuario(contrasenaEncriptada);
-        // Registrar
         try {
+
+            // Validar que no haya otro usuario con el mismo correo
+            if (usuarioDAO.consultarUsuarioPorCorreo(pacienteNuevo.getCorreo()) != null) {
+                throw new NegocioException("El correo ingresado ya se encuentra asociado a otro usuario");
+            }
+
+            // validar que no haya otro paciente con el mismo telefono
+            if (pacienteDAO.consultarPacientePorTelefono(pacienteNuevo.getTelefono())) {
+                throw new NegocioException("El teléfono ingresado ya se encuentra asociado a otro paciente");
+            }
+
+            // Uso de Mapper para convertir a Entidad y Encriptación de contraseña.
+            Paciente paciente = mapperPaciente.convertirAEntidad(pacienteNuevo);
+            String contrasenaEncriptada = encriptador.encriptar(pacienteNuevo.getContrasenaUsuario());
+            paciente.setContrasenaUsuario(contrasenaEncriptada);
+            // Registrar
             Paciente pacienteAGuardar = pacienteDAO.registrarPaciente(paciente);
             return pacienteAGuardar != null;
         } catch (PersistenciaException pe) {
