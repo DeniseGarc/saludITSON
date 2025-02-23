@@ -123,4 +123,24 @@ public class MedicoDAO implements IMedicoDAO{
             throw new PersistenciaException("Error al intentar obtener horarios para citas");
         }
     }
+    
+    @Override
+    public String consultarNombreCompletoMedico(int idMedico) throws PersistenciaException {
+        String sentenciaSQL = "SELECT CONCAT(nombresMedico, ' ', apellidoPaternoMedico, ' ', apellidoMaternoMedico) AS nombreCompleto FROM medicos WHERE IDMedico = ?";
+    
+        try (Connection con = conexion.crearConexion(); 
+             PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+        
+            ps.setInt(1, idMedico); 
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getString("nombreCompleto"); 
+            } else {
+                throw new PersistenciaException(null);
+            }
+    } catch (SQLException ex) {
+        logger.log(Level.SEVERE, null, ex);
+        throw new PersistenciaException(null, ex);
+    }
+}
 }

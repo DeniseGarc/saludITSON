@@ -4,7 +4,15 @@
  */
 package GUI;
 
+import BO.UsuarioBO;
+import DTO.UsuarioIniciarSesionDTO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import sesion.ManejadorSesion;
 
 /**
  *
@@ -12,6 +20,7 @@ import java.awt.Color;
  */
 public class FrmInicioSesion extends javax.swing.JFrame {
 
+     private UsuarioBO usuarioBO = DependencyInjector.crearUsuarioBO();
     /**
      * Creates new form FrmInicioSesion
      */
@@ -62,6 +71,11 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         btnIniciarSesion.setBackground(new java.awt.Color(44, 44, 44));
         btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnIniciarSesion.setText("Iniciar Sesión");
+        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarSesionActionPerformed(evt);
+            }
+        });
 
         lblRegistro.setText("<html><u>Registrarse como paciente</u></html>");
         lblRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -140,7 +154,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void txtContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtContrasenaActionPerformed
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtContrasenaActionPerformed
 
     private void lblRegistroMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblRegistroMouseClicked
@@ -155,6 +169,10 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         lblRegistro.setForeground(new Color(0, 0, 0));
     }//GEN-LAST:event_lblRegistroMouseExited
 
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        iniciarSesion();
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+     
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -194,7 +212,33 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         frmRegistrarPaciente.setVisible(true);
         dispose();
     }
+    private void iniciarSesion() {
+    try {
+        String nombreUsuario = txtUsuario.getText().trim();
+        String contrasena = new String(txtContrasena.getPassword()).trim();
 
+        
+        UsuarioIniciarSesionDTO usuarioIniciarSesionDTO = usuarioBO.iniciarSesion(nombreUsuario, contrasena);
+
+        ManejadorSesion.setIdUsuario(String.valueOf(usuarioIniciarSesionDTO.getIdUsuario()));
+        ManejadorSesion.setTipo(usuarioIniciarSesionDTO.getTipo());
+
+        if (ManejadorSesion.getTipo().equals("Paciente")) {
+            FrmCitasPaciente frmPaciente = new FrmCitasPaciente();
+            frmPaciente.setVisible(true);
+        } else {
+            FrmCitasMedico frmMedico = new FrmCitasMedico();
+            frmMedico.setVisible(true);
+        }
+
+        dispose();
+    } catch (NegocioException e) {
+        Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error inesperado", e);
+        JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+
+  
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
     private javax.swing.JLabel jLabel1;

@@ -72,5 +72,26 @@ public class PacienteDAO implements IPacienteDAO {
             throw new PersistenciaException("Error al intentar consultar el telefono del paciente");
         }
     }
+    
+    @Override
+    public String consultarNombreCompletoPaciente(int idPaciente) throws PersistenciaException {
+        String sentenciaSQL = "SELECT CONCAT(nombresPaciente, ' ', apellidoPaternoPaciente, ' ', apellidoMaternoPaciente) AS nombreCompleto FROM pacientes WHERE IDPaciente = ?";
+        try (Connection con = conexion.crearConexion(); 
+            PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+        
+            ps.setInt(1, idPaciente);
+            ResultSet rs = ps.executeQuery();
+        
+            if (rs.next()) {
+                return rs.getString("nombreCompleto"); 
+            } else {
+            throw new PersistenciaException(null);
+            }
+        
+        } catch (SQLException ex) {
+        logger.log(Level.SEVERE, null, ex);
+        throw new PersistenciaException(null, ex);
+        }
+}
 
 }

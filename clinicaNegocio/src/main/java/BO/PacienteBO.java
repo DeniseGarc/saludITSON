@@ -124,5 +124,12 @@ public class PacienteBO {
     public static boolean esCampoValido(String campo) {
         return campo != null && !campo.trim().isEmpty();
     }
+     public String obtenerNombreCompletoPaciente(int idPaciente) throws NegocioException {
+        try {
+            return pacienteDAO.consultarNombreCompletoPaciente(idPaciente);
+        } catch (PersistenciaException e) {
+            throw new NegocioException(null + e.getMessage(), e);
+        }
+    }
 
 }
