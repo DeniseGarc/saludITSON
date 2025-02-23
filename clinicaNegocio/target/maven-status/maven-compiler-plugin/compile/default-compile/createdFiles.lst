@@ -1,9 +1,11 @@
+BO\CitaBO$1.class
 BO\CitaBO.class
 DTO\UsuarioDTO.class
 Mapper\UsuarioMapper.class
 configuracion\DependencyInjector.class
 Encriptado\IEncriptador.class
 Encriptado\Encriptador.class
+DTO\CitaEmergenciaDTO.class
 DTO\PacienteSimpleDTO.class
 BO\PacienteBO.class
 excepciones\NegocioException.class

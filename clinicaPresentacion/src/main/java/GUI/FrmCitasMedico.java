@@ -42,7 +42,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         jScrollPane2 = new javax.swing.JScrollPane();
         tablaCitasEmergencia = new javax.swing.JTable();
         lblCitasEmergencia = new javax.swing.JLabel();
-        btnGenerarConsulta1 = new javax.swing.JButton();
         btnAtenderCitaEmergencia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -255,15 +254,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         lblCitasEmergencia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCitasEmergencia.setText("Citas emergencia");
 
-        btnGenerarConsulta1.setBackground(new java.awt.Color(128, 204, 43));
-        btnGenerarConsulta1.setForeground(new java.awt.Color(255, 255, 255));
-        btnGenerarConsulta1.setText("Activar cuenta");
-        btnGenerarConsulta1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarConsulta1ActionPerformed(evt);
-            }
-        });
-
         btnAtenderCitaEmergencia.setBackground(new java.awt.Color(128, 204, 43));
         btnAtenderCitaEmergencia.setForeground(new java.awt.Color(255, 255, 255));
         btnAtenderCitaEmergencia.setText("Atender cita");
@@ -285,11 +275,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 611, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(lblCitasEmergencia, javax.swing.GroupLayout.PREFERRED_SIZE, 109, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(43, Short.MAX_VALUE))
-            .addGroup(panelRedondoCitasELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelRedondoCitasELayout.createSequentialGroup()
-                    .addGap(281, 281, 281)
-                    .addComponent(btnGenerarConsulta1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(281, Short.MAX_VALUE)))
         );
         panelRedondoCitasELayout.setVerticalGroup(
             panelRedondoCitasELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -301,11 +286,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAtenderCitaEmergencia)
                 .addGap(11, 11, 11))
-            .addGroup(panelRedondoCitasELayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(panelRedondoCitasELayout.createSequentialGroup()
-                    .addGap(87, 87, 87)
-                    .addComponent(btnGenerarConsulta1)
-                    .addContainerGap(94, Short.MAX_VALUE)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -346,10 +326,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
     private void btnCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCitasActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCitasActionPerformed
-
-    private void btnGenerarConsulta1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarConsulta1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnGenerarConsulta1ActionPerformed
 
     private void btnBajaTemporalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaTemporalActionPerformed
         // TODO add your handling code here:
@@ -408,7 +384,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
     private javax.swing.JButton btnBajaTemporal;
     private javax.swing.JButton btnCitas;
     private javax.swing.JButton btnConsultaPrevia;
-    private javax.swing.JButton btnGenerarConsulta1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblAvatar;

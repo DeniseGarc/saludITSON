@@ -62,6 +62,11 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         btnIniciarSesion.setBackground(new java.awt.Color(44, 44, 44));
         btnIniciarSesion.setForeground(new java.awt.Color(255, 255, 255));
         btnIniciarSesion.setText("Iniciar Sesión");
+        btnIniciarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnIniciarSesionActionPerformed(evt);
+            }
+        });
 
         lblRegistro.setText("<html><u>Registrarse como paciente</u></html>");
         lblRegistro.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -155,6 +160,10 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         lblRegistro.setForeground(new Color(0, 0, 0));
     }//GEN-LAST:event_lblRegistroMouseExited
 
+    private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        pantallaInicio();
+    }//GEN-LAST:event_btnIniciarSesionActionPerformed
+
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -194,6 +203,12 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         frmRegistrarPaciente.setVisible(true);
         dispose();
     }
+    private void pantallaInicio() {
+        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
+        frmCitasPaciente.setVisible(true);
+        dispose();
+    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;

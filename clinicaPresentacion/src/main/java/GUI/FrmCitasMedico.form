@@ -318,13 +318,6 @@
                   </Group>
                   <EmptySpace pref="43" max="32767" attributes="0"/>
               </Group>
-              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="281" max="-2" attributes="0"/>
-                      <Component id="btnGenerarConsulta1" min="-2" pref="121" max="-2" attributes="0"/>
-                      <EmptySpace pref="281" max="32767" attributes="0"/>
-                  </Group>
-              </Group>
           </Group>
         </DimensionLayout>
         <DimensionLayout dim="1">
@@ -337,13 +330,6 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnAtenderCitaEmergencia" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="11" max="-2" attributes="0"/>
-              </Group>
-              <Group type="103" rootIndex="1" groupAlignment="0" attributes="0">
-                  <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace min="-2" pref="87" max="-2" attributes="0"/>
-                      <Component id="btnGenerarConsulta1" min="-2" max="-2" attributes="0"/>
-                      <EmptySpace pref="94" max="32767" attributes="0"/>
-                  </Group>
               </Group>
           </Group>
         </DimensionLayout>
@@ -392,20 +378,6 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Citas emergencia"/>
           </Properties>
-        </Component>
-        <Component class="javax.swing.JButton" name="btnGenerarConsulta1">
-          <Properties>
-            <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="2b" green="cc" red="80" type="rgb"/>
-            </Property>
-            <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
-              <Color blue="ff" green="ff" red="ff" type="rgb"/>
-            </Property>
-            <Property name="text" type="java.lang.String" value="Activar cuenta"/>
-          </Properties>
-          <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarConsulta1ActionPerformed"/>
-          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnAtenderCitaEmergencia">
           <Properties>
