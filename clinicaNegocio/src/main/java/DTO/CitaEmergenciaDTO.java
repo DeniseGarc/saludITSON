@@ -12,16 +12,33 @@ import java.time.LocalDateTime;
  */
 public class CitaEmergenciaDTO {
 
+    private String idCita;
     private LocalDateTime fechaHora;
     private String folioCita;
     private MedicoDTO medicoDTO;
     private String idPaciente;
+
+    public CitaEmergenciaDTO(String idCita, LocalDateTime fechaHora, String folioCita, MedicoDTO medicoDTO, String idPaciente) {
+        this.idCita = idCita;
+        this.fechaHora = fechaHora;
+        this.folioCita = folioCita;
+        this.medicoDTO = medicoDTO;
+        this.idPaciente = idPaciente;
+    }
 
     public CitaEmergenciaDTO(LocalDateTime fechaHora, String folioCita, MedicoDTO medicoDTO, String idPaciente) {
         this.fechaHora = fechaHora;
         this.folioCita = folioCita;
         this.medicoDTO = medicoDTO;
         this.idPaciente = idPaciente;
+    }
+
+    public String getIdCita() {
+        return idCita;
+    }
+
+    public void setIdCita(String idCita) {
+        this.idCita = idCita;
     }
 
     public LocalDateTime getFechaHora() {

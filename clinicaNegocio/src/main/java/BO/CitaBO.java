@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Random;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -39,10 +41,19 @@ public class CitaBO {
     private final IMedicoDAO medicoDAO;
     private final MapperMedico convertidorMedico = new MapperMedico();
     private final CitaMapper convertidorCita = new CitaMapper();
+    Timer timer = new Timer();
 
     public CitaBO(IConexion conexion) {
         this.citaDAO = new CitaDAO(conexion);
         this.medicoDAO = new MedicoDAO(conexion);
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                verificarValidezCitasActivas();
+            }
+        }, 0, 60000);
+
     }
 
     public List<String> especialidadesMedicos() throws NegocioException {
@@ -94,14 +105,14 @@ public class CitaBO {
         }
     }
 
-    public String generarFolio() throws NegocioException {
+    private String generarFolio() throws NegocioException {
         Random random = new Random();
-        String folioEscrito = null;
+        String folioEscrito;
         try {
             do {
                 int folio = 10000000 + random.nextInt(90000000);
                 folioEscrito = String.valueOf(folio);
-            } while (citaDAO.consultarCitaPorFolio(folioEscrito));
+            } while (citaDAO.consultarCitaPorFolio(folioEscrito).getFolioCita() != null);
             return folioEscrito;
 
         } catch (PersistenciaException ex) {
@@ -120,24 +131,24 @@ public class CitaBO {
             Map<Medico, LocalDateTime> medicoHorasCercanas = new HashMap<>();
             // medicos por especialidad indicada
             List<Medico> medicos = medicoDAO.consultarMedicosPorEspecialidad(especialidad);
-            
+
             for (Medico medico : medicos) {
                 // lista de horas disponibles del medico
-               
+
                 List<LocalTime> horasDisponibles = obtenerHorasDisponiblesMedico(medico.getIDUsuario());
-                 if (horasDisponibles  == null) {
+                if (horasDisponibles == null) {
                     throw new NegocioException("No hay horarios de atención disponibles");
                 }
                 // se utiliza optional para manejar la posible ausencia de horas disponibles
-                Optional<LocalDateTime> horaMasCercana 
+                Optional<LocalDateTime> horaMasCercana
                         // se hace stream a las horas disponibles del medico
                         = horasDisponibles.stream()
-                         // Combina las horas con la fecha actual
-                        .map(hora -> LocalDateTime.of(ahora.toLocalDate(), hora)) 
-                        // se filtran las fecha y hora que son anteriores a la fecha actual
-                        .filter(horaFecha -> !horaFecha.isBefore(ahora))
-                        // se ordena ascendentemente las fecha hora       
-                        .min((h1, h2) -> h1.compareTo(h2));
+                                // Combina las horas con la fecha actual
+                                .map(hora -> LocalDateTime.of(ahora.toLocalDate(), hora))
+                                // se filtran las fecha y hora que son anteriores a la fecha actual
+                                .filter(horaFecha -> !horaFecha.isBefore(ahora))
+                                // se ordena ascendentemente las fecha hora       
+                                .min((h1, h2) -> h1.compareTo(h2));
                 // si hay un valor obtenido en el stream anterior se agrega al mapa el medico con su hora 
                 horaMasCercana.ifPresent(hora -> medicoHorasCercanas.put(medico, hora)); // mete al mapa el medico y la hora 
             }
@@ -154,7 +165,8 @@ public class CitaBO {
                 String folio;
                 folio = generarFolio();
                 CitaEmergenciaDTO citaEmergencia = new CitaEmergenciaDTO(medicoHorarioCita.getValue(), folio, medicoCita, idPaciente);
-                if (citaDAO.generarCitaEmergencia(convertidorCita.convertirAEntidad(citaEmergencia))) {
+                Cita citaGenerada = citaDAO.generarCitaEmergencia(convertidorCita.convertirAEntidad(citaEmergencia));
+                if (citaGenerada != null) {
                     return citaEmergencia;
                 }
             }
@@ -177,4 +189,31 @@ public class CitaBO {
         }
     }
 
+    public boolean cancelarCitaPorFolio(String folio) throws NegocioException {
+        try {
+            Cita cita = citaDAO.consultarCitaPorFolio(folio);
+            cita.setEstadoCita("cancelada");
+            return citaDAO.actualizarEstadoCita(cita);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No fue posible cancelar la cita");
+        }
+    }
+
+    private void verificarValidezCitasActivas() {
+        try {
+            List<Cita> citasActivas = citaDAO.consultarCitasActivas();
+            for (Cita citaActiva : citasActivas) {
+                if (citaActiva.getTipo().equals("previa") && LocalDateTime.now().isAfter(citaActiva.getFechaHora().plusMinutes(15))) {
+                    citaActiva.setEstadoCita("no asistió paciente");
+                    citaDAO.actualizarEstadoCita(citaActiva);
+                } else if (citaActiva.getTipo().equals("emergencia") && LocalDateTime.now().isAfter(citaActiva.getFechaHora().plusMinutes(10))) {
+                    citaActiva.setEstadoCita("no atendida");
+                    citaDAO.actualizarEstadoCita(citaActiva);
+                }
+            }
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, "Ha ocurrido un error al intentar cambiar el estado de la cita", ex);
+        }
+    }
 }

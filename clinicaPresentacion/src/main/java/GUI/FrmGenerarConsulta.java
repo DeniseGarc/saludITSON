@@ -9,7 +9,6 @@ import DTO.CitaEmergenciaDTO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
 import java.util.List;
-import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -57,6 +56,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
         lblInfo2 = new javax.swing.JLabel();
         panelRedondoFolio = new GUI.PanelRound();
         lblFolio = new javax.swing.JLabel();
+        lblInfo3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(241, 243, 245));
@@ -170,6 +170,9 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
                 .addContainerGap(32, Short.MAX_VALUE))
         );
 
+        lblInfo3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblInfo3.setToolTipText("");
+
         javax.swing.GroupLayout panelRedondoLayout = new javax.swing.GroupLayout(panelRedondo);
         panelRedondo.setLayout(panelRedondoLayout);
         panelRedondoLayout.setHorizontalGroup(
@@ -181,7 +184,9 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
                     .addGroup(panelRedondoLayout.createSequentialGroup()
                         .addComponent(btnRegresar)
                         .addGap(161, 161, 161)
-                        .addComponent(panelRedondoFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelRedondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(panelRedondoFolio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(lblInfo3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addComponent(lblSeleccionEspecialidad, javax.swing.GroupLayout.PREFERRED_SIZE, 292, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(lblInfo, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelRedondoLayout.createSequentialGroup()
@@ -230,7 +235,9 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
                     .addGroup(panelRedondoLayout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(panelRedondoFolio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addContainerGap(45, Short.MAX_VALUE))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(lblInfo3, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(23, Short.MAX_VALUE))))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -299,10 +306,10 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
     private void generarFolio() {
         try {
             CitaEmergenciaDTO cita = citaBO.asignarCitaEmergencia(cBoxEspecialidad.getSelectedItem().toString(), ManejadorSesion.getIdUsuario());
-            lblMedico.setText(cita.getMedicoDTO().getNombresMedico()+" "+cita.getMedicoDTO().getApellidoPaternoMedico()+" "+cita.getMedicoDTO().getApellidoMaternoMedico());
-            lblHora.setText("Fecha: "+cita.getFechaHora().toLocalDate().toString()+" Hora: "+cita.getFechaHora().toLocalTime().toString());
+            lblMedico.setText(cita.getMedicoDTO().getNombresMedico() + " " + cita.getMedicoDTO().getApellidoPaternoMedico() + " " + cita.getMedicoDTO().getApellidoMaternoMedico());
+            lblHora.setText("Fecha: " + cita.getFechaHora().toLocalDate().toString() + " Hora: " + cita.getFechaHora().toLocalTime().toString());
             lblFolio.setText(cita.getFolioCita());
-            btnRegresar.setEnabled(false);
+            lblInfo3.setText("Su folio será valido hasta las "+cita.getFechaHora().toLocalTime().plusMinutes(10));
             btnGenerarFolio.setEnabled(false);
         } catch (NegocioException ex) {
             Logger.getLogger(FrmGenerarConsulta.class.getName()).log(Level.SEVERE, null, ex);
@@ -339,9 +346,25 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
     }
 
     private void regresar() {
-        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
-        frmCitasPaciente.setVisible(true);
-        dispose();
+
+        if (lblFolio.getText().isBlank()) {
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
+            frmCitasPaciente.setVisible(true);
+            dispose();
+            return;
+        }
+        int respuesta = JOptionPane.showConfirmDialog(this, "Si regresa perderá el folio de consulta, ¿Desea regresar?", "Advertencia", JOptionPane.YES_NO_OPTION);
+        if (respuesta == 0) {
+            try {
+                citaBO.cancelarCitaPorFolio(lblFolio.getText());
+            } catch (NegocioException ex) {
+                Logger.getLogger(FrmGenerarConsulta.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
+            frmCitasPaciente.setVisible(true);
+            dispose();
+        }
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -353,6 +376,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
     private javax.swing.JLabel lblHoraTitulo;
     private javax.swing.JLabel lblInfo;
     private javax.swing.JLabel lblInfo2;
+    private javax.swing.JLabel lblInfo3;
     private javax.swing.JLabel lblMedico;
     private javax.swing.JLabel lblMedicoTitulo;
     private javax.swing.JLabel lblSeleccionEspecialidad;
