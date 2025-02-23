@@ -264,6 +264,15 @@ public class CitaBO {
     }
 
     public boolean registrarConsulta(ConsultaDTO consulta) throws NegocioException {
+        if (consulta == null) {
+            throw new NegocioException("Error al intentar registrar la consulta");
+        }
+        if (consulta.getDiagnostico().isBlank() || consulta.getObservaciones().isBlank() || consulta.getTratamiento().isBlank()
+                || consulta.getIdCita().isBlank() || consulta.getDiagnostico() == null || consulta.getObservaciones() == null || consulta.getTratamiento() == null
+                || consulta.getIdCita() == null) {
+            throw new NegocioException("Alguno de los campos se mandó vacio");
+        }
+
         try {
             return citaDAO.registrarConsulta(convertidorCita.convertirAEntidad(consulta));
         } catch (PersistenciaException ex) {

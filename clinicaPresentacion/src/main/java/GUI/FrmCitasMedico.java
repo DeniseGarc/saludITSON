@@ -9,8 +9,11 @@ import BO.PacienteBO;
 import DTO.CitaDTO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -27,14 +30,25 @@ public class FrmCitasMedico extends javax.swing.JFrame {
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     private List<CitaDTO> citasPrevias;
     private List<CitaDTO> citasEmergencia;
+    Timer timer = new Timer();
 
     /**
      * Creates new form FrmCitas
      */
     public FrmCitasMedico() {
         initComponents();
-        cargarCitasPrevias();
-        cargarCitasEmergencia();
+//        cargarCitasPrevias();
+//        cargarCitasEmergencia();
+            tablaCitasEmergencia.removeColumn(tablaCitasEmergencia.getColumnModel().getColumn(0));
+            tablaCitas.removeColumn(tablaCitas.getColumnModel().getColumn(0));
+
+        timer.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                cargarCitasPrevias();
+                cargarCitasEmergencia();
+            }
+        }, 0, 60000);
     }
 
     /**
@@ -402,7 +416,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
             List<CitaDTO> citasPrevias = citaBO.citasActivasMedico(ManejadorSesion.getIdUsuario()).stream().filter(citaDTO -> citaDTO.getTipo().equals("previa")).sorted(Comparator.comparing(CitaDTO::getFechaHora)).toList();
 
             // Ocultar columna ID
-            tablaCitas.removeColumn(tablaCitas.getColumnModel().getColumn(0));
 
             for (CitaDTO cita : citasPrevias) {
 
@@ -426,7 +439,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
             List<CitaDTO> citasEmergencia = citaBO.citasActivasMedico(ManejadorSesion.getIdUsuario()).stream().filter(citaDTO -> citaDTO.getTipo().equals("emergencia")).sorted(Comparator.comparing(CitaDTO::getFechaHora)).toList();
 
             // Tabla de citas de emergencia
-            tablaCitasEmergencia.removeColumn(tablaCitasEmergencia.getColumnModel().getColumn(0));
             for (CitaDTO cita : citasEmergencia) {
                 modeloTablaEmergencia.addRow(new Object[]{
                     cita.getIDCita(),
@@ -444,9 +456,19 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         if (filaseleccionada == null) {
             JOptionPane.showMessageDialog(this, "Seleccione la cita a atender", "Información", JOptionPane.INFORMATION_MESSAGE);
         } else {
-            FrmRegistrarConsulta frmRegistrarConsulta = new FrmRegistrarConsulta(filaseleccionada);
-            frmRegistrarConsulta.setVisible(true);
-            dispose();
+            try {
+                CitaDTO citaDTO = citaBO.obtenerCitaPorId(filaseleccionada);
+                if (LocalDateTime.now().isBefore(citaDTO.getFechaHora())) {
+                    JOptionPane.showMessageDialog(null, "Espere a que sea la hora de la cita", "Información", JOptionPane.INFORMATION_MESSAGE);
+                } else {
+                    FrmRegistrarConsulta frmRegistrarConsulta = new FrmRegistrarConsulta(citaDTO);
+                    frmRegistrarConsulta.setVisible(true);
+                    dispose();
+                }
+            } catch (NegocioException ex) {
+                Logger.getLogger(FrmRegistrarConsulta.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 

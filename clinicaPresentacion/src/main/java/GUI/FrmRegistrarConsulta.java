@@ -29,17 +29,12 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
      *
      * @param idCita
      */
-    public FrmRegistrarConsulta(String idCita) {
+    public FrmRegistrarConsulta(CitaDTO cita) {
         initComponents();
+        this.cita = cita;
         btnRegistrarConsulta.setEnabled(false);
-        try {
-            cita = citaBO.obtenerCitaPorId(idCita);
-            lblEdad.setText(cita.getPacienteSimpleDTO().getEdad());
-            lblPaciente.setText(cita.getPacienteSimpleDTO().toString());
-        } catch (NegocioException ex) {
-            Logger.getLogger(FrmRegistrarConsulta.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error al obtener la cita", "Error", JOptionPane.ERROR_MESSAGE);
-        }
+        lblEdad.setText(cita.getPacienteSimpleDTO().getEdad());
+        lblPaciente.setText(cita.getPacienteSimpleDTO().toString());
         inicializarCampos();
         agregarListeners();
     }
