@@ -324,7 +324,7 @@ public class FrmRegistro extends javax.swing.JFrame {
             }
         } catch (NegocioException e) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "Error inesperado", e);
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Info", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

@@ -5,6 +5,7 @@
 package DAO;
 
 import entidades.Cita;
+import entidades.Consulta;
 import excepciones.PersistenciaException;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,8 +23,12 @@ public interface ICitaDAO {
     public Cita consultarCitaPorFolio(String folio) throws PersistenciaException;
 
     public Cita generarCitaEmergencia(Cita cita) throws PersistenciaException;
-    
+
     public boolean actualizarEstadoCita(Cita cita) throws PersistenciaException;
 
-    public List<Cita> consultarCitasActivas() throws PersistenciaException; 
+    public Cita consultarCitaPorId(int id) throws PersistenciaException;
+
+    public List<Cita> consultarCitasActivas() throws PersistenciaException;
+    
+    public boolean registrarConsulta(Consulta consulta)throws PersistenciaException;
 }

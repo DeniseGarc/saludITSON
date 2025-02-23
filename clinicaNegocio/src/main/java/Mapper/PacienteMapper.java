@@ -15,7 +15,7 @@ import entidades.Direccion;
 public class PacienteMapper {
 
     public Paciente convertirAEntidad(PacienteNuevoDTO pacienteNuevo) {
-        Direccion direccion = new Direccion(pacienteNuevo.getCalle(),pacienteNuevo.getNumero(),pacienteNuevo.getColonia(),pacienteNuevo.getCodigoPostal());
+        Direccion direccion = new Direccion(pacienteNuevo.getCalle(), pacienteNuevo.getNumero(), pacienteNuevo.getColonia(), pacienteNuevo.getCodigoPostal());
         Paciente paciente = new Paciente(pacienteNuevo.getNombresPaciente(), pacienteNuevo.getApellidoPaternoPaciente(), pacienteNuevo.getApellidoMaternoPaciente(), pacienteNuevo.getCorreo(), pacienteNuevo.getTelefono(), pacienteNuevo.getFechaNacimiento(), direccion);
         return paciente;
     }

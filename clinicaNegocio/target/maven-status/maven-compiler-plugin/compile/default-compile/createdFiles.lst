@@ -10,8 +10,10 @@ DTO\PacienteSimpleDTO.class
 BO\PacienteBO.class
 excepciones\NegocioException.class
 DTO\MedicoDTO.class
+DTO\ConsultaDTO.class
 BO\UsuarioBO.class
 Mapper\MapperMedico.class
+DTO\CitaDTO.class
 Mapper\CitaMapper.class
 DTO\PacienteNuevoDTO.class
 Mapper\PacienteMapper.class

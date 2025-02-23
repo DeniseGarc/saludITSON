@@ -124,25 +124,28 @@ public class MedicoDAO implements IMedicoDAO {
             throw new PersistenciaException("Error al intentar obtener horarios para citas");
         }
     }
-//
-//    @Override
-//    public Medico consultarMedicoPorId(int id) throws PersistenciaException {
-//        String sentenciaSQL = "SELECT IDMedico, nombresMedico, apellidoPaternoMedico, apellidoMaternoMedico, cedulaProfesional, especialidad, estado FROM medicos WHERE IDMedico = ?";
-//        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
-//            ps.setInt(1, id);
-//            ResultSet rs = ps.executeQuery();
-//            if (rs.next()) {
-//                Medico medico = new Medico(
-//                        rs.getInt("IDMedico"), null,
-//                        rs.getString("nombresMedico"),
-//                        rs.getString("apellidoPaternoMedico"),
-//                        rs.getString("apellidoMaternoMedico"),
-//                        rs.getString("cedulaProfesional"),
-//                        rs.getString("especialidad"),
-//                        rs.getString("estado"));
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
+
+    @Override
+    public Medico consultarMedicoPorId(int id) throws PersistenciaException {
+        String sentenciaSQL = "SELECT IDMedico, nombresMedico, apellidoPaternoMedico, apellidoMaternoMedico, cedulaProfesional, especialidad, estado FROM medicos WHERE IDMedico = ?";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            Medico medico = null;
+            if (rs.next()) {
+                medico = new Medico(
+                        rs.getInt("IDMedico"), null,
+                        rs.getString("nombresMedico"),
+                        rs.getString("apellidoPaternoMedico"),
+                        rs.getString("apellidoMaternoMedico"),
+                        rs.getString("cedulaProfesional"),
+                        rs.getString("especialidad"),
+                        rs.getString("estado"));
+            }
+            return medico;
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al intentar consultar el medico por su id");
+        }
+    }
 }

@@ -10,18 +10,64 @@ package DTO;
  */
 public class PacienteSimpleDTO {
 
-    private int IDPaciente;
+    private String IDPaciente;
+    private String nombrePaciente;
+    private String apellidoPaternoPaciente;
+    private String apellidoMaternoPaciente;
+    private String edad;
 
-    public PacienteSimpleDTO(int IDPaciente) {
+    public PacienteSimpleDTO(String IDPaciente, String nombrePaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String edad) {
         this.IDPaciente = IDPaciente;
+        this.nombrePaciente = nombrePaciente;
+        this.apellidoPaternoPaciente = apellidoPaternoPaciente;
+        this.apellidoMaternoPaciente = apellidoMaternoPaciente;
+        this.edad = edad;
     }
 
-    public int getIDPaciente() {
+    public String getIDPaciente() {
         return IDPaciente;
     }
 
-    public void setIDPaciente(int IDPaciente) {
+    public void setIDPaciente(String IDPaciente) {
         this.IDPaciente = IDPaciente;
     }
 
+    public String getNombrePaciente() {
+        return nombrePaciente;
+    }
+
+    public void setNombrePaciente(String nombrePaciente) {
+        this.nombrePaciente = nombrePaciente;
+    }
+
+    public String getApellidoPaternoPaciente() {
+        return apellidoPaternoPaciente;
+    }
+
+    public void setApellidoPaternoPaciente(String apellidoPaternoPaciente) {
+        this.apellidoPaternoPaciente = apellidoPaternoPaciente;
+    }
+
+    public String getApellidoMaternoPaciente() {
+        return apellidoMaternoPaciente;
+    }
+
+    public void setApellidoMaternoPaciente(String apellidoMaternoPaciente) {
+        this.apellidoMaternoPaciente = apellidoMaternoPaciente;
+    }
+
+    public String getEdad() {
+        return edad;
+    }
+
+    public void setEdad(String edad) {
+        this.edad = edad;
+    }
+
+    @Override
+    public String toString() {
+        return nombrePaciente + " "
+                + apellidoPaternoPaciente + " "
+                + apellidoMaternoPaciente;
+    }
 }

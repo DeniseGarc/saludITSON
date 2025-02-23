@@ -5,6 +5,7 @@
 package DAO;
 
 import conexion.IConexion;
+import entidades.Direccion;
 import entidades.Paciente;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
@@ -70,6 +71,43 @@ public class PacienteDAO implements IPacienteDAO {
         } catch (SQLException ex) {
             Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al intentar consultar el telefono del paciente");
+        }
+    }
+
+    @Override
+    public Paciente consultarPacientePorId(int id) throws PersistenciaException {
+        String sentenciaSQL = "SELECT IDPaciente, nombresPaciente, apellidoPaternoPaciente, apellidoMaternoPaciente, correo, telefono, fechaNacimiento, idDireccion FROM pacientes WHERE IDPaciente = ?";
+        try (Connection con = conexion.crearConexion()) {
+            try (PreparedStatement psPaciente = con.prepareStatement(sentenciaSQL)) {
+                psPaciente.setInt(1, id);
+                ResultSet rs = psPaciente.executeQuery();
+                Paciente paciente = null;
+                if (rs.next()) {
+                    paciente = new Paciente(rs.getInt("IDPaciente"),
+                            null,
+                            rs.getString("nombresPaciente"),
+                            rs.getString("apellidoPaternoPaciente"),
+                            rs.getString("apellidoMaternoPaciente"),
+                            rs.getString("correo"),
+                            rs.getString("telefono"),
+                            rs.getDate("fechaNacimiento").toLocalDate(),
+                            new Direccion(rs.getInt("idDireccion"), null, null, null, null));
+                }
+                String sentenciaSQL2 = "SELECT calle, numero, colonia, codigoPostal FROM direcciones WHERE IDDireccion = ?";
+                try (PreparedStatement psDireccion = con.prepareStatement(sentenciaSQL2)) {
+                    psDireccion.setInt(1, paciente.getDireccion().getIDDireccion());
+                    if (rs.next()) {
+                        paciente.getDireccion().setCalle(rs.getString("calle"));
+                        paciente.getDireccion().setNumero(rs.getString("numero"));
+                        paciente.getDireccion().setColonia(rs.getString("colonia"));
+                        paciente.getDireccion().setCodigoPostal(rs.getString("codigoPostal"));
+                    }
+                }
+                return paciente;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al intentar consultar el paciente por su id");
         }
     }
 

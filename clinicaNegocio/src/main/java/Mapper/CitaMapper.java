@@ -4,11 +4,18 @@
  */
 package Mapper;
 
+import DTO.CitaDTO;
 import DTO.CitaRegistroDTO;
 import DTO.CitaEmergenciaDTO;
+import DTO.ConsultaDTO;
+import DTO.MedicoDTO;
+import DTO.PacienteSimpleDTO;
 import entidades.Cita;
+import entidades.Consulta;
 import entidades.Medico;
 import entidades.Paciente;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -31,5 +38,40 @@ public class CitaMapper {
         paciente.setIDUsuario(Integer.parseInt(citaEmergencia.getIdPaciente()));
         return new Cita(citaEmergencia.getFechaHora(), null, citaEmergencia.getFolioCita(), null, medico, paciente);
     }
-    
+
+    public List<CitaDTO> convertirADTO(List<Cita> citas) {
+        List<CitaDTO> citasDTO = new ArrayList<>();
+        for (Cita cita : citas) {
+            citasDTO.add(convertirADTO(cita));
+        }
+        return citasDTO;
+    }
+
+    public CitaDTO convertirADTO(Cita cita) {
+        return new CitaDTO(
+                String.valueOf(cita.getIDCita()),
+                cita.getFechaHora(),
+                cita.getFolioCita(),
+                cita.getTipo(),
+                new MedicoDTO(String.valueOf(cita.getMedico().getIDUsuario()),
+                        cita.getMedico().getNombresMedico(),
+                        cita.getMedico().getApellidoPaternoMedico(),
+                        cita.getMedico().getApellidoMaternoMedico()
+                ),
+                new PacienteSimpleDTO(
+                        String.valueOf(cita.getPaciente().getIDUsuario()),
+                        cita.getPaciente().getNombresPaciente(),
+                        cita.getPaciente().getApellidoPaternoPaciente(),
+                        cita.getPaciente().getApellidoMaternoPaciente(),
+                        String.valueOf(cita.getPaciente().getEdad())
+                )
+        );
+    }
+
+    public Consulta convertirAEntidad(ConsultaDTO consultaDTO) {
+        Cita cita = new Cita();
+        cita.setIDCita(Integer.parseInt(consultaDTO.getIdCita()));
+        return new Consulta(consultaDTO.getDiagnostico(), consultaDTO.getTratamiento(), consultaDTO.getObservaciones(), cita);
+    }
+
 }

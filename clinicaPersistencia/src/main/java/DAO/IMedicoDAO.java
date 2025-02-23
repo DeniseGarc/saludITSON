@@ -25,5 +25,5 @@ public interface IMedicoDAO {
 
     public List<LocalTime> obtenerHorariosCitas(Medico medico, LocalDate fecha) throws PersistenciaException;
 
-    //public Medico consultarMedicoPorId(int id) throws PersistenciaException;
+    public Medico consultarMedicoPorId(int id) throws PersistenciaException;
 }

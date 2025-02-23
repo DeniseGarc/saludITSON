@@ -4,17 +4,37 @@
  */
 package GUI;
 
+import BO.CitaBO;
+import BO.PacienteBO;
+import DTO.CitaDTO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
+import java.util.Comparator;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import sesion.ManejadorSesion;
+
 /**
  *
  * @author Alici
  */
 public class FrmCitasMedico extends javax.swing.JFrame {
 
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
+    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+    private List<CitaDTO> citasPrevias;
+    private List<CitaDTO> citasEmergencia;
+
     /**
      * Creates new form FrmCitas
      */
     public FrmCitasMedico() {
         initComponents();
+        cargarCitasPrevias();
+        cargarCitasEmergencia();
     }
 
     /**
@@ -54,27 +74,29 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/avatar.png"))); // NOI18N
         lblAvatar.setPreferredSize(new java.awt.Dimension(30, 30));
 
+        btnActivarCuenta.setText("Activar cuenta");
         btnActivarCuenta.setBackground(new java.awt.Color(128, 204, 43));
         btnActivarCuenta.setForeground(new java.awt.Color(255, 255, 255));
-        btnActivarCuenta.setText("Activar cuenta");
+        btnActivarCuenta.setMaximumSize(new java.awt.Dimension(72, 23));
+        btnActivarCuenta.setMinimumSize(new java.awt.Dimension(72, 23));
         btnActivarCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActivarCuentaActionPerformed(evt);
             }
         });
 
+        btnConsultaPrevia.setText("Consultas previas");
         btnConsultaPrevia.setBackground(new java.awt.Color(30, 98, 159));
         btnConsultaPrevia.setForeground(new java.awt.Color(255, 255, 255));
-        btnConsultaPrevia.setText("Consultas previas");
         btnConsultaPrevia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaPreviaActionPerformed(evt);
             }
         });
 
+        btnCitas.setText("Citas");
         btnCitas.setBackground(new java.awt.Color(30, 98, 159));
         btnCitas.setForeground(new java.awt.Color(255, 255, 255));
-        btnCitas.setText("Citas");
         btnCitas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCitasActionPerformed(evt);
@@ -83,9 +105,11 @@ public class FrmCitasMedico extends javax.swing.JFrame {
 
         lblCerrarSesion.setText("<html><u>Cerrar Sesión</u></html>");
 
+        btnBajaTemporal.setText("Baja temporal");
         btnBajaTemporal.setBackground(new java.awt.Color(195, 54, 29));
         btnBajaTemporal.setForeground(new java.awt.Color(255, 255, 255));
-        btnBajaTemporal.setText("Baja temporal");
+        btnBajaTemporal.setMaximumSize(new java.awt.Dimension(72, 23));
+        btnBajaTemporal.setMinimumSize(new java.awt.Dimension(72, 23));
         btnBajaTemporal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBajaTemporalActionPerformed(evt);
@@ -97,16 +121,11 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         panelBarraLateralLayout.setHorizontalGroup(
             panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
                 .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                            .addGap(41, 41, 41)
-                            .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(btnCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(panelBarraLateralLayout.createSequentialGroup()
                         .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(51, 51, 51)))
@@ -114,24 +133,28 @@ public class FrmCitasMedico extends javax.swing.JFrame {
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnBajaTemporal, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                    .addComponent(btnActivarCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(btnActivarCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
+                    .addComponent(btnBajaTemporal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(panelBarraLateralLayout.createSequentialGroup()
+                .addGap(43, 43, 43)
+                .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelBarraLateralLayout.setVerticalGroup(
             panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addGap(15, 15, 15)
+                .addGap(21, 21, 21)
                 .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addGap(28, 28, 28)
                 .addComponent(btnCitas)
                 .addGap(18, 18, 18)
                 .addComponent(btnConsultaPrevia)
                 .addGap(18, 18, 18)
-                .addComponent(btnBajaTemporal)
+                .addComponent(btnBajaTemporal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnActivarCuenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnActivarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 304, Short.MAX_VALUE)
                 .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -144,25 +167,18 @@ public class FrmCitasMedico extends javax.swing.JFrame {
 
         tablaCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Fecha y hora", "Paciente"
+                "IdCita", "Fecha y hora", "Paciente"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class
-            };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
@@ -173,14 +189,15 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         if (tablaCitas.getColumnModel().getColumnCount() > 0) {
             tablaCitas.getColumnModel().getColumn(0).setResizable(false);
             tablaCitas.getColumnModel().getColumn(1).setResizable(false);
+            tablaCitas.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        lblCitasProximas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCitasProximas.setText("Citas próximas");
+        lblCitasProximas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
+        btnAtenderCitaProxima.setText("Atender cita");
         btnAtenderCitaProxima.setBackground(new java.awt.Color(128, 204, 43));
         btnAtenderCitaProxima.setForeground(new java.awt.Color(255, 255, 255));
-        btnAtenderCitaProxima.setText("Atender cita");
         btnAtenderCitaProxima.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtenderCitaProximaActionPerformed(evt);
@@ -220,20 +237,20 @@ public class FrmCitasMedico extends javax.swing.JFrame {
 
         tablaCitasEmergencia.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+                {null, null, null},
+                {null, null, null},
+                {null, null, null},
+                {null, null, null}
             },
             new String [] {
-                "Fecha y hora", "Paciente"
+                "idCita", "Fecha y hora", "Paciente"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false
+                false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -249,14 +266,15 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         if (tablaCitasEmergencia.getColumnModel().getColumnCount() > 0) {
             tablaCitasEmergencia.getColumnModel().getColumn(0).setResizable(false);
             tablaCitasEmergencia.getColumnModel().getColumn(1).setResizable(false);
+            tablaCitasEmergencia.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        lblCitasEmergencia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCitasEmergencia.setText("Citas emergencia");
+        lblCitasEmergencia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
+        btnAtenderCitaEmergencia.setText("Atender cita");
         btnAtenderCitaEmergencia.setBackground(new java.awt.Color(128, 204, 43));
         btnAtenderCitaEmergencia.setForeground(new java.awt.Color(255, 255, 255));
-        btnAtenderCitaEmergencia.setText("Atender cita");
         btnAtenderCitaEmergencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtenderCitaEmergenciaActionPerformed(evt);
@@ -332,11 +350,11 @@ public class FrmCitasMedico extends javax.swing.JFrame {
     }//GEN-LAST:event_btnBajaTemporalActionPerformed
 
     private void btnAtenderCitaEmergenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtenderCitaEmergenciaActionPerformed
-        // TODO add your handling code here:
+        atenderCita(obtenerIdCitaSeleccionadaCitasEmergencia());
     }//GEN-LAST:event_btnAtenderCitaEmergenciaActionPerformed
 
     private void btnAtenderCitaProximaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtenderCitaProximaActionPerformed
-        // TODO add your handling code here:
+        atenderCita(obtenerIdCitaSeleccionadaCitasPrevias());
     }//GEN-LAST:event_btnAtenderCitaProximaActionPerformed
 
 //    /**
@@ -376,6 +394,79 @@ public class FrmCitasMedico extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    public void cargarCitasPrevias() {
+        DefaultTableModel modeloTablaPrevias = (DefaultTableModel) tablaCitas.getModel();
+        modeloTablaPrevias.setRowCount(0); // Limpiar la tabla
+
+        try {
+            List<CitaDTO> citasPrevias = citaBO.citasActivasMedico(ManejadorSesion.getIdUsuario()).stream().filter(citaDTO -> citaDTO.getTipo().equals("previa")).sorted(Comparator.comparing(CitaDTO::getFechaHora)).toList();
+
+            // Ocultar columna ID
+            tablaCitas.removeColumn(tablaCitas.getColumnModel().getColumn(0));
+
+            for (CitaDTO cita : citasPrevias) {
+
+                modeloTablaPrevias.addRow(new Object[]{
+                    cita.getIDCita(), // Columna 0 oculta 
+                    String.valueOf(cita.getFechaHora().toLocalDate().toString() + " " + cita.getFechaHora().toLocalTime()), // Columna 1 visible
+                    String.valueOf(cita.getPacienteSimpleDTO()) // Columna 2 visible
+                });
+            }
+
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void cargarCitasEmergencia() {
+        DefaultTableModel modeloTablaEmergencia = (DefaultTableModel) tablaCitasEmergencia.getModel();
+        modeloTablaEmergencia.setRowCount(0); // Limpiar la tabla
+
+        try {
+            List<CitaDTO> citasEmergencia = citaBO.citasActivasMedico(ManejadorSesion.getIdUsuario()).stream().filter(citaDTO -> citaDTO.getTipo().equals("emergencia")).sorted(Comparator.comparing(CitaDTO::getFechaHora)).toList();
+
+            // Tabla de citas de emergencia
+            tablaCitasEmergencia.removeColumn(tablaCitasEmergencia.getColumnModel().getColumn(0));
+            for (CitaDTO cita : citasEmergencia) {
+                modeloTablaEmergencia.addRow(new Object[]{
+                    cita.getIDCita(),
+                    String.valueOf(cita.getFechaHora().toLocalDate().toString() + " " + cita.getFechaHora().toLocalTime()),
+                    String.valueOf(cita.getPacienteSimpleDTO())
+                });
+            }
+
+        } catch (NegocioException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public void atenderCita(String filaseleccionada) {
+        if (filaseleccionada == null) {
+            JOptionPane.showMessageDialog(this, "Seleccione la cita a atender", "Información", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            FrmRegistrarConsulta frmRegistrarConsulta = new FrmRegistrarConsulta(filaseleccionada);
+            frmRegistrarConsulta.setVisible(true);
+            dispose();
+        }
+    }
+
+    // Método para obtener el ID de la cita al seleccionar una fila
+    public String obtenerIdCitaSeleccionadaCitasPrevias() {
+        int filaSeleccionada = tablaCitas.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            return tablaCitas.getModel().getValueAt(filaSeleccionada, 0).toString();
+        }
+        return null;
+    }
+
+    public String obtenerIdCitaSeleccionadaCitasEmergencia() {
+        int filaSeleccionada = tablaCitasEmergencia.getSelectedRow();
+        if (filaSeleccionada != -1) {
+            return tablaCitasEmergencia.getModel().getValueAt(filaSeleccionada, 0).toString();
+        }
+        return null;
+    }
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnActivarCuenta;

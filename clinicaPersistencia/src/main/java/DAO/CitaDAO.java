@@ -3,6 +3,9 @@ package DAO;
 import conexion.IConexion;
 import excepciones.PersistenciaException;
 import entidades.Cita;
+import entidades.Consulta;
+import entidades.Medico;
+import entidades.Paciente;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -101,6 +104,49 @@ public class CitaDAO implements ICitaDAO {
     }
 
     @Override
+    public Cita consultarCitaPorId(int id) throws PersistenciaException {
+        String sentenciaSQL = "SELECT c.IDCita, c.fechaHora, c.estadoCita, c.folioCita, c.tipo, c.idMedico, m.nombresMedico, m.apellidoPaternoMedico, m.apellidoMaternoMedico, m.cedulaProfesional, m.especialidad, m.estado, c.idPaciente,p.nombresPaciente, p.apellidoPaternoPaciente, p.apellidoMaternoPaciente, p.correo, p.telefono,calcularEdad(p.fechaNacimiento) as 'edad' ,p.fechaNacimiento FROM citas c INNER JOIN pacientes p ON p.IDPaciente = c.idPaciente INNER JOIN medicos m ON m.IDMedico = c.idMedico WHERE IDCita = ?";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            Medico medico = new Medico();
+            Paciente paciente = new Paciente();
+            if (rs.next()) {
+                medico.setIDUsuario(rs.getInt("idMedico"));
+                paciente.setIDUsuario(rs.getInt("idPaciente"));
+                Cita cita = new Cita(
+                        rs.getInt("IDCita"),
+                        rs.getTimestamp("fechaHora").toLocalDateTime(),
+                        rs.getString("estadoCita"),
+                        rs.getString("folioCita"),
+                        rs.getString("tipo"),
+                        new Medico(rs.getInt("idMedico"),
+                                null, rs.getString("nombresMedico"),
+                                rs.getString("apellidoPaternoMedico"),
+                                rs.getString("apellidoMaternoMedico"),
+                                rs.getString("cedulaProfesional"),
+                                rs.getString("especialidad"),
+                                rs.getString("estado")
+                        ),
+                        new Paciente(rs.getInt("idPaciente"), null,
+                                rs.getString("nombresPaciente"),
+                                rs.getString("apellidoPaternoPaciente"),
+                                rs.getString("apellidoMaternoPaciente"),
+                                rs.getString("correo"),
+                                rs.getString("telefono"),
+                                rs.getInt("edad"),
+                                rs.getDate("fechaNacimiento").toLocalDate(),
+                                null));
+                return cita;
+            }
+            return null;
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al conseguir la cita por su id");
+        }
+    }
+
+    @Override
     public boolean actualizarEstadoCita(Cita cita) throws PersistenciaException {
         String sentenciaSQL = "UPDATE citas SET estadoCita = ?, folioCita = null WHERE IDCita = ?";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
@@ -117,19 +163,37 @@ public class CitaDAO implements ICitaDAO {
     @Override
     public List<Cita> consultarCitasActivas() throws PersistenciaException {
         List<Cita> citas = new ArrayList<>();
-        String sentenciaSQL = "SELECT IDCita, fechaHora, estadoCita, folioCita, tipo FROM citas WHERE estadoCita = 'activa'";
+        String sentenciaSQL = "SELECT c.IDCita, c.fechaHora, c.estadoCita, c.folioCita, c.tipo, c.idMedico, m.nombresMedico, m.apellidoPaternoMedico, m.apellidoMaternoMedico, m.cedulaProfesional, m.especialidad, m.estado, c.idPaciente,p.nombresPaciente, p.apellidoPaternoPaciente, p.apellidoMaternoPaciente, p.correo, p.telefono,calcularEdad(p.fechaNacimiento) as 'edad' ,p.fechaNacimiento FROM citas c INNER JOIN pacientes p ON p.IDPaciente = c.idPaciente INNER JOIN medicos m ON m.IDMedico = c.idMedico WHERE estadoCita = 'activa'";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
             ResultSet rs = ps.executeQuery();
+            Medico medico = new Medico();
+            Paciente paciente = new Paciente();
             while (rs.next()) {
+                medico.setIDUsuario(rs.getInt("idMedico"));
+                paciente.setIDUsuario(rs.getInt("idPaciente"));
                 Cita cita = new Cita(
                         rs.getInt("IDCita"),
                         rs.getTimestamp("fechaHora").toLocalDateTime(),
                         rs.getString("estadoCita"),
                         rs.getString("folioCita"),
                         rs.getString("tipo"),
-                        null,
-                        null
-                );
+                        new Medico(rs.getInt("idMedico"),
+                                null, rs.getString("nombresMedico"),
+                                rs.getString("apellidoPaternoMedico"),
+                                rs.getString("apellidoMaternoMedico"),
+                                rs.getString("cedulaProfesional"),
+                                rs.getString("especialidad"),
+                                rs.getString("estado")
+                        ),
+                        new Paciente(rs.getInt("idPaciente"), null,
+                                rs.getString("nombresPaciente"),
+                                rs.getString("apellidoPaternoPaciente"),
+                                rs.getString("apellidoMaternoPaciente"),
+                                rs.getString("correo"),
+                                rs.getString("telefono"),
+                                rs.getInt("edad"),
+                                rs.getDate("fechaNacimiento").toLocalDate(),
+                                null));
                 citas.add(cita);
             }
             return citas;
@@ -137,7 +201,22 @@ public class CitaDAO implements ICitaDAO {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al conseguir las citas registradas");
         }
-
     }
 
+    @Override
+    public boolean registrarConsulta(Consulta consulta) throws PersistenciaException{
+        String sentenciaSQL = "INSERT INTO consultas(diagnostico, tratamiento, observaciones, idCita) VALUES (?,?,?,?)";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+            ps.setString(1,consulta.getDiagnostico());
+            ps.setString(2, consulta.getTratamiento());
+            ps.setString(3, consulta.getObservaciones());
+            ps.setInt(4, consulta.getCita().getIDCita());
+            int filasAfectadas = ps.executeUpdate();
+            return filasAfectadas > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("No fue posible registrar la consulta");
+        }
+        
+    }
 }

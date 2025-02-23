@@ -7,9 +7,13 @@ package BO;
 import DAO.CitaDAO;
 import DAO.ICitaDAO;
 import DAO.IMedicoDAO;
+import DAO.IPacienteDAO;
 import DAO.MedicoDAO;
+import DAO.PacienteDAO;
+import DTO.CitaDTO;
 import DTO.CitaRegistroDTO;
 import DTO.CitaEmergenciaDTO;
+import DTO.ConsultaDTO;
 import DTO.MedicoDTO;
 import Mapper.CitaMapper;
 import Mapper.MapperMedico;
@@ -39,6 +43,7 @@ public class CitaBO {
 
     private final ICitaDAO citaDAO;
     private final IMedicoDAO medicoDAO;
+    private final IPacienteDAO pacienteDAO;
     private final MapperMedico convertidorMedico = new MapperMedico();
     private final CitaMapper convertidorCita = new CitaMapper();
     Timer timer = new Timer();
@@ -46,6 +51,7 @@ public class CitaBO {
     public CitaBO(IConexion conexion) {
         this.citaDAO = new CitaDAO(conexion);
         this.medicoDAO = new MedicoDAO(conexion);
+        this.pacienteDAO = new PacienteDAO(conexion);
 
         timer.schedule(new TimerTask() {
             @Override
@@ -200,6 +206,17 @@ public class CitaBO {
         }
     }
 
+    public boolean actualizarCitaPorId(String id) throws NegocioException {
+        try {
+            Cita cita = citaDAO.consultarCitaPorId(Integer.parseInt(id));
+            cita.setEstadoCita("atendida");
+            return citaDAO.actualizarEstadoCita(cita);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No fue posible marcar como atendida la cita");
+        }
+    }
+
     private void verificarValidezCitasActivas() {
         try {
             List<Cita> citasActivas = citaDAO.consultarCitasActivas();
@@ -214,6 +231,44 @@ public class CitaBO {
             }
         } catch (PersistenciaException ex) {
             Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, "Ha ocurrido un error al intentar cambiar el estado de la cita", ex);
+        }
+    }
+
+    public List<CitaDTO> citasActivasMedico(String idMedico) throws NegocioException {
+        try {
+            List<Cita> citas = citaDAO.consultarCitasActivas().stream().filter(cita -> cita.getMedico().getIDUsuario() == Integer.parseInt(idMedico)).toList();
+            return convertidorCita.convertirADTO(citas);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Error al obtener las citas activas del médico");
+        }
+    }
+
+    public List<CitaDTO> citasActivasPaciente(String idPaciente) throws NegocioException {
+        try {
+            List<Cita> citas = citaDAO.consultarCitasActivas().stream().filter(cita -> cita.getPaciente().getIDUsuario() == Integer.parseInt(idPaciente) && cita.getTipo().equals("previa")).toList();
+            return convertidorCita.convertirADTO(citas);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Error al obtener las citas activas del paciente");
+        }
+    }
+
+    public CitaDTO obtenerCitaPorId(String idMedico) throws NegocioException {
+        try {
+            return convertidorCita.convertirADTO(citaDAO.consultarCitaPorId(Integer.parseInt(idMedico)));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("No es posible obtener la cita con el id indicado");
+        }
+    }
+
+    public boolean registrarConsulta(ConsultaDTO consulta) throws NegocioException {
+        try {
+            return citaDAO.registrarConsulta(convertidorCita.convertirAEntidad(consulta));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new NegocioException("Error al intentar registrar la consulta");
         }
     }
 }

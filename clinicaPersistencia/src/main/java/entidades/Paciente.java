@@ -17,6 +17,7 @@ public class Paciente extends Usuario {
     private String apellidoMaternoPaciente;
     private String correo;
     private String telefono;
+    private int edad;
     private LocalDate fechaNacimiento;
     private Direccion direccion;
 
@@ -25,6 +26,19 @@ public class Paciente extends Usuario {
         super();
     }
 
+    public Paciente(int IDUsuario, String contrasenaUsuario, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, int edad, LocalDate fechaNacimiento, Direccion direccion) {
+        super(IDUsuario, correo, contrasenaUsuario);
+        this.nombresPaciente = nombresPaciente;
+        this.apellidoPaternoPaciente = apellidoPaternoPaciente;
+        this.apellidoMaternoPaciente = apellidoMaternoPaciente;
+        this.correo = correo;
+        this.telefono = telefono;
+        this.edad = edad;
+        this.fechaNacimiento = fechaNacimiento;
+        this.direccion = direccion;
+    }
+    
+    
     // constructor con los puros datos de paciente
     public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
         this.nombresPaciente = nombresPaciente;
@@ -61,6 +75,14 @@ public class Paciente extends Usuario {
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.direccion = direccion;
+    }
+
+    public int getEdad() {
+        return edad;
+    }
+
+    public void setEdad(int edad) {
+        this.edad = edad;
     }
 
     //gets y sets

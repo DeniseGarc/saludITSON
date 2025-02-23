@@ -177,6 +177,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Validar folio"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnValidarFolioActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JLabel" name="lblPacienteTitulo">
           <Properties>
@@ -195,14 +198,8 @@
           </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblPaciente">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="texto temporal"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblEdad">
-          <Properties>
-            <Property name="text" type="java.lang.String" value="texto temporal"/>
-          </Properties>
         </Component>
         <Component class="javax.swing.JLabel" name="lblDiagnostico">
           <Properties>
@@ -261,6 +258,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Registrar consulta"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnRegistrarConsultaActionPerformed"/>
+          </Events>
         </Component>
       </SubComponents>
     </Container>

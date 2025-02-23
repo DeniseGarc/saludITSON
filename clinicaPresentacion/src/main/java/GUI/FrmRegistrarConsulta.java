@@ -4,17 +4,44 @@
  */
 package GUI;
 
+import BO.CitaBO;
+import DTO.CitaDTO;
+import DTO.ConsultaDTO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+
 /**
  *
  * @author Alici
  */
 public class FrmRegistrarConsulta extends javax.swing.JFrame {
 
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
+    private CitaDTO cita;
+
     /**
      * Creates new form FrmRegistrarConsulta
+     *
+     * @param idCita
      */
-    public FrmRegistrarConsulta() {
+    public FrmRegistrarConsulta(String idCita) {
         initComponents();
+        btnRegistrarConsulta.setEnabled(false);
+        try {
+            cita = citaBO.obtenerCitaPorId(idCita);
+            lblEdad.setText(cita.getPacienteSimpleDTO().getEdad());
+            lblPaciente.setText(cita.getPacienteSimpleDTO().toString());
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmRegistrarConsulta.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al obtener la cita", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        inicializarCampos();
+        agregarListeners();
     }
 
     /**
@@ -63,16 +90,17 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
         btnValidarFolio.setBackground(new java.awt.Color(128, 204, 43));
         btnValidarFolio.setForeground(new java.awt.Color(255, 255, 255));
         btnValidarFolio.setText("Validar folio");
+        btnValidarFolio.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnValidarFolioActionPerformed(evt);
+            }
+        });
 
         lblPacienteTitulo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblPacienteTitulo.setText("Paciente:");
 
         lblEdadTitulo.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblEdadTitulo.setText("Edad:");
-
-        lblPaciente.setText("texto temporal");
-
-        lblEdad.setText("texto temporal");
 
         lblDiagnostico.setText("Diagnóstico");
 
@@ -91,6 +119,11 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
         btnRegistrarConsulta.setBackground(new java.awt.Color(30, 98, 159));
         btnRegistrarConsulta.setForeground(new java.awt.Color(255, 255, 255));
         btnRegistrarConsulta.setText("Registrar consulta");
+        btnRegistrarConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRegistrarConsultaActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelRound1Layout = new javax.swing.GroupLayout(panelRound1);
         panelRound1.setLayout(panelRound1Layout);
@@ -190,6 +223,14 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnValidarFolioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnValidarFolioActionPerformed
+        validarFolio();
+    }//GEN-LAST:event_btnValidarFolioActionPerformed
+
+    private void btnRegistrarConsultaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegistrarConsultaActionPerformed
+        registrarConsulta();
+    }//GEN-LAST:event_btnRegistrarConsultaActionPerformed
+
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -224,6 +265,89 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    private void registrarConsulta() {
+        ConsultaDTO consulta = new ConsultaDTO(txtDiagnostico.getText(), txtAreaTratamiento.getText(), txtAreaObservaciones.getText(), cita.getIDCita());
+        try {
+            if (citaBO.registrarConsulta(consulta)) {
+                JOptionPane.showMessageDialog(this, "Se ha registrado la consulta exitosamente", "Consulta registrada", JOptionPane.INFORMATION_MESSAGE);
+                FrmCitasMedico frmCitasMedico = new FrmCitasMedico();
+                frmCitasMedico.setVisible(true);
+                dispose();
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "No fue posible registrar la consulta", "Error al registrar consulta", JOptionPane.INFORMATION_MESSAGE);
+
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmRegistrarConsulta.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(this, "Ha ocurrido un error al intentar realizar la consulta", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void inicializarCampos() {
+        if (cita.getTipo().equals("previa")) {
+            btnValidarFolio.setEnabled(false);
+            txtFolio.setEnabled(false);
+            try {
+                citaBO.actualizarCitaPorId(cita.getIDCita());
+            } catch (NegocioException ex) {
+                Logger.getLogger(FrmRegistrarConsulta.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Ha ocurrido un error al intentar atender la cita", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            txtAreaObservaciones.setEnabled(false);
+            txtAreaTratamiento.setEnabled(false);
+            txtDiagnostico.setEnabled(false);
+        }
+    }
+
+    private void actualizarEstadoBoton() {
+        boolean camposLlenos = !txtDiagnostico.getText().trim().isEmpty()
+                && !txtAreaTratamiento.getText().trim().isEmpty()
+                && !txtAreaObservaciones.getText().trim().isEmpty();
+        btnRegistrarConsulta.setEnabled(camposLlenos);
+    }
+
+    private void validarFolio() {
+        if (txtFolio.getText().equals(cita.getFolioCita())) {
+            txtFolio.setEnabled(false);
+            btnValidarFolio.setEnabled(false);
+            try {
+                citaBO.actualizarCitaPorId(cita.getIDCita());
+                txtDiagnostico.setEnabled(true);
+                txtAreaTratamiento.setEnabled(true);
+                txtAreaObservaciones.setEnabled(true);
+            } catch (NegocioException ex) {
+                Logger.getLogger(FrmRegistrarConsulta.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Ha ocurrido un error al intentar atender la cita", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "El folio ingresado no coincide con el asociado a la consulta", "Folio incorrecto", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }
+
+    // Listeners
+    private void agregarListeners() {
+        DocumentListener listener = new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                actualizarEstadoBoton();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                actualizarEstadoBoton();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                actualizarEstadoBoton();
+            }
+        };
+        txtDiagnostico.getDocument().addDocumentListener(listener);
+        txtAreaObservaciones.getDocument().addDocumentListener(listener);
+        txtAreaTratamiento.getDocument().addDocumentListener(listener);
+        txtFolio.getDocument().addDocumentListener(listener);
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRegistrarConsulta;

@@ -2,47 +2,24 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package entidades;
+package DTO;
 
 /**
  *
  * @author Alici
  */
-public class Consulta {
+public class ConsultaDTO {
 
-    private int IDConsulta;
     private String diagnostico;
     private String tratamiento;
     private String observaciones;
-    private Cita cita;
+    private String idCita;
 
-    //Constructor vacio
-    public Consulta() {
-    }
-
-    //constructor con todos los atributos 
-    public Consulta(int IDConsulta, String diagnostico, String tratamiento, String observaciones, Cita cita) {
-        this.IDConsulta = IDConsulta;
+    public ConsultaDTO(String diagnostico, String tratamiento, String observaciones, String idCita) {
         this.diagnostico = diagnostico;
         this.tratamiento = tratamiento;
         this.observaciones = observaciones;
-        this.cita = cita;
-    }
-
-    //constructor con todos los atributos menos IDConsulta
-    public Consulta(String diagnostico, String tratamiento, String observaciones, Cita cita) {
-        this.diagnostico = diagnostico;
-        this.tratamiento = tratamiento;
-        this.observaciones = observaciones;
-        this.cita = cita;
-    }
-
-    public int getIDConsulta() {
-        return IDConsulta;
-    }
-
-    public void setIDConsulta(int IDConsulta) {
-        this.IDConsulta = IDConsulta;
+        this.idCita = idCita;
     }
 
     public String getDiagnostico() {
@@ -69,12 +46,12 @@ public class Consulta {
         this.observaciones = observaciones;
     }
 
-    public Cita getCita() {
-        return cita;
+    public String getIdCita() {
+        return idCita;
     }
 
-    public void setCita(Cita cita) {
-        this.cita = cita;
+    public void setIdCita(String idCita) {
+        this.idCita = idCita;
     }
 
 }
