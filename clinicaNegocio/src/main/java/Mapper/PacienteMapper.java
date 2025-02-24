@@ -21,7 +21,7 @@ public class PacienteMapper {
     }
 
     public PacienteNuevoDTO ConvertirADTO(Paciente paciente) {
-        PacienteNuevoDTO pacienteDTO = new PacienteNuevoDTO(paciente.getNombresPaciente(), paciente.getApellidoPaternoPaciente(), paciente.getApellidoMaternoPaciente(), paciente.getCorreo(), paciente.getTelefono(), paciente.getFechaNacimiento(), paciente.getDireccion().getCalle(), paciente.getDireccion().getNumero(), paciente.getDireccion().getColonia(), paciente.getDireccion().getCodigoPostal(), paciente.getNombreUsuario(), paciente.getContrasenaUsuario());
+        PacienteNuevoDTO pacienteDTO = new PacienteNuevoDTO(paciente.getNombresPaciente(), paciente.getApellidoPaternoPaciente(), paciente.getApellidoMaternoPaciente(), paciente.getCorreo(), paciente.getTelefono(), paciente.getFechaNacimiento(), paciente.getDireccion().getCalle(), paciente.getDireccion().getNumero(), paciente.getDireccion().getColonia(), paciente.getDireccion().getCodigoPostal(), paciente.getContrasenaUsuario());
         return pacienteDTO;
     }
 }

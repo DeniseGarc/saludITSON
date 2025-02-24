@@ -10,7 +10,6 @@ import DAO.MedicoDAO;
 import conexion.IConexion;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
-import mapper.MedicoMapper;
 
 /**
  *
@@ -18,7 +17,6 @@ import mapper.MedicoMapper;
  */
 public class MedicoBO {
     private final IMedicoDAO medicoDAO;
-    private final MedicoMapper mapper = new MedicoMapper();
 
     public MedicoBO(IConexion conexion) {
         this.medicoDAO = new MedicoDAO(conexion);

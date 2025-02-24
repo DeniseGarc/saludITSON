@@ -27,9 +27,8 @@ public class PacienteNuevoDTO extends UsuarioDTO {
     public PacienteNuevoDTO() {
     }
 
-    public PacienteNuevoDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, String calle, String numero, String colonia, String codigoPostal, String nombreUsuario, String contrasenaUsuario) {
-        super(nombreUsuario, contrasenaUsuario);
-        this.nombresPaciente = nombresPaciente;
+    public PacienteNuevoDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, String calle, String numero, String colonia, String codigoPostal, String contrasenaUsuario) {
+        super(nombresPaciente, contrasenaUsuario);
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
         this.correo = correo;

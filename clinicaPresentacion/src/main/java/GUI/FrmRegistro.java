@@ -314,7 +314,7 @@ public class FrmRegistro extends javax.swing.JFrame {
             String telefono = txtTelefono.getText();
             String correo = txtCorreo.getText();
             String contrasena = txtContrasena.getText();
-            PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO(nombre, apellidoPaterno, apellidoMaterno, correo, telefono, fechaNacimiento, calle, numero, colonia, codigoPostal, correo, contrasena);
+            PacienteNuevoDTO pacienteNuevo = new PacienteNuevoDTO(nombre, apellidoPaterno, apellidoMaterno, correo, telefono, fechaNacimiento, calle, numero, colonia, codigoPostal, contrasena);
             boolean exito = pacienteBO.registrarPaciente(pacienteNuevo);
             if (exito) {
                 JOptionPane.showMessageDialog(this, "Se ha registrado correctamente");

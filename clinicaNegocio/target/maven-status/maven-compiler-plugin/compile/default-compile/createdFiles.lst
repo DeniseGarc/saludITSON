@@ -4,6 +4,7 @@ DTO\UsuarioDTO.class
 Mapper\UsuarioMapper.class
 configuracion\DependencyInjector.class
 Encriptado\IEncriptador.class
+DTO\UsuarioIniciarSesionDTO.class
 Encriptado\Encriptador.class
 DTO\CitaEmergenciaDTO.class
 DTO\PacienteSimpleDTO.class
@@ -14,6 +15,7 @@ DTO\ConsultaDTO.class
 BO\UsuarioBO.class
 Mapper\MapperMedico.class
 DTO\CitaDTO.class
+BO\MedicoBO.class
 Mapper\CitaMapper.class
 DTO\PacienteNuevoDTO.class
 Mapper\PacienteMapper.class

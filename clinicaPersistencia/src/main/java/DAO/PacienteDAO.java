@@ -95,7 +95,6 @@ public class PacienteDAO implements IPacienteDAO {
         }
 }
 
-    @Override
     public Paciente consultarPacientePorId(int id) throws PersistenciaException {
         String sentenciaSQL = "SELECT IDPaciente, nombresPaciente, apellidoPaternoPaciente, apellidoMaternoPaciente, correo, telefono, fechaNacimiento, idDireccion FROM pacientes WHERE IDPaciente = ?";
         try (Connection con = conexion.crearConexion()) {

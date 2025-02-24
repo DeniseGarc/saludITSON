@@ -79,7 +79,7 @@ public class MedicoDAO implements IMedicoDAO{
                         rs.getString("apellidoMaternoMedico"),
                         rs.getString("cedulaProfesional"), 
                         rs.getString("especialidad"), 
-                        rs.getString("estado"),null,null);
+                        rs.getString("estado"));
                 medicos.add(medico);
             }
             return medicos;

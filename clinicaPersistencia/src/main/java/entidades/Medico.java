@@ -32,6 +32,18 @@ public class Medico extends Usuario {
         this.especialidad = especialidad;
         this.estado = estado;
     }
+    
+    //constructor sin contraseña.
+
+    public Medico(int IDUsuario, String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String cedulaProfesional, String especialidad, String estado) {
+        super(IDUsuario, cedulaProfesional, " ");
+        this.nombresMedico = nombresMedico;
+        this.apellidoPaternoMedico = apellidoPaternoMedico;
+        this.apellidoMaternoMedico = apellidoMaternoMedico;
+        this.cedulaProfesional = cedulaProfesional;
+        this.especialidad = especialidad;
+        this.estado = estado;
+    }
 
     //constructor con todos los atributos menos el IDUsuario
     public Medico(String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String cedulaProfesional, String especialidad, String estado, String nombreUsuario, String contrasenaUsuario) {
