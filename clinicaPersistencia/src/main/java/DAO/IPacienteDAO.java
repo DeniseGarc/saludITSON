@@ -6,6 +6,7 @@ package DAO;
 
 import entidades.Paciente;
 import excepciones.PersistenciaException;
+import java.time.LocalDate;
 
 /**
  *
@@ -19,4 +20,9 @@ public interface IPacienteDAO {
     public boolean consultarPacientePorTelefono(String telefono) throws PersistenciaException;
     
     public String consultarNombreCompletoPaciente(int idPaciente) throws PersistenciaException;
+       
+  public boolean actualizarPaciente(int idPaciente, String nombres, String apellidoPaterno, String apellidoMaterno,
+  String telefono, LocalDate fechaNacimiento,int idDireccion, String calle, String numero, String colonia, String codigoPostal) throws PersistenciaException; 
+  
+  public boolean tieneCitasActivas(int idPaciente) throws PersistenciaException;
 }

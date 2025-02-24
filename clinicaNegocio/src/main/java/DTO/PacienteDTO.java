@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author joelr
  */
 public class PacienteDTO extends UsuarioDTO {
-
+    
     private String nombresPaciente;
     private String apellidoPaternoPaciente;
     private String apellidoMaternoPaciente;

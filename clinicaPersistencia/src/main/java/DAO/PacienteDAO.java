@@ -5,6 +5,7 @@
 package DAO;
 
 import conexion.IConexion;
+import entidades.Direccion;
 import entidades.Paciente;
 import excepciones.PersistenciaException;
 import java.sql.CallableStatement;
@@ -13,6 +14,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 
@@ -93,5 +95,77 @@ public class PacienteDAO implements IPacienteDAO {
         throw new PersistenciaException(null, ex);
         }
 }
+    @Override
+    public boolean tieneCitasActivas(int idPaciente) throws PersistenciaException {
+    String sentenciasql = "SELECT COUNT(*) FROM Citas WHERE idPaciente = ? AND estadoCita = 'activa'";
+    
+    try (Connection con = conexion.crearConexion();
+         PreparedStatement ps = con.prepareStatement(sentenciasql)) {
 
+        ps.setInt(1, idPaciente);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    } catch (SQLException e) {
+        throw new PersistenciaException("Error al verificar citas activas: " + e.getMessage());
+    }
+}
+    @Override
+    public boolean actualizarPaciente(int idPaciente, String nombres, String apellidoPaterno, String apellidoMaterno,
+        String telefono, LocalDate fechaNacimiento, int idDireccion, String calle, String numero, String colonia, String codigoPostal) throws PersistenciaException {
+        Connection con = null;
+        try {
+        con = conexion.crearConexion();
+        con.setAutoCommit(false); 
+
+        String sqlDireccion = "UPDATE Direcciones SET calle = ?, numero = ?, colonia = ?, codigoPostal = ? WHERE IDDireccion = ?";
+        try (PreparedStatement psDireccion = con.prepareStatement(sqlDireccion)) {
+            psDireccion.setString(1, calle);
+            psDireccion.setString(2, numero);
+            psDireccion.setString(3, colonia);
+            psDireccion.setString(4, codigoPostal);
+            psDireccion.setInt(5, idDireccion);
+            psDireccion.executeUpdate();
+        }
+
+        String sqlPaciente = "UPDATE Pacientes SET nombresPaciente = ?, apellidoPaternoPaciente = ?, apellidoMaternoPaciente = ?, telefono = ?, fechaNacimiento = ? WHERE IDPaciente = ?";
+        try (PreparedStatement psPaciente = con.prepareStatement(sqlPaciente)) {
+            psPaciente.setString(1, nombres);
+            psPaciente.setString(2, apellidoPaterno);
+            psPaciente.setString(3, apellidoMaterno);
+            psPaciente.setString(4, telefono); // 
+            psPaciente.setDate(5, Date.valueOf(fechaNacimiento)); 
+            psPaciente.setInt(6, idPaciente); 
+            psPaciente.executeUpdate();
+        }
+
+        con.commit(); 
+
+        return true; 
+
+    } catch (SQLException e) {
+        if (con != null) {
+            try {
+                con.rollback(); 
+            } catch (SQLException ex) {
+                throw new PersistenciaException("Error al hacer rollback: " + ex.getMessage());
+            }
+        }
+        throw new PersistenciaException("Error al actualizar paciente: " + e.getMessage());
+    } finally {
+        if (con != null) {
+            try {
+                con.setAutoCommit(true);
+                con.close();
+            } catch (SQLException e) {
+                
+            }
+        }
+    }
+}
+
+      
 }

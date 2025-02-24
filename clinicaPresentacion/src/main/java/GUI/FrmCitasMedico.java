@@ -390,9 +390,7 @@ public class FrmCitasMedico extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAtenderCitaProximaActionPerformed
 
     private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
-        FrmInicioSesion frmInicio = new FrmInicioSesion();
-        frmInicio.setVisible(true);
-        dispose();
+        cerrarSesion();
     }//GEN-LAST:event_lblCerrarSesionMouseClicked
 
     private void lblCerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseEntered
@@ -406,14 +404,19 @@ public class FrmCitasMedico extends javax.swing.JFrame {
     try {
         String idUsuario = ManejadorSesion.getIdUsuario();
         int idMedico = Integer.parseInt(idUsuario);
-        // Obtener el nombre completo del medico usando el ID
         String nombreCompleto = medicoBO.obtenerNombreCompletoMedico(idMedico);
-        // Mostrar el nombre en la etiqueta
         lblNombreCompletoMedico.setText(nombreCompleto);
     } catch (NegocioException e) {
        
     }
+    
 }
+    private void cerrarSesion() {
+        ManejadorSesion.borrarDatosSesion();
+        FrmInicioSesion frmInicio = new FrmInicioSesion(); 
+        frmInicio.setVisible(true);
+        this.dispose();
+    }
 //    /**
 //     * @param args the command line arguments
 //     */

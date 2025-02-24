@@ -6,6 +6,7 @@ package BO;
 
 import DAO.IPacienteDAO;
 import DAO.PacienteDAO;
+import DTO.PacienteActualizarDTO;
 import DTO.PacienteDTO;
 import Encriptado.Encriptador;
 import Encriptado.IEncriptador;
@@ -131,5 +132,34 @@ public class PacienteBO {
             throw new NegocioException(null + e.getMessage(), e);
         }
     }
+     
+     public boolean actualizarPaciente(PacienteActualizarDTO pacienteDTO) throws NegocioException {
+    try {
+        if (pacienteDTO == null) {
+            throw new NegocioException("El paciente no puede ser nulo");
+        }
+        if (pacienteDAO.tieneCitasActivas(pacienteDTO.getIdPaciente())) {
+            throw new NegocioException("No se puede actualizar: el paciente tiene citas activas");
+        }
+        int idPaciente = pacienteDTO.getIdPaciente();
+        String nombres = pacienteDTO.getNombresPaciente();
+        String apellidoPaterno = pacienteDTO.getApellidoPaternoPaciente();
+        String apellidoMaterno = pacienteDTO.getApellidoMaternoPaciente();
+        String telefono = pacienteDTO.getTelefono();
+        LocalDate fechaNacimiento = pacienteDTO.getFechaNacimiento();
+        int idDireccion = pacienteDTO.getDireccion().getIdDireccion();
+        String calle = pacienteDTO.getDireccion().getCalle();
+        String numero = pacienteDTO.getDireccion().getNumero();
+        String colonia = pacienteDTO.getDireccion().getColonia();
+        String codigoPostal = pacienteDTO.getDireccion().getCodigoPostal();
+        return pacienteDAO.actualizarPaciente(
+            idPaciente, nombres, apellidoPaterno, apellidoMaterno,
+             telefono, fechaNacimiento,idDireccion, calle, numero, colonia, codigoPostal
+        );
 
+    } catch (PersistenciaException e) {
+        throw new NegocioException(e.getMessage());
+    }
+}
+     
 }

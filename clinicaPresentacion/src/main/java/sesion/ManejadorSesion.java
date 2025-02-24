@@ -29,5 +29,9 @@ public class ManejadorSesion {
         ManejadorSesion.tipo = tipo;
     }
     
+    public static void borrarDatosSesion() {
+        idUsuario = null;
+        tipo = null;
+    }
     
 }

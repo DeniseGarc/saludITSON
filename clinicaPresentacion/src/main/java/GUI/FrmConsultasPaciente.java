@@ -60,6 +60,11 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
 
         lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/avatar.png"))); // NOI18N
         lblAvatar.setPreferredSize(new java.awt.Dimension(30, 30));
+        lblAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAvatarMouseClicked(evt);
+            }
+        });
 
         btnGenerarConsulta.setText("Generar consulta");
         btnGenerarConsulta.setBackground(new java.awt.Color(128, 204, 43));
@@ -304,22 +309,33 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCerrarSesionMouseExited
 
     private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
-        FrmInicioSesion frmInicio = new FrmInicioSesion();
-        frmInicio.setVisible(true);
-        dispose();
+        cerrarSesion();
     }//GEN-LAST:event_lblCerrarSesionMouseClicked
+
+    private void lblAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvatarMouseClicked
+        actualizarDatos();       
+    }//GEN-LAST:event_lblAvatarMouseClicked
     
     private void cargarNombrePaciente() {
     try {
         String idUsuario = ManejadorSesion.getIdUsuario();
         int idPaciente = Integer.parseInt(idUsuario);
-        // Obtener el nombre completo del paciente usando el ID
         String nombreCompleto = pacienteBO.obtenerNombreCompletoPaciente(idPaciente);
-        // Mostrar el nombre en la etiqueta
         lblNombreCompletoPaciente.setText(nombreCompleto);
     } catch (NegocioException e) {
        
     }
+    }
+        private void cerrarSesion() {
+        ManejadorSesion.borrarDatosSesion();
+        FrmInicioSesion frmInicio = new FrmInicioSesion(); 
+        frmInicio.setVisible(true);
+        this.dispose();
+    }
+        private void actualizarDatos(){
+        FrmActualizarDatosPaciente frmActualizar = new FrmActualizarDatosPaciente();
+        frmActualizar.setVisible(true);
+        this.dispose();
     }
 //    /**
 //     * @param args the command line arguments
