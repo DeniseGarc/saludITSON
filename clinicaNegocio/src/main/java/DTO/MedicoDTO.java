@@ -10,14 +10,16 @@ public class MedicoDTO {
     private String nombresMedico;
     private String apellidoPaternoMedico;
     private String apellidoMaternoMedico;
-
-    public MedicoDTO(String IDMedico, String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico) {
+    private String especialidad;
+    //Constructor con los atributos de Medico.
+    public MedicoDTO(String IDMedico, String nombresMedico, String apellidoPaternoMedico, String apellidoMaternoMedico, String especialidad) {
         this.IDMedico = IDMedico;
         this.nombresMedico = nombresMedico;
         this.apellidoPaternoMedico = apellidoPaternoMedico;
         this.apellidoMaternoMedico = apellidoMaternoMedico;
+        this.especialidad = especialidad;
     }
-
+    // Gets y Sets
     public String getIDMedico() {
         return IDMedico;
     }
@@ -50,10 +52,19 @@ public class MedicoDTO {
         this.apellidoMaternoMedico = apellidoMaternoMedico;
     }
 
+    public String getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(String especialidad) {
+        this.especialidad = especialidad;
+    }
+    
     @Override
     public String toString() {
         return nombresMedico + " "
                 + apellidoPaternoMedico + " "
-                + apellidoMaternoMedico;
+                + apellidoMaternoMedico + " "
+                + especialidad;
     }
 }

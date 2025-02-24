@@ -34,6 +34,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -280,4 +283,33 @@ public class CitaBO {
             throw new NegocioException("Error al intentar registrar la consulta");
         }
     }
+    /**
+     * Método para cargar la lista de citas en la tabla de la interfaz
+     * gráfica.
+     */
+    public DefaultTableModel cargarActivistas(JTable tabla, int idPaciente) {
+        // Obtener el modelo de la tabla y limpiar cualquier dato previo
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+
+        try {
+            // Obtener la lista de activistas desde la capa de negocio (BO)
+            List<CitaDTO> lista = this.citasActivasPaciente(String.valueOf(idPaciente));
+
+            // Recorrer la lista de activistas y agregarlos como filas en la tabla
+            for (CitaDTO citas : lista) {
+                modelo.addRow(new Object[]{
+                    citas.getFechaHora(), // Fecha y hora de la cita.
+                    citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
+                    citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
+                });
+            }
+            return modelo;
+        } catch (NegocioException ex) {
+            // Manejo de errores en caso de que falle la obtención de datos
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        return null;
+}
 }

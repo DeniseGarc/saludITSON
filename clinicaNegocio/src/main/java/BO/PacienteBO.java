@@ -20,6 +20,7 @@ import excepciones.PersistenciaException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -134,6 +135,36 @@ public class PacienteBO {
         }
 
         return "validos";
+    }
+
+    /*
+    Metodo que se encarga de validar que el correo y la contraseña existen.
+    Si si existen en la base de datos, el paciente se logea.
+    Muestra un error correspondiente en caso contrario.
+     */
+    public int Login(String correo, String contrasena) throws NegocioException, PersistenciaException {
+        try {
+
+            // Validar que los campos no esten vacios.
+            if (correo == null || contrasena == null) {
+                throw new NegocioException("Error: El correo o la contraseña son incorrectos o no se encuentran registados");
+
+            } else if (correo.isEmpty() || contrasena.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Los campos estan vacios.");
+                return 0;
+            } else {
+                int id = pacienteDAO.consultarIDPacientePorContrasenaCorreo(correo, contrasena);
+                return id;
+            }
+
+        } catch (NegocioException pe) {
+            // Registro de error con el logger
+            logger.log(Level.SEVERE, "Error: error al obtener el ID en la base de datos", pe);
+            // Muestra excepcion con un mensaje
+
+            throw new NegocioException("Error al intentar registrar en el sistema.");
+
+        }
     }
 
     public static boolean esCampoValido(String campo) {
