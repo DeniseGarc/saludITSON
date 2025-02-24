@@ -16,7 +16,7 @@ import GUI.FrmInicioSesion;
 public class ClinicaPresentacion {
 
     public static void main(String[] args) {
-        FrmCitasMedico inicio = new FrmCitasMedico();
+        FrmInicioSesion inicio = new FrmInicioSesion();
         inicio.setVisible(true);
     }
 }

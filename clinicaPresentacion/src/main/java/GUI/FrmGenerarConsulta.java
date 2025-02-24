@@ -19,17 +19,18 @@ import sesion.ManejadorSesion;
  * @author Alici
  */
 public class FrmGenerarConsulta extends javax.swing.JFrame {
-
+    private int idPaciente;
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
 
     /**
      * Creates new form FrmGenerarConsulta
      */
-    public FrmGenerarConsulta() {
+    public FrmGenerarConsulta(int id) {
         initComponents();
         llenarComboEspecialidad();
         btnGenerarFolio.setEnabled(false);
         agregarListener();
+        idPaciente=id;
     }
 
     /**
@@ -348,7 +349,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
     private void regresar() {
 
         if (lblFolio.getText().isBlank()) {
-            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
             frmCitasPaciente.setVisible(true);
             dispose();
             return;
@@ -361,7 +362,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
                 Logger.getLogger(FrmGenerarConsulta.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
             frmCitasPaciente.setVisible(true);
             dispose();
         }

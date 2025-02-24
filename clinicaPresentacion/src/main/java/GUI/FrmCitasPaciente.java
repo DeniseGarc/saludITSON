@@ -4,17 +4,31 @@
  */
 package GUI;
 
+import BO.CitaBO;
+import DTO.CitaDTO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Alici
  */
 public class FrmCitasPaciente extends javax.swing.JFrame {
-
+    private int idPaciente;
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
     /**
-     * Creates new form FrmCitas
+     * Form de las citas del paciente, aqui se muestra una tabla con las citas proximas del paciente.
+     * Utiliza el ID obtenido del login del frmInicioSesion para mostrar las citas del paciente logeado.
      */
-    public FrmCitasPaciente() {
+    public FrmCitasPaciente(int id) {
         initComponents();
+        idPaciente = id;
+        this.cargarCitas();
     }
 
     /**
@@ -290,16 +304,41 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
 //        });
 //    }
     private void agendarCita() {
-        FrmAgendarCita frmAgendarCita = new FrmAgendarCita();
+        FrmAgendarCita frmAgendarCita = new FrmAgendarCita(idPaciente);
         frmAgendarCita.setVisible(true);
         dispose();
     }
 
     private void generarFolio() {
-        FrmGenerarConsulta frmGenerarConsulta = new FrmGenerarConsulta();
+        FrmGenerarConsulta frmGenerarConsulta = new FrmGenerarConsulta(idPaciente);
         frmGenerarConsulta.setVisible(true);
         dispose();
     }
+    private void cargarCitas(){
+//        citaBO.cargarActivistas(tablaCitas, idPaciente);
+         // Obtener el modelo de la tabla y limpiar cualquier dato previo
+        DefaultTableModel modelo = (DefaultTableModel) this.tablaCitas.getModel();
+        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+
+        try {
+            // Obtener la lista de activistas desde la capa de negocio (BO)
+            List<CitaDTO> lista = citaBO.citasActivasPaciente(String.valueOf(idPaciente));
+
+            // Recorrer la lista de activistas y agregarlos como filas en la tabla
+            for (CitaDTO citas : lista) {
+                modelo.addRow(new Object[]{
+                    citas.getFechaHora(), // Fecha y hora de la cita.
+                    citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
+                    citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
+                });
+            }
+        } catch (NegocioException ex) {
+            // Manejo de errores en caso de que falle la obtención de datos
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+}
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgendarCita;

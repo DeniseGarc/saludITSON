@@ -303,6 +303,7 @@ public class FrmRegistro extends javax.swing.JFrame {
     // boton registrar paciente
     private void registrarPaciente() {
         try {
+            
             String apellidoPaterno = txtApellidoPaterno.getText();
             String apellidoMaterno = txtApellidoMaterno.getText();
             String nombre = txtNombre.getText();

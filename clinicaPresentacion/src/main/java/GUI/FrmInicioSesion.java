@@ -4,7 +4,14 @@
  */
 package GUI;
 
+import BO.PacienteBO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -161,7 +168,13 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     }//GEN-LAST:event_lblRegistroMouseExited
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
-        pantallaInicio();
+        try {
+            pantallaInicio();
+        } catch (NegocioException ex) {
+            Logger.getLogger(FrmInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmInicioSesion.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
 
 //    /**
@@ -203,12 +216,27 @@ public class FrmInicioSesion extends javax.swing.JFrame {
         frmRegistrarPaciente.setVisible(true);
         dispose();
     }
-    private void pantallaInicio() {
-        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
-        frmCitasPaciente.setVisible(true);
-        dispose();
+
+    private void pantallaInicio() throws NegocioException, PersistenciaException {
+        PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+        char[] contrasenaEnPartes = this.txtContrasena.getPassword();
+        String contrasena = new String(contrasenaEnPartes);
+
+        if (this.txtUsuario.getText().isEmpty() || contrasena.isEmpty()) {
+            JOptionPane.showMessageDialog(rootPane, "Error: Debe llenar todos los campos.");
+        } else if (this.txtUsuario.getText() == null || contrasena == null) {
+
+            JOptionPane.showMessageDialog(rootPane, "Error: El usuario no existe o la contraseña esta incorrecta");
+        } else {
+            int idPaciente = pacienteBO.Login(this.txtUsuario.getText(), contrasena);
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
+            frmCitasPaciente.setVisible(true);
+            System.out.println(idPaciente);
+            dispose();
+        }
+
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnIniciarSesion;
