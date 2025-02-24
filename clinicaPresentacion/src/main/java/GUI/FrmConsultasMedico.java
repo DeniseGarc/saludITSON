@@ -8,6 +8,7 @@ import BO.MedicoBO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
 import java.awt.Color;
+import javax.swing.JOptionPane;
 import sesion.ManejadorSesion;
 
 /**
@@ -22,6 +23,7 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
     public FrmConsultasMedico() {
         initComponents();
         cargarNombreMedico();
+        cargarEstadoMedicoYActualizarBotones();
     }
 
     /**
@@ -80,6 +82,11 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
         btnBajaTemporal.setBackground(new java.awt.Color(195, 54, 29));
         btnBajaTemporal.setForeground(new java.awt.Color(255, 255, 255));
         btnBajaTemporal.setText("Baja temporal");
+        btnBajaTemporal.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnBajaTemporalMouseClicked(evt);
+            }
+        });
         btnBajaTemporal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBajaTemporalActionPerformed(evt);
@@ -98,6 +105,11 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
         btnActivarCuenta.setBackground(new java.awt.Color(128, 204, 43));
         btnActivarCuenta.setForeground(new java.awt.Color(255, 255, 255));
         btnActivarCuenta.setText("Activar cuenta");
+        btnActivarCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                btnActivarCuentaMouseClicked(evt);
+            }
+        });
         btnActivarCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActivarCuentaActionPerformed(evt);
@@ -271,6 +283,14 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
     private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
         cerrarSesion();
     }//GEN-LAST:event_lblCerrarSesionMouseClicked
+
+    private void btnBajaTemporalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBajaTemporalMouseClicked
+        bajaCuenta ();
+    }//GEN-LAST:event_btnBajaTemporalMouseClicked
+
+    private void btnActivarCuentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActivarCuentaMouseClicked
+        activarCuenta ();
+    }//GEN-LAST:event_btnActivarCuentaMouseClicked
     private void cargarNombreMedico() {
     try {
         String idUsuario = ManejadorSesion.getIdUsuario();
@@ -286,6 +306,79 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
         FrmInicioSesion frmInicio = new FrmInicioSesion();
         frmInicio.setVisible(true);
         this.dispose();
+    }
+    private void cargarEstadoMedicoYActualizarBotones() {
+    try {
+        String idUsuario = ManejadorSesion.getIdUsuario();
+        int idMedico = Integer.parseInt(idUsuario);
+        String estadoMedico = medicoBO.obtenerEstadoMedico(idMedico);
+
+        if (estadoMedico.equals("activo")) {
+            btnBajaTemporal.setEnabled(true);
+            btnActivarCuenta.setEnabled(false);
+        } else if (estadoMedico.equals("inactivo")) {
+            btnBajaTemporal.setEnabled(false);
+            btnActivarCuenta.setEnabled(true);
+        }
+    } catch (NegocioException e) {
+        JOptionPane.showMessageDialog(this, "Error al obtener el estado del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
+}
+    private void bajaCuenta (){
+    int confirmacion = JOptionPane.showConfirmDialog(
+        this, 
+        "¿Estás seguro de que deseas desactivar tu cuenta?", 
+        "Confirmar baja temporal", 
+        JOptionPane.YES_NO_OPTION, 
+        JOptionPane.WARNING_MESSAGE
+    );
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        try {
+            String idUsuario = ManejadorSesion.getIdUsuario();
+            int idMedico = Integer.parseInt(idUsuario);
+
+            boolean exito = medicoBO.darDeBajaTemporal(idMedico);
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Médico dado de baja temporalmente correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarEstadoMedicoYActualizarBotones(); 
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo dar de baja temporalmente al médico.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, "Error al dar de baja temporalmente al médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+    }  
+    }
+    
+    public void activarCuenta (){
+    int confirmacion = JOptionPane.showConfirmDialog(
+        this, 
+        "¿Estás seguro de que deseas reactivar tu cuenta?", 
+        "Confirmar reactivación", 
+        JOptionPane.YES_NO_OPTION, 
+        JOptionPane.WARNING_MESSAGE
+    );
+
+    if (confirmacion == JOptionPane.YES_OPTION) {
+        try {
+            String idUsuario = ManejadorSesion.getIdUsuario();
+            int idMedico = Integer.parseInt(idUsuario);
+
+            boolean exito = medicoBO.reactivarCuenta(idMedico);
+            if (exito) {
+                JOptionPane.showMessageDialog(this, "Cuenta del médico reactivada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                cargarEstadoMedicoYActualizarBotones(); // Actualizar botones después de la operación
+            } else {
+                JOptionPane.showMessageDialog(this, "No se pudo reactivar la cuenta del médico.", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(this, "Error al reactivar la cuenta del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    } else {
+        JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+    }
     }
 //    /**
 //     * @param args the command line arguments

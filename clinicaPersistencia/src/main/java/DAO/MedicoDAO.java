@@ -143,4 +143,75 @@ public class MedicoDAO implements IMedicoDAO{
         throw new PersistenciaException(null, ex);
     }
 }
+    
+     @Override
+    public boolean tieneCitasActivas(int idMedico) throws PersistenciaException {
+    String sentenciasql = "SELECT COUNT(*) FROM Citas WHERE idMedico = ? AND estadoCita = 'activa'";
+    
+    try (Connection con = conexion.crearConexion();
+         PreparedStatement ps = con.prepareStatement(sentenciasql)) {
+
+        ps.setInt(1, idMedico);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        }
+        return false;
+    } catch (SQLException e) {
+        throw new PersistenciaException("Error al verificar citas activas: " + e.getMessage());
+    }
+}
+    
+    @Override
+    public boolean bajaTemporal(int idMedico) throws PersistenciaException {
+    if (tieneCitasActivas(idMedico)) {
+        throw new PersistenciaException("No se puede dar de baja al médico porque tiene citas activas.");
+    }
+    String sentenciaSQL = "UPDATE Medicos SET estado = 'inactivo' WHERE IDMedico = ?";
+    try (Connection con = conexion.crearConexion();
+         PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+         ps.setInt(1, idMedico);
+         int filasActualizadas = ps.executeUpdate();
+        // Devolver true si se actualizó al menos una fila
+        return filasActualizadas > 0;
+    } catch (SQLException e) {
+        logger.log(Level.SEVERE, "Error al dar de baja temporalmente al médico", e);
+        throw new PersistenciaException("Error al dar de baja temporalmente al médico: " + e.getMessage());
+    }
+}
+    
+    @Override
+    public boolean reactivarCuenta(int idMedico) throws PersistenciaException {
+    String sentenciaSQL = "UPDATE Medicos SET estado = 'activo' WHERE IDMedico = ?";
+    try (Connection con = conexion.crearConexion();
+         PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+         ps.setInt(1, idMedico);
+         int filasActualizadas = ps.executeUpdate();
+         return filasActualizadas > 0;
+    } catch (SQLException e) {
+        logger.log(Level.SEVERE, "Error al reactivar la cuenta del médico", e);
+        throw new PersistenciaException("Error al reactivar la cuenta del médico: " + e.getMessage());
+    }
+}
+    @Override
+    public String obtenerEstadoMedico(int idMedico) throws PersistenciaException {
+    String sentenciaSQL = "SELECT estado FROM Medicos WHERE IDMedico = ?";
+    
+    try (Connection con = conexion.crearConexion();
+         PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+
+        ps.setInt(1, idMedico);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getString("estado");
+            } else {
+                throw new PersistenciaException("No se encontró el médico con ID: " + idMedico);
+            }
+        }
+    } catch (SQLException e) {
+        logger.log(Level.SEVERE, "Error al obtener el estado del médico", e);
+        throw new PersistenciaException("Error al obtener el estado del médico: " + e.getMessage());
+    }
+}
 }
