@@ -20,64 +20,66 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
+
 /**
  *
  * @author benjy
  */
-public class MedicoDAO implements IMedicoDAO {
-
+public class MedicoDAO implements IMedicoDAO{
     IConexion conexion;
     private static final Logger logger = Logger.getLogger(PacienteDAO.class.getName());
 
     public MedicoDAO(IConexion conexion) {
         this.conexion = conexion;
     }
-    // lo dejamos? No es algo que sea necesario implementar ya que no se pidió en los requerimientos  
+    
+    
+    @Override
+    public Medico registrarMedico(Medico medico) throws PersistenciaException {
+        String procedimientoSQL = "{CALL registrar_medico(?, ?, ?, ?, ?, ?)}";
 
-//    @Override
-//    public Medico registrarMedico(Medico medico) throws PersistenciaException {
-//        String procedimientoSQL = "{CALL registrar_medico(?, ?, ?, ?, ?, ?)}";
-//
-//        try (Connection con = conexion.crearConexion();
-//             CallableStatement cs = con.prepareCall(procedimientoSQL)) {
-//
-//            // Establecer los parámetros del procedimiento almacenado
-//            cs.setString(1, medico.getNombresMedico());
-//            cs.setString(2, medico.getApellidoPaternoMedico());
-//            cs.setString(3, medico.getApellidoMaternoMedico());
-//            cs.setString(4, medico.getCedulaProfesional());
-//            cs.setString(5, medico.getEspecialidad());
-//            cs.setString(6, medico.getContrasenaUsuario()); // Contraseña
-//
-//            // Enviar los horarios, cada uno en su correspondiente parámetro
-//
-//            // Ejecutar el procedimiento almacenado
-//            cs.executeUpdate();
-//            logger.info("Médico registrado exitosamente.");
-//
-//            return medico;
-//
-//        } catch (SQLException e) {
-//            logger.log(Level.SEVERE, "Error al registrar médico", e);
-//            throw new PersistenciaException("Error al registrar el médico en la base de datos.", e);
-//        }
-//    }
+        try (Connection con = conexion.crearConexion();
+             CallableStatement cs = con.prepareCall(procedimientoSQL)) {
+
+            // Establecer los parámetros del procedimiento almacenado
+            cs.setString(1, medico.getNombresMedico());
+            cs.setString(2, medico.getApellidoPaternoMedico());
+            cs.setString(3, medico.getApellidoMaternoMedico());
+            cs.setString(4, medico.getCedulaProfesional());
+            cs.setString(5, medico.getEspecialidad());
+            cs.setString(6, medico.getContrasenaUsuario()); // Contraseña
+
+            // Enviar los horarios, cada uno en su correspondiente parámetro
+
+            // Ejecutar el procedimiento almacenado
+            cs.executeUpdate();
+            logger.info("Médico registrado exitosamente.");
+
+            return medico;
+
+        } catch (SQLException e) {
+            logger.log(Level.SEVERE, "Error al registrar médico", e);
+            throw new PersistenciaException("Error al registrar el médico en la base de datos.", e);
+        }
+    }
+    
     @Override
     public List<Medico> consultarMedicosPorEspecialidad(String especialidad) throws PersistenciaException {
         ArrayList<Medico> medicos = new ArrayList<>();
-        String senteciaSQL = "SELECT IDMedico, nombresMedico, apellidoPaternoMedico, apellidoMaternoMedico, cedulaProfesional, especialidad, estado FROM medicos WHERE especialidad LIKE ? AND estado = \"activo\"";
-        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(senteciaSQL);) {
+        String senteciaSQL = "SELECT IDMedico, nombresMedico, apellidoPaternoMedico, apellidoMaternoMedico, cedulaProfesional, especialidad, estado FROM medicos WHERE especialidad LIKE ?";
+        try(Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(senteciaSQL);){
             ps.setString(1, especialidad);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+            while (rs.next()) {                
                 Medico medico = new Medico(
-                        rs.getInt("IDMedico"), null,
-                        rs.getString("nombresMedico"),
+                        rs.getInt("IDMedico"), 
+                        rs.getString("nombresMedico"), 
                         rs.getString("apellidoPaternoMedico"),
                         rs.getString("apellidoMaternoMedico"),
-                        rs.getString("cedulaProfesional"),
-                        rs.getString("especialidad"),
-                        rs.getString("estado"));
+                        rs.getString("cedulaProfesional"), 
+                        rs.getString("especialidad"), 
+                        rs.getString("estado"),null,null);
                 medicos.add(medico);
             }
             return medicos;
@@ -91,9 +93,9 @@ public class MedicoDAO implements IMedicoDAO {
     public List<String> consultarEspecialidades() throws PersistenciaException {
         ArrayList<String> especialidades = new ArrayList<>();
         String sentenciaSQL = "SELECT especialidad FROM medicos GROUP BY especialidad";
-        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);){
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+            while (rs.next()) {                
                 especialidades.add(rs.getString("especialidad"));
             }
             return especialidades;
@@ -102,50 +104,43 @@ public class MedicoDAO implements IMedicoDAO {
             throw new PersistenciaException("Error al intentar obtener las especialidades de los médicos");
         }
     }
-
+    
     @Override
-    public List<LocalTime> obtenerHorariosCitas(Medico medico, LocalDate fecha) throws PersistenciaException {
+    public List<LocalTime> obtenerHorariosCitas(Medico medico, LocalDate fecha) throws PersistenciaException{
         ArrayList<LocalTime> horariosDisponibles = new ArrayList<>();
         String sentenciaSQL = "CALL generarHorariosDisponibles(?,?)";
-
+        
         try (Connection con = conexion.crearConexion(); CallableStatement cs = con.prepareCall(sentenciaSQL);) {
             cs.setInt(1, medico.getIDUsuario());
             cs.setDate(2, Date.valueOf(fecha));
             ResultSet resultados = cs.executeQuery();
-            while (resultados.next()) {
-                horariosDisponibles.add(resultados.getTime(1, null).toLocalTime());
+            while (resultados.next()) {                
+                horariosDisponibles.add(resultados.getTime(1,null).toLocalTime());
             }
             return horariosDisponibles;
         } catch (SQLException ex) {
-            if ("45000".equals(ex.getSQLState())) {
-                throw new PersistenciaException(ex.getMessage());
-            }
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al intentar obtener horarios para citas");
         }
     }
-
+    
     @Override
-    public Medico consultarMedicoPorId(int id) throws PersistenciaException {
-        String sentenciaSQL = "SELECT IDMedico, nombresMedico, apellidoPaternoMedico, apellidoMaternoMedico, cedulaProfesional, especialidad, estado FROM medicos WHERE IDMedico = ?";
-        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
-            ps.setInt(1, id);
+    public String consultarNombreCompletoMedico(int idMedico) throws PersistenciaException {
+        String sentenciaSQL = "SELECT CONCAT(nombresMedico, ' ', apellidoPaternoMedico, ' ', apellidoMaternoMedico) AS nombreCompleto FROM medicos WHERE IDMedico = ?";
+    
+        try (Connection con = conexion.crearConexion(); 
+             PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+        
+            ps.setInt(1, idMedico); 
             ResultSet rs = ps.executeQuery();
-            Medico medico = null;
             if (rs.next()) {
-                medico = new Medico(
-                        rs.getInt("IDMedico"), null,
-                        rs.getString("nombresMedico"),
-                        rs.getString("apellidoPaternoMedico"),
-                        rs.getString("apellidoMaternoMedico"),
-                        rs.getString("cedulaProfesional"),
-                        rs.getString("especialidad"),
-                        rs.getString("estado"));
+                return rs.getString("nombreCompleto"); 
+            } else {
+                throw new PersistenciaException(null);
             }
-            return medico;
-        } catch (SQLException ex) {
-            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
-            throw new PersistenciaException("Error al intentar consultar el medico por su id");
-        }
+    } catch (SQLException ex) {
+        logger.log(Level.SEVERE, null, ex);
+        throw new PersistenciaException(null, ex);
     }
+}
 }

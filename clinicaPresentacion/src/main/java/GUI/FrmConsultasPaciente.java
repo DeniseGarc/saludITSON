@@ -4,17 +4,24 @@
  */
 package GUI;
 
+import BO.PacienteBO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
+import java.awt.Color;
+import sesion.ManejadorSesion;
+
 /**
  *
  * @author Alici
  */
 public class FrmConsultasPaciente extends javax.swing.JFrame {
-
+    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     /**
      * Creates new form FrmCitas
      */
     public FrmConsultasPaciente() {
         initComponents();
+        cargarNombrePaciente();
     }
 
     /**
@@ -32,6 +39,7 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         btnConsultaPrevia = new javax.swing.JButton();
         btnCitas = new javax.swing.JButton();
         lblCerrarSesion = new javax.swing.JLabel();
+        lblNombreCompletoPaciente = new javax.swing.JLabel();
         panelRedondo = new GUI.PanelRound();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaConsultas = new javax.swing.JTable();
@@ -53,27 +61,27 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/avatar.png"))); // NOI18N
         lblAvatar.setPreferredSize(new java.awt.Dimension(30, 30));
 
+        btnGenerarConsulta.setText("Generar consulta");
         btnGenerarConsulta.setBackground(new java.awt.Color(128, 204, 43));
         btnGenerarConsulta.setForeground(new java.awt.Color(255, 255, 255));
-        btnGenerarConsulta.setText("Generar consulta");
         btnGenerarConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenerarConsultaActionPerformed(evt);
             }
         });
 
+        btnConsultaPrevia.setText("Consultas previas");
         btnConsultaPrevia.setBackground(new java.awt.Color(30, 98, 159));
         btnConsultaPrevia.setForeground(new java.awt.Color(255, 255, 255));
-        btnConsultaPrevia.setText("Consultas previas");
         btnConsultaPrevia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaPreviaActionPerformed(evt);
             }
         });
 
+        btnCitas.setText("Citas");
         btnCitas.setBackground(new java.awt.Color(30, 98, 159));
         btnCitas.setForeground(new java.awt.Color(255, 255, 255));
-        btnCitas.setText("Citas");
         btnCitas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCitasActionPerformed(evt);
@@ -81,6 +89,19 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         });
 
         lblCerrarSesion.setText("<html><u>Cerrar Sesión</u></html>");
+        lblCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseExited(evt);
+            }
+        });
+
+        lblNombreCompletoPaciente.setText("jLabel1");
 
         javax.swing.GroupLayout panelBarraLateralLayout = new javax.swing.GroupLayout(panelBarraLateral);
         panelBarraLateral.setLayout(panelBarraLateralLayout);
@@ -94,9 +115,11 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
                             .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGroup(panelBarraLateralLayout.createSequentialGroup()
                             .addGap(10, 10, 10)
-                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnGenerarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblNombreCompletoPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGenerarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                     .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -107,7 +130,9 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
                 .addGap(15, 15, 15)
                 .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblNombreCompletoPaciente)
+                .addGap(12, 12, 12)
                 .addComponent(btnGenerarConsulta)
                 .addGap(18, 18, 18)
                 .addComponent(btnConsultaPrevia)
@@ -163,8 +188,8 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
             tablaConsultas.getColumnModel().getColumn(5).setResizable(false);
         }
 
-        lblCitasProximas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCitasProximas.setText("Consultas previas");
+        lblCitasProximas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         lblDesde.setText("Desde");
 
@@ -172,9 +197,9 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
 
         cBoxEspecialidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
+        btnFiltrar.setText("Filtrar");
         btnFiltrar.setBackground(new java.awt.Color(128, 204, 43));
         btnFiltrar.setForeground(new java.awt.Color(255, 255, 255));
-        btnFiltrar.setText("Filtrar");
         btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFiltrarActionPerformed(evt);
@@ -270,6 +295,32 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
+    private void lblCerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseEntered
+        lblCerrarSesion.setForeground(new Color(30, 98, 159));
+    }//GEN-LAST:event_lblCerrarSesionMouseEntered
+
+    private void lblCerrarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseExited
+        lblCerrarSesion.setForeground(new Color(0, 0, 0));
+    }//GEN-LAST:event_lblCerrarSesionMouseExited
+
+    private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
+        FrmInicioSesion frmInicio = new FrmInicioSesion();
+        frmInicio.setVisible(true);
+        dispose();
+    }//GEN-LAST:event_lblCerrarSesionMouseClicked
+    
+    private void cargarNombrePaciente() {
+    try {
+        String idUsuario = ManejadorSesion.getIdUsuario();
+        int idPaciente = Integer.parseInt(idUsuario);
+        // Obtener el nombre completo del paciente usando el ID
+        String nombreCompleto = pacienteBO.obtenerNombreCompletoPaciente(idPaciente);
+        // Mostrar el nombre en la etiqueta
+        lblNombreCompletoPaciente.setText(nombreCompleto);
+    } catch (NegocioException e) {
+       
+    }
+    }
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -327,6 +378,7 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
     private javax.swing.JLabel lblDesde;
     private javax.swing.JLabel lblEspecialidad;
     private javax.swing.JLabel lblHasta;
+    private javax.swing.JLabel lblNombreCompletoPaciente;
     private javax.swing.JPanel panelBarraLateral;
     private GUI.PanelRound panelRedondo;
     private javax.swing.JTable tablaConsultas;

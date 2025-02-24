@@ -6,11 +6,11 @@ package sesion;
 
 /**
  *
- * @author Alici
+ * @author benjy
  */
 public class ManejadorSesion {
-
-    private static String idUsuario = "1";
+    
+    private static String idUsuario;
     private static String tipo;
 
     public static String getIdUsuario() {
@@ -28,4 +28,6 @@ public class ManejadorSesion {
     public static void setTipo(String tipo) {
         ManejadorSesion.tipo = tipo;
     }
+    
+    
 }
