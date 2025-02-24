@@ -19,4 +19,6 @@ public interface IPacienteDAO {
     public boolean consultarPacientePorTelefono(String telefono) throws PersistenciaException;
 
     public Paciente consultarPacientePorId(int id) throws PersistenciaException;
+    
+   public int consultarIDPacientePorContrasenaCorreo(String correoIngresado, String contrasenaIngresada) throws PersistenciaException;
 }

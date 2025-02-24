@@ -4,6 +4,8 @@
  */
 package DAO;
 
+import Encriptado.Encriptador;
+import Encriptado.IEncriptador;
 import conexion.IConexion;
 import entidades.Direccion;
 import entidades.Paciente;
@@ -16,6 +18,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -25,6 +28,7 @@ public class PacienteDAO implements IPacienteDAO {
 
     IConexion conexion;
     private static final Logger logger = Logger.getLogger(PacienteDAO.class.getName());
+    IEncriptador encriptador = new Encriptador();
 
     public PacienteDAO(IConexion conexion) {
         this.conexion = conexion;
@@ -111,4 +115,104 @@ public class PacienteDAO implements IPacienteDAO {
         }
     }
 
+    /*
+    Metodo para consultar el id del paciente que corresponde con el correo y la contraseña.
+    Ejecuta 2 consultas, la primera consulta el correo en la tabla pacientes, si el correo coincide con uno almacenado
+    en la BD, obtiene el id del paciente, muestra un error en caso contrario.
+    La segunda consulta busca el usuario que tenga una contraseña que coincida en la base de datos
+    Si encuentra un usuario que tenga una contraseña que coincida, obtiene el id, muestra un error en caso contrario.
+    Al encontrar los 2 IDs que coinciden, estos se comparan, si ambos son iguales, entonces el correo y la contraseña
+    estan correctos, dando lugar al logeo.
+     */
+    @Override
+    public int consultarIDPacientePorContrasenaCorreo(String correoIngresado, String contrasenaIngresada) throws PersistenciaException {
+
+        try (Connection con = conexion.crearConexion()) {
+            String sentenciaSQL = "SELECT IDPaciente,IDUsuario, FROM pacientes INNER JOIN Usuarios ON IDPaciente=IDUsuario WHERE correo = ?  AND contrasenaUsuario = ?";
+            PreparedStatement psID1 = con.prepareStatement(sentenciaSQL);
+            psID1.setString(1, correoIngresado);
+            psID1.setString(2, contrasenaIngresada);
+            ResultSet rs = psID1.executeQuery();
+            if (rs.getString(1).isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: El correo no esta registrado en el Sistema.");
+                return 0;
+            } else if (rs.getString(2).isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: La contraseña es incorrecta.");
+                return 0;
+            } else {
+                return Integer.parseInt(rs.getString(1));
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, "Error: Espacios vacios", ex);
+            JOptionPane.showMessageDialog(null, "Error: error al intentar consultar el paciente");
+
+        }
+        return 0;
+    }
+
+    public boolean VerificarCorreo(String correoIngresado) throws PersistenciaException {
+        try (Connection con = conexion.crearConexion()) {
+            String sentenciaSQL = "SELECT IDPaciente FROM pacientes WHERE correo = ?";
+            PreparedStatement psID1 = con.prepareStatement(sentenciaSQL);
+            psID1.setString(1, correoIngresado);
+            ResultSet rs = psID1.executeQuery();
+            if (rs.getString(1).isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: El correo no esta registrado en el Sistema.");
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, "Error: Espacios vacios", ex);
+            JOptionPane.showMessageDialog(null, "Error: error al intentar consultar el paciente");
+
+        }
+        return false;
+    }
+
+    public boolean VerificarContrasena(String contrasenaIngresada) throws PersistenciaException {
+        try (Connection con = conexion.crearConexion()) {
+            String sentenciaSQL = "SELECT IDUsuario FROM pacientes WHERE contrasenaUsuario = ?";
+            PreparedStatement psID1 = con.prepareStatement(sentenciaSQL);
+            psID1.setString(1, contrasenaIngresada);
+            ResultSet rs = psID1.executeQuery();
+            if (rs.getString(1).isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: la contrasena esta vacia.");
+                return false;
+            } else {
+                return true;
+            }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, "Error: Espacios vacios", ex);
+            JOptionPane.showMessageDialog(null, "Error: error al intentar consultar el paciente");
+
+        }
+        return false;
+    }
+
+    public int ObtenerIDPaciente(boolean verificacion1, boolean verificacion2, String correoIngresado) throws PersistenciaException {
+        if (verificacion1 == true && verificacion2 == true) {
+            try (Connection con = conexion.crearConexion()) {
+                String sentenciaSQL = "SELECT IDPaciente FROM pacientes WHERE correo = ?";
+                PreparedStatement psID1 = con.prepareStatement(sentenciaSQL);
+                psID1.setString(1, correoIngresado);
+                ResultSet rs = psID1.executeQuery();
+                if (rs.getString(1).isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "Error: El correo no esta registrado en el Sistema.");
+                    return 0;
+                } else {
+                    return Integer.parseInt(rs.getString(1));
+                }
+
+            } catch (SQLException ex) {
+                Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, "Error: Espacios vacios", ex);
+                JOptionPane.showMessageDialog(null, "Error: error al intentar consultar el paciente");
+
+            }
+        }
+        return 0;
+    }
 }
