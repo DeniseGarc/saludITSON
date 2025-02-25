@@ -17,10 +17,12 @@ public class CitaDTO {
     private String tipo;
     private MedicoDTO medicoDTO;
     private PacienteSimpleDTO pacienteSimpleDTO;
+    private String estado;
 
-    public CitaDTO(String IDCita, LocalDateTime fechaHora, String folioCita, String tipo, MedicoDTO medicoDTO, PacienteSimpleDTO pacienteSimpleDTO) {
+    public CitaDTO(String IDCita, LocalDateTime fechaHora,String estado, String folioCita, String tipo, MedicoDTO medicoDTO, PacienteSimpleDTO pacienteSimpleDTO) {
         this.IDCita = IDCita;
         this.fechaHora = fechaHora;
+        this.estado = estado;
         this.folioCita = folioCita;
         this.tipo = tipo;
         this.medicoDTO = medicoDTO;
@@ -41,6 +43,14 @@ public class CitaDTO {
 
     public void setFechaHora(LocalDateTime fechaHora) {
         this.fechaHora = fechaHora;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public String getFolioCita() {

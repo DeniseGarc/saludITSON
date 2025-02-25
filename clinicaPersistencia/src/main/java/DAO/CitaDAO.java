@@ -222,7 +222,7 @@ public class CitaDAO implements ICitaDAO {
     }
     @Override
     public boolean eliminarCitaSeleccionada(int idMedico, LocalDateTime fechaHora ) throws PersistenciaException{
-        String sentenciaSQL = "DELETE FROM citas WHERE idMedico = ? AND fechaHora = ?";
+        String sentenciaSQL = "UPDATE citas SET estadoCita = 'cancelada' WHERE idMedico = ? AND fechaHora = ?";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
             ps.setInt(1,idMedico);
             ps.setTimestamp(2, Timestamp.valueOf(fechaHora));
