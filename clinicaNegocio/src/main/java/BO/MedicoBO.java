@@ -46,7 +46,7 @@ public class MedicoBO {
             throw new NegocioException("No se pudo dar de baja temporalmente al médico.");
         }
         logger.info("Médico dado de baja temporalmente correctamente.");
-        return true; // Operación exitosa
+        return true; 
     } catch (PersistenciaException e) {
         logger.log(Level.SEVERE, "Error al dar de baja temporalmente al médico", e);
         throw new NegocioException("Error al dar de baja temporalmente al médico: " + e.getMessage());

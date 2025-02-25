@@ -7,9 +7,11 @@ package GUI;
 import BO.PacienteBO;
 import DTO.DireccionDTO;
 import DTO.PacienteActualizarDTO;
+import Mapper.PacienteMapper;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
-import java.time.LocalDate;
+import javax.swing.JOptionPane;
+import sesion.ManejadorSesion;
 
 
 /**
@@ -18,13 +20,14 @@ import java.time.LocalDate;
  */
 public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
-    
+    int idUsuario = Integer.parseInt(ManejadorSesion.getIdUsuario());
     /**
      * Creates new form FrmRegistro
      */
     public FrmActualizarDatosPaciente() {
         initComponents();
         this.setLocationRelativeTo(null);
+        cargarDatosPaciente(idUsuario);
     }
     /**
      * This method is called from within the constructor to initialize the form.
@@ -266,7 +269,7 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnRegresarActionPerformed
 
     private void btnActualizarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActualizarMouseClicked
-           actualizar();    }//GEN-LAST:event_btnActualizarMouseClicked
+           actualizar();  regresar();    }//GEN-LAST:event_btnActualizarMouseClicked
     
   
     public void regresar(){
@@ -275,30 +278,31 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
         this.dispose();
     }
     
-    public void actualizar(){
-        try {
-        String nombres = txtNombre.getText();
-        String apellidoPaterno = txtApellidoPaterno.getText();
-        String apellidoMaterno = txtApellidoMaterno.getText();
-        String telefono = txtTelefono.getText();
-        LocalDate fechaNacimiento = dtPikrfechaNacimiento.getDate();
-        String calle = txtCalle.getText();
-        String numero = txtNumero.getText();
-        String colonia = txtColonia.getText();
-        String codigoPostal = txtCodigoPostal.getText();
+    public void actualizar() {
+    try {
+        int idUsuario = Integer.parseInt(ManejadorSesion.getIdUsuario());
+        int idDireccion = pacienteBO.obtenerIdDireccionPorPaciente(idUsuario);
 
+        
         PacienteActualizarDTO pacienteDTO = new PacienteActualizarDTO();
-        pacienteDTO.setNombresPaciente(nombres);
-        pacienteDTO.setApellidoPaternoPaciente(apellidoPaterno);
-        pacienteDTO.setApellidoMaternoPaciente(apellidoMaterno);
-        pacienteDTO.setTelefono(telefono);
-        pacienteDTO.setFechaNacimiento(fechaNacimiento);
+        pacienteDTO.setNombresPaciente(txtNombre.getText());
+        pacienteDTO.setApellidoPaternoPaciente(txtApellidoPaterno.getText());
+        pacienteDTO.setApellidoMaternoPaciente(txtApellidoMaterno.getText());
+        pacienteDTO.setTelefono(txtTelefono.getText());
+        pacienteDTO.setFechaNacimiento(dtPikrfechaNacimiento.getDate());
+        pacienteDTO.setIdPaciente(idUsuario);
+
+        // Establecer la dirección
         DireccionDTO direccionDTO = new DireccionDTO();
-        direccionDTO.setCalle(calle);
-        direccionDTO.setNumero(numero);
-        direccionDTO.setColonia(colonia);
-        direccionDTO.setCodigoPostal(codigoPostal);
+        direccionDTO.setIdDireccion(idDireccion);
+        direccionDTO.setCalle(txtCalle.getText());
+        direccionDTO.setNumero(txtNumero.getText());
+        direccionDTO.setColonia(txtColonia.getText());
+        direccionDTO.setCodigoPostal(txtCodigoPostal.getText());
+
+        // Asignar la dirección al pacienteDTO
         pacienteDTO.setDireccion(direccionDTO);
+
         boolean exito = pacienteBO.actualizarPaciente(pacienteDTO);
 
         if (exito) {
@@ -306,11 +310,26 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
         } else {
             javax.swing.JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los datos");
         }
-        } catch (NegocioException ex) {
+    } catch (NegocioException ex) {
         javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
     }
-
+}
+    public void cargarDatosPaciente(int idUsuario) {
+    try{
+        PacienteActualizarDTO pacienteDTO = pacienteBO.obtenerDatosPaciente(idUsuario);
+        txtNombre.setText(pacienteDTO.getNombresPaciente());
+        txtApellidoPaterno.setText(pacienteDTO.getApellidoPaternoPaciente());
+        txtApellidoMaterno.setText(pacienteDTO.getApellidoMaternoPaciente());
+        dtPikrfechaNacimiento.setDate(pacienteDTO.getFechaNacimiento());
+        txtTelefono.setText(pacienteDTO.getTelefono());
+        txtCalle.setText(pacienteDTO.getDireccion().getCalle());
+        txtNumero.setText(pacienteDTO.getDireccion().getNumero());
+        txtColonia.setText(pacienteDTO.getDireccion().getColonia());
+        txtCodigoPostal.setText(pacienteDTO.getDireccion().getCodigoPostal());
+    } catch (NegocioException e) {
+        JOptionPane.showMessageDialog(null, "Error al cargar los datos del paciente: " + e.getMessage());
     }
+}
     
     
     

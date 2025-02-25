@@ -15,6 +15,20 @@ public class DireccionDTO {
     private String colonia;
     private String codigoPostal;
 
+    public DireccionDTO(int idDireccion, String calle, String numero, String colonia, String codigoPostal) {
+        this.idDireccion = idDireccion;
+        this.calle = calle;
+        this.numero = numero;
+        this.colonia = colonia;
+        this.codigoPostal = codigoPostal;
+    }
+
+    public DireccionDTO() {
+    }
+
+    
+    
+
     public int getIdDireccion() {
         return idDireccion;
     }

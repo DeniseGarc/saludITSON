@@ -6,6 +6,7 @@ package BO;
 
 import DAO.IPacienteDAO;
 import DAO.PacienteDAO;
+import DTO.DireccionDTO;
 import DTO.PacienteActualizarDTO;
 import DTO.PacienteDTO;
 import Encriptado.Encriptador;
@@ -132,11 +133,63 @@ public class PacienteBO {
             throw new NegocioException(null + e.getMessage(), e);
         }
     }
+     private String validarDatosPacienteActualizar(PacienteActualizarDTO paciente) {
+        String nombresPaciente = paciente.getNombresPaciente();
+        String apellidoPaternoPaciente = paciente.getApellidoPaternoPaciente();
+        String apellidoMaternoPaciente = paciente.getApellidoMaternoPaciente();
+        String telefono = paciente.getTelefono();
+        LocalDate fechaNacimiento = paciente.getFechaNacimiento();
+        DireccionDTO direccion = paciente.getDireccion();
+        String calle = direccion.getCalle();
+        String numero = direccion.getNumero();
+        String colonia = direccion.getColonia();
+        String codigoPostal = direccion.getCodigoPostal();
+
+        if (!esCampoValido(nombresPaciente) || !esCampoValido(apellidoPaternoPaciente)
+            || !esCampoValido(apellidoMaternoPaciente) || !esCampoValido(telefono)
+            || !esCampoValido(calle) || !esCampoValido(numero) || !esCampoValido(colonia)
+            || !esCampoValido(codigoPostal) || fechaNacimiento == null) {
+            return "Se ha dejado algún campo en blanco";
+        }
+
+        if (fechaNacimiento.isAfter(LocalDate.now())) {
+            return "La fecha de nacimiento no puede ser en el futuro";
+        }
+
+        if (!numero.matches("\\d{1,10}")) {
+            return "El número de casa debe de ser numérico, no mayor a 10 dígitos";
+        }
+
+        if (!codigoPostal.matches("\\d{5}")) {
+            return "El código postal debe ser de 5 dígitos";
+        }
+
+        if (!telefono.matches("\\d{1,10}")) {
+            return "El teléfono debe ser numérico y de máximo 10 dígitos";
+        }
+
+        if (nombresPaciente.length() > 100 || apellidoPaternoPaciente.length() > 50 || apellidoMaternoPaciente.length() > 50) {
+            return "Los nombres y apellidos no deben exceder los 100 y 50 caracteres, respectivamente";
+        }
+
+        if (!nombresPaciente.matches("[a-zA-Z ]+") || !apellidoPaternoPaciente.matches("[a-zA-Z]+") || !apellidoMaternoPaciente.matches("[a-zA-Z]+")) {
+            return "Nombre en formato incorrecto, solo ingrese letras y un espacio entre los nombres";
+        }
+
+        if (calle.length() > 100 || colonia.length() > 50) {
+            return "La calle y la colonia no deben exceder los 100 y 50 caracteres respectivamente";
+        }
+    return "validos";
+}
      
      public boolean actualizarPaciente(PacienteActualizarDTO pacienteDTO) throws NegocioException {
     try {
         if (pacienteDTO == null) {
             throw new NegocioException("El paciente no puede ser nulo");
+        }
+        String mensaje = validarDatosPacienteActualizar(pacienteDTO);
+        if (!mensaje.equals("validos")) {
+            throw new NegocioException(mensaje);
         }
         if (pacienteDAO.tieneCitasActivas(pacienteDTO.getIdPaciente())) {
             throw new NegocioException("No se puede actualizar: el paciente tiene citas activas");
@@ -159,6 +212,25 @@ public class PacienteBO {
 
     } catch (PersistenciaException e) {
         throw new NegocioException(e.getMessage());
+    }
+}
+     public int obtenerIdDireccionPorPaciente(int idPaciente) throws NegocioException {
+    try {
+        return pacienteDAO.obtenerIdDireccionPorPaciente(idPaciente);
+    } catch (PersistenciaException e) {
+        throw new NegocioException("No se pudo obtener el ID de la dirección: " + e.getMessage());
+    }
+}
+     
+     public PacienteActualizarDTO obtenerDatosPaciente(int idPaciente) throws NegocioException {
+    try {
+        Paciente paciente = pacienteDAO.obtenerDatosPaciente(idPaciente);
+        if (paciente == null) {
+            throw new NegocioException("No se encontró un paciente con el ID: " + idPaciente);
+        }
+        return mapperPaciente.convertirAPacienteActualizarDTO(paciente);
+    } catch (PersistenciaException e) {
+        throw new NegocioException("Error al obtener los datos del paciente: " + e.getMessage(), e);
     }
 }
      

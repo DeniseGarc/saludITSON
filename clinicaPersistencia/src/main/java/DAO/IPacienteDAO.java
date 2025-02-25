@@ -25,4 +25,8 @@ public interface IPacienteDAO {
   String telefono, LocalDate fechaNacimiento,int idDireccion, String calle, String numero, String colonia, String codigoPostal) throws PersistenciaException; 
   
   public boolean tieneCitasActivas(int idPaciente) throws PersistenciaException;
+  
+  public int obtenerIdDireccionPorPaciente(int idPaciente) throws PersistenciaException;
+  
+  public Paciente obtenerDatosPaciente(int idPaciente) throws PersistenciaException;
 }

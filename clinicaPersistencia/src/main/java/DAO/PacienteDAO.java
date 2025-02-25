@@ -116,10 +116,8 @@ public class PacienteDAO implements IPacienteDAO {
     @Override
     public boolean actualizarPaciente(int idPaciente, String nombres, String apellidoPaterno, String apellidoMaterno,
         String telefono, LocalDate fechaNacimiento, int idDireccion, String calle, String numero, String colonia, String codigoPostal) throws PersistenciaException {
-        Connection con = null;
-        try {
-        con = conexion.crearConexion();
-        con.setAutoCommit(false); 
+        try (Connection con = conexion.crearConexion();){
+       
 
         String sqlDireccion = "UPDATE Direcciones SET calle = ?, numero = ?, colonia = ?, codigoPostal = ? WHERE IDDireccion = ?";
         try (PreparedStatement psDireccion = con.prepareStatement(sqlDireccion)) {
@@ -136,36 +134,74 @@ public class PacienteDAO implements IPacienteDAO {
             psPaciente.setString(1, nombres);
             psPaciente.setString(2, apellidoPaterno);
             psPaciente.setString(3, apellidoMaterno);
-            psPaciente.setString(4, telefono); // 
+            psPaciente.setString(4, telefono); 
             psPaciente.setDate(5, Date.valueOf(fechaNacimiento)); 
             psPaciente.setInt(6, idPaciente); 
-            psPaciente.executeUpdate();
+        }
+        return true; 
+        
+    } catch (SQLException e) {
+       throw new PersistenciaException("Error al actualizar paciente: " + e.getMessage());
+    }     
+    }
+    @Override
+    public int obtenerIdDireccionPorPaciente(int idPaciente) throws PersistenciaException {
+    String sql = "SELECT IDDireccion FROM Pacientes WHERE IDPaciente = ?";
+    try (Connection con = conexion.crearConexion();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idPaciente);
+        try (ResultSet rs = ps.executeQuery()) {
+            if (rs.next()) {
+                return rs.getInt("IDDireccion");
+            } else {
+                throw new PersistenciaException("No se encontró la dirección para el paciente con ID: " + idPaciente);
+            }
+        }
+    } catch (SQLException e) {
+        throw new PersistenciaException("Error al obtener la dirección: " + e.getMessage());
+    }
+}
+    @Override
+    public Paciente obtenerDatosPaciente(int idPaciente) throws PersistenciaException {
+        String sql = "SELECT p.nombresPaciente, p.apellidoPaternoPaciente, p.apellidoMaternoPaciente, p.telefono, p.fechaNacimiento, d.calle, d.numero, d.colonia, d.codigoPostal " +
+                 "FROM Pacientes p JOIN Direcciones d ON p.IDDireccion = d.IDDireccion WHERE p.IDPaciente = ?";
+    
+    try (Connection conn = conexion.crearConexion();
+         PreparedStatement ps = conn.prepareStatement(sql)) {
+         
+        ps.setInt(1, idPaciente);
+        ResultSet rs = ps.executeQuery();
+        
+        if (!rs.next()) {
+            throw new PersistenciaException("No se encontró un paciente con ID: " + idPaciente);
         }
 
-        con.commit(); 
+        Paciente paciente = new Paciente();
+        paciente.setNombresPaciente(rs.getString("nombresPaciente"));
+        paciente.setApellidoPaternoPaciente(rs.getString("apellidoPaternoPaciente"));
+        paciente.setApellidoMaternoPaciente(rs.getString("apellidoMaternoPaciente"));
+        paciente.setTelefono(rs.getString("telefono"));
 
-        return true; 
+        Date fecha = rs.getDate("fechaNacimiento");
+        if (fecha != null) {
+            paciente.setFechaNacimiento(fecha.toLocalDate());
+        }
+
+        Direccion direccion = new Direccion();
+        direccion.setCalle(rs.getString("calle"));
+        direccion.setNumero(rs.getString("numero"));
+        direccion.setColonia(rs.getString("colonia"));
+        direccion.setCodigoPostal(rs.getString("codigoPostal"));
+        paciente.setDireccion(direccion);
+
+        return paciente;
 
     } catch (SQLException e) {
-        if (con != null) {
-            try {
-                con.rollback(); 
-            } catch (SQLException ex) {
-                throw new PersistenciaException("Error al hacer rollback: " + ex.getMessage());
-            }
-        }
-        throw new PersistenciaException("Error al actualizar paciente: " + e.getMessage());
-    } finally {
-        if (con != null) {
-            try {
-                con.setAutoCommit(true);
-                con.close();
-            } catch (SQLException e) {
-                
-            }
-        }
+        throw new PersistenciaException("Error al obtener los datos del paciente: " + e.getMessage(), e);
     }
+}
+    
 }
 
       
-}
+

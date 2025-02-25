@@ -222,7 +222,7 @@ public class FrmInicioSesion extends javax.swing.JFrame {
 
         ManejadorSesion.setIdUsuario(String.valueOf(usuarioIniciarSesionDTO.getIdUsuario()));
         ManejadorSesion.setTipo(usuarioIniciarSesionDTO.getTipo());
-
+        
         if (ManejadorSesion.getTipo().equals("Paciente")) {
             FrmCitasPaciente frmPaciente = new FrmCitasPaciente();
             frmPaciente.setVisible(true);

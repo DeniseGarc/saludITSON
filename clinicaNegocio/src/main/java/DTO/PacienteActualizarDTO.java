@@ -15,11 +15,23 @@ public class PacienteActualizarDTO {
     private String nombresPaciente;
     private String apellidoPaternoPaciente;
     private String apellidoMaternoPaciente;
-    private String correo;
     private String telefono;
     private LocalDate fechaNacimiento;
     private DireccionDTO direccion;
 
+    public PacienteActualizarDTO(int idPaciente, String nombresPaciente, String apellidoPaternoPaciente,String apellidoMaternoPaciente, String telefono, LocalDate fechaNacimiento,DireccionDTO direccion) {
+        this.nombresPaciente = nombresPaciente;
+        this.apellidoPaternoPaciente = apellidoPaternoPaciente;
+        this.apellidoMaternoPaciente = apellidoMaternoPaciente;
+        this.telefono = telefono;
+        this.fechaNacimiento = fechaNacimiento;
+        this.direccion = direccion;
+    }
+
+    public PacienteActualizarDTO() {
+    }
+    
+    
     public int getIdPaciente() {
         return idPaciente;
     }
@@ -50,14 +62,6 @@ public class PacienteActualizarDTO {
 
     public void setApellidoMaternoPaciente(String apellidoMaternoPaciente) {
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
-    }
-
-    public String getCorreo() {
-        return correo;
-    }
-
-    public void setCorreo(String correo) {
-        this.correo = correo;
     }
 
     public String getTelefono() {

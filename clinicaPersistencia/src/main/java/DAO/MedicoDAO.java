@@ -173,7 +173,6 @@ public class MedicoDAO implements IMedicoDAO{
          PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
          ps.setInt(1, idMedico);
          int filasActualizadas = ps.executeUpdate();
-        // Devolver true si se actualizó al menos una fila
         return filasActualizadas > 0;
     } catch (SQLException e) {
         logger.log(Level.SEVERE, "Error al dar de baja temporalmente al médico", e);

@@ -12,7 +12,7 @@ public class ManejadorSesion {
     
     private static String idUsuario;
     private static String tipo;
-
+    
     public static String getIdUsuario() {
         return idUsuario;
     }
