@@ -4,17 +4,25 @@
  */
 package GUI;
 
+import BO.CitaBO;
+import DTO.ConsultaDTO;
+import configuracion.DependencyInjector;
+import java.util.List;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Alici
  */
 public class FrmConsultasPaciente extends javax.swing.JFrame {
-
+    int idPaciente;
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
     /**
      * Creates new form FrmCitas
      */
-    public FrmConsultasPaciente() {
+    public FrmConsultasPaciente(int id) {
         initComponents();
+        idPaciente = id;
     }
 
     /**
@@ -270,6 +278,36 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
+    public void cargarTabla(){
+        // Obtener el modelo de la tabla y limpiar cualquier dato previo
+        DefaultTableModel modelo = (DefaultTableModel) this.tablaConsultas.getModel();
+        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+
+//        try {
+//            // Obtener la lista de Citas desde la capa de negocio (BO)
+//            List<ConsultaDTO> lista = citaBO.(String.valueOf(idPaciente));
+//
+//            // Recorrer la lista de Citas y las agrega como filas en la tabla
+//            for (CitaDTO citas : lista) {
+//                if (citas.getEstado().equalsIgnoreCase("activa")) { // Valida que solo llene la tabla con citas que tengan el estado "Activa".
+//                    modelo.addRow(new Object[]{
+//                        citas.getFechaHora().toLocalDate(),
+//                        citas.getFechaHora().toLocalTime(), // Fecha y hora de la cita.
+//                        citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
+//                        citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
+//                    });
+//                } else {
+//
+//                }
+//
+//            }
+//        } catch (NegocioException ex) {
+//            // Manejo de errores en caso de que falle la obtención de datos
+//            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+//            JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+//        }
+
+    }
 //    /**
 //     * @param args the command line arguments
 //     */

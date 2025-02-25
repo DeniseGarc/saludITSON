@@ -272,9 +272,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGenerarConsultaActionPerformed
 
     private void btnConsultaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPreviaActionPerformed
-        FrmConsultasPaciente consultasPaciente = new FrmConsultasPaciente();
-        consultasPaciente.setVisible(true);
-        this.dispose();
+        this.consultasPrevias();
     }//GEN-LAST:event_btnConsultaPreviaActionPerformed
 
     private void btnCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCitasActionPerformed
@@ -286,7 +284,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
     private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
-        this.eliminarCita();
+        this.CancelarCita();
 
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
@@ -342,6 +340,12 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         dispose();
     }
 
+    private void consultasPrevias() {
+        FrmConsultasPaciente consultasPaciente = new FrmConsultasPaciente(this.idPaciente);
+        consultasPaciente.setVisible(true);
+        this.dispose();
+    }
+
     /**
      * Metodo para mostrar los datos de las citas del paciente en la tabla.
      */
@@ -377,7 +381,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
 
     }
 
-    private void eliminarCita() {
+    private void CancelarCita() {
         // Si no hay ningun espacio seleccionado y se presiona el boton cancelar, muestra un error.
         if (this.citaSeleccionada < 0) {
             JOptionPane.showMessageDialog(null, "Error: No ha seleccionado una cita para eliminar");
@@ -391,7 +395,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
             LocalDateTime fechaHoraConvertido = LocalDateTime.parse(fechaHora, formato); //Convierte el string con al fecha y hora en localdatetime.
             try {
                 int idMedico = this.citaBO.ObtenerMedicoPorNombre(nombreMedico); //Obtiene el id del medico de la cita seleccionada.
-                this.citaBO.EliminarCitaSeleccionada(idMedico, fechaHoraConvertido); //Posteriormente toma el id del medico y busca la cita seleccionada 
+                this.citaBO.ActualizarEstadoCancelarCita(idMedico, fechaHoraConvertido); //Posteriormente toma el id del medico y busca la cita seleccionada 
                 this.cargarCitas();// Despues de eliminar la cita, actualiza la tabla. // para eliminarla
             } catch (PersistenciaException ex) {
                 Logger.getLogger(FrmCitasPaciente.class.getName()).log(Level.SEVERE, null, ex);
