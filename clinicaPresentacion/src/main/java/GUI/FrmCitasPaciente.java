@@ -8,6 +8,11 @@ import BO.CitaBO;
 import DTO.CitaDTO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,6 +26,7 @@ import javax.swing.table.DefaultTableModel;
 public class FrmCitasPaciente extends javax.swing.JFrame {
     private int idPaciente;
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
+    private int citaSeleccionada = 0;
     /**
      * Form de las citas del paciente, aqui se muestra una tabla con las citas proximas del paciente.
      * Utiliza el ID obtenido del login del frmInicioSesion para mostrar las citas del paciente logeado.
@@ -141,20 +147,22 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
 
         tablaCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Fecha y hora", "Especialidad", "Médico"
+                "Fecha", "Hora", "Especialidad", "Médico"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -165,12 +173,20 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaCitas.setColumnSelectionAllowed(true);
         tablaCitas.getTableHeader().setReorderingAllowed(false);
+        tablaCitas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaCitasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaCitas);
+        tablaCitas.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tablaCitas.getColumnModel().getColumnCount() > 0) {
             tablaCitas.getColumnModel().getColumn(0).setResizable(false);
             tablaCitas.getColumnModel().getColumn(1).setResizable(false);
             tablaCitas.getColumnModel().getColumn(2).setResizable(false);
+            tablaCitas.getColumnModel().getColumn(3).setResizable(false);
         }
 
         btnAgendarCita.setBackground(new java.awt.Color(30, 98, 159));
@@ -265,8 +281,31 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
     private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
-        // TODO add your handling code here:
+        // Si no hay ningun espacio seleccionado y se presiona el boton cancelar, muestra un error.
+        if (this.citaSeleccionada <0) {
+            JOptionPane.showMessageDialog(null, "Error: No ha seleccionado una cita para eliminar");
+        }else{
+        // Crear variables para tomar los valores de la cita seleccionada para posteriormente usarlos.    
+        String nombreMedico = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 3));
+        String fecha = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 0));
+        String hora = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada,1));
+        String fechaHora = fecha + " " + hora+":00"; // Separa la fecha y la hora debido a un problema con el formato.
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime fechaHoraConvertido =  LocalDateTime.parse(fechaHora,formato); //Convierte el string con al fecha y hora en localdatetime.
+        try {
+            int idMedico = this.citaBO.ObtenerMedicoPorNombre(nombreMedico); //Obtiene el id del medico de la cita seleccionada.
+            this.citaBO.EliminarCitaSeleccionada(idMedico,fechaHoraConvertido); //Posteriormente toma el id del medico y busca la cita seleccionada 
+            this.cargarCitas();// Despues de eliminar la cita, actualiza la tabla. // para eliminarla
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmCitasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: error al obtener los datos de la tabla");
+        }}
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
+
+    private void tablaCitasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCitasMouseClicked
+        this.citaSeleccionada = this.tablaCitas.getSelectedRow();
+        
+    }//GEN-LAST:event_tablaCitasMouseClicked
 
 //    /**
 //     * @param args the command line arguments
@@ -314,6 +353,9 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         frmGenerarConsulta.setVisible(true);
         dispose();
     }
+    /**
+     * Metodo para mostrar los datos de las citas del paciente en la tabla.
+     */
     private void cargarCitas(){
 //        citaBO.cargarActivistas(tablaCitas, idPaciente);
          // Obtener el modelo de la tabla y limpiar cualquier dato previo
@@ -321,13 +363,14 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
 
         try {
-            // Obtener la lista de activistas desde la capa de negocio (BO)
+            // Obtener la lista de Citas desde la capa de negocio (BO)
             List<CitaDTO> lista = citaBO.citasActivasPaciente(String.valueOf(idPaciente));
 
-            // Recorrer la lista de activistas y agregarlos como filas en la tabla
+            // Recorrer la lista de Citas y las agrega como filas en la tabla
             for (CitaDTO citas : lista) {
                 modelo.addRow(new Object[]{
-                    citas.getFechaHora(), // Fecha y hora de la cita.
+                   citas.getFechaHora().toLocalDate(), 
+                   citas.getFechaHora().toLocalTime(), // Fecha y hora de la cita.
                     citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
                     citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
                 });
@@ -337,7 +380,8 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
             Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-}
+    
+}       
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
