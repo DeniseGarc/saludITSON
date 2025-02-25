@@ -220,8 +220,16 @@ public class CitaDAO implements ICitaDAO {
         }
         
     }
+    /**
+     * Metodo para actualizar el estado de la cita a cancelada cuando se cancela una cita.
+     * 
+     * @param idMedico
+     * @param fechaHora
+     * @return
+     * @throws PersistenciaException 
+     */
     @Override
-    public boolean eliminarCitaSeleccionada(int idMedico, LocalDateTime fechaHora ) throws PersistenciaException{
+    public boolean ActualizarEstadoCancelarCita(int idMedico, LocalDateTime fechaHora ) throws PersistenciaException{
         String sentenciaSQL = "UPDATE citas SET estadoCita = 'cancelada' WHERE idMedico = ? AND fechaHora = ?";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
             ps.setInt(1,idMedico);

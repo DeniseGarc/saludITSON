@@ -33,5 +33,5 @@ public interface ICitaDAO {
     
     public boolean registrarConsulta(Consulta consulta)throws PersistenciaException;
     
-        public boolean eliminarCitaSeleccionada(int idMedico, LocalDateTime fechaHora ) throws PersistenciaException;
+        public boolean ActualizarEstadoCancelarCita(int idMedico, LocalDateTime fechaHora ) throws PersistenciaException;
 }
