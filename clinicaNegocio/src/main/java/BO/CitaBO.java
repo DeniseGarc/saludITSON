@@ -173,6 +173,9 @@ public class CitaBO {
                 folio = generarFolio();
                 CitaEmergenciaDTO citaEmergencia = new CitaEmergenciaDTO(medicoHorarioCita.getValue(), folio, medicoCita, idPaciente);
                 Cita citaGenerada = citaDAO.generarCitaEmergencia(convertidorCita.convertirAEntidad(citaEmergencia));
+                //Cambio: Genera una consultaDTO para posteriormente usar el mapper, convertirlo a entidad y registrar la consulta.
+                ConsultaDTO consultaDTO = new ConsultaDTO("En espera","En espera","En espera",String.valueOf(citaGenerada.getIDCita()));
+                this.citaDAO.registrarConsulta(convertidorCita.convertirAEntidad(consultaDTO));
                 if (citaGenerada != null) {
                     return citaEmergencia;
                 }
@@ -319,9 +322,9 @@ public class CitaBO {
      * @return
      * @throws PersistenciaException 
      */
-    public boolean EliminarCitaSeleccionada(int idMedico,LocalDateTime FechaHora) throws PersistenciaException{
+    public boolean ActualizarEstadoCancelarCita(int idMedico,LocalDateTime FechaHora) throws PersistenciaException{
         try{
-            citaDAO.eliminarCitaSeleccionada(idMedico, FechaHora);
+            citaDAO.ActualizarEstadoCancelarCita(idMedico, FechaHora);
             return true;
         }catch(PersistenciaException pe){
             Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, pe);
