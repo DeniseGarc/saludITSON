@@ -116,7 +116,7 @@ public class PacienteBO {
         if (!correo.matches("^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             return "El correo electrónico ingresado no está en el formato correcto";
         }
-        if (!nombresPaciente.matches("[a-zA-Záéíóú ]+") || !apellidoPaternoPaciente.matches("[a-zA-Záéíóú]+") || !apellidoMaternoPaciente.matches("[a-zA-Z]+")) {
+        if (!nombresPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1 ]+") || !apellidoPaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+") || !apellidoMaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+")) {
             return "Nombre en formato incorrecto, puede ingresar sus nombres pero solo ingrese un apellido por campo";
         }
 
@@ -174,7 +174,7 @@ public class PacienteBO {
             return "Los nombres y apellidos no deben exceder los 100 y 50 caracteres, respectivamente";
         }
 
-        if (!nombresPaciente.matches("[a-zA-Záéíóú ]+") || !apellidoPaternoPaciente.matches("[a-zA-Záéíóú]+") || !apellidoMaternoPaciente.matches("[a-zA-Z]+")) {
+        if (!nombresPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1 ]+") || !apellidoPaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+") || !apellidoMaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+")) {
             return "Nombre en formato incorrecto, solo ingrese letras y un espacio entre los nombres";
         }
 
