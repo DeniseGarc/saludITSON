@@ -87,7 +87,12 @@ public class PacienteBO {
             throw new NegocioException("Error al intentar registrar en el sistema.");
         }
     }
-
+    /**
+     * Metodo que valida los datos del paciente, si uno de los datos introducidos no cumple con los 
+     * requerimientos, devuelve el error correspondiente.
+     * @param paciente
+     * @return 
+     */
     private String validarDatosPaciente(PacienteNuevoDTO paciente) {
         String nombresPaciente = paciente.getNombresPaciente();
         String apellidoPaternoPaciente = paciente.getApellidoPaternoPaciente();
@@ -166,6 +171,7 @@ public class PacienteBO {
 
         }
     }
+    
 
     public static boolean esCampoValido(String campo) {
         return campo != null && !campo.trim().isEmpty();

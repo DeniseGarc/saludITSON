@@ -25,6 +25,7 @@ import excepciones.PersistenciaException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
@@ -185,7 +186,11 @@ public class CitaBO {
             throw new NegocioException(ex.getMessage());
         }
     }
-
+    /**
+     * Metodo que devuelve una lista de las horas disponibles del medico con el id correspondiente.
+     * @param idMedico
+     * @return 
+     */
     private List<LocalTime> obtenerHorasDisponiblesMedico(int idMedico) {
         // Tu implementación actual para obtener horas disponibles
         Medico medico = new Medico();
@@ -208,7 +213,14 @@ public class CitaBO {
             throw new NegocioException("No fue posible cancelar la cita");
         }
     }
-
+    /**
+     * Metodo que recibe un id por el cual actualiza el estado de las citas
+     * Si no ocurre ningun error regresa un true.
+     * Si ocurre un error devuelve false.
+     * @param id
+     * @return true si todo sale bien, false en caso contrario.
+     * @throws NegocioException 
+     */
     public boolean actualizarCitaPorId(String id) throws NegocioException {
         try {
             Cita cita = citaDAO.consultarCitaPorId(Integer.parseInt(id));
@@ -219,7 +231,9 @@ public class CitaBO {
             throw new NegocioException("No fue posible marcar como atendida la cita");
         }
     }
-
+    /**
+     * Metodo que valida los estaods de las citas.
+     */
     private void verificarValidezCitasActivas() {
         try {
             List<Cita> citasActivas = citaDAO.consultarCitasActivas();
@@ -236,7 +250,12 @@ public class CitaBO {
             Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, "Ha ocurrido un error al intentar cambiar el estado de la cita", ex);
         }
     }
-
+    /**
+     * Metodo que devuelve las citas activas del medico.
+     * @param idMedico
+     * @return
+     * @throws NegocioException 
+     */
     public List<CitaDTO> citasActivasMedico(String idMedico) throws NegocioException {
         try {
             List<Cita> citas = citaDAO.consultarCitasActivas().stream().filter(cita -> cita.getMedico().getIDUsuario() == Integer.parseInt(idMedico)).toList();
@@ -256,7 +275,12 @@ public class CitaBO {
             throw new NegocioException("Error al obtener las citas activas del paciente");
         }
     }
-
+    /**
+     * Metodo que obtiene una cita por su id.
+     * @param idMedico
+     * @return
+     * @throws NegocioException 
+     */
     public CitaDTO obtenerCitaPorId(String idMedico) throws NegocioException {
         try {
             return convertidorCita.convertirADTO(citaDAO.consultarCitaPorId(Integer.parseInt(idMedico)));
@@ -265,7 +289,13 @@ public class CitaBO {
             throw new NegocioException("No es posible obtener la cita con el id indicado");
         }
     }
-
+    /**
+     * Metodo que recibe consultaDTO para registrarla.
+     * Valida si la consulta es null o si tiene algun campo vacio, envia el mensaje correspondiente.
+     * @param consulta
+     * @return
+     * @throws NegocioException 
+     */
     public boolean registrarConsulta(ConsultaDTO consulta) throws NegocioException {
         if (consulta == null) {
             throw new NegocioException("Error al intentar registrar la consulta");
@@ -284,32 +314,43 @@ public class CitaBO {
         }
     }
     /**
-     * Método para cargar la lista de citas en la tabla de la interfaz
-     * gráfica.
+     * Metodo que instancia el metodo para eliminar la cita seleccionada.
+     * Devuelve true si no hay errores de persistencia.
+     * Devuelve false y un mensaje de error en caso contrario.
+     * @param idMedico
+     * @param FechaHora
+     * @return
+     * @throws PersistenciaException 
      */
-    public DefaultTableModel cargarActivistas(JTable tabla, int idPaciente) {
-        // Obtener el modelo de la tabla y limpiar cualquier dato previo
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
-        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
-
-        try {
-            // Obtener la lista de activistas desde la capa de negocio (BO)
-            List<CitaDTO> lista = this.citasActivasPaciente(String.valueOf(idPaciente));
-
-            // Recorrer la lista de activistas y agregarlos como filas en la tabla
-            for (CitaDTO citas : lista) {
-                modelo.addRow(new Object[]{
-                    citas.getFechaHora(), // Fecha y hora de la cita.
-                    citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
-                    citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
-                });
-            }
-            return modelo;
-        } catch (NegocioException ex) {
-            // Manejo de errores en caso de que falle la obtención de datos
-            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    public boolean EliminarCitaSeleccionada(int idMedico,LocalDateTime FechaHora) throws PersistenciaException{
+        try{
+            citaDAO.eliminarCitaSeleccionada(idMedico, FechaHora);
+            return true;
+        }catch(PersistenciaException pe){
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, pe);
+           JOptionPane.showMessageDialog(null, "Error: error al eliminar cita.");
+           return false;
         }
-        return null;
-}
-}
+        
+       
+        
+    }
+    /**
+     * Obtener Medico por su nombre.
+     * @param nombresMedico
+     * @return
+     * @throws PersistenciaException 
+     */
+     public int ObtenerMedicoPorNombre(String nombresMedico) throws PersistenciaException{
+         try{
+            int id = medicoDAO.consultarMedicoPorNombre(nombresMedico);
+             return id;
+         }catch(PersistenciaException pe){
+           Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, pe);
+           JOptionPane.showMessageDialog(null, "Error: error al obtener el medico.");
+           return 0;
+         }
+            
+        }
+    }
+
