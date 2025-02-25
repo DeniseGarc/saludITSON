@@ -148,4 +148,21 @@ public class MedicoDAO implements IMedicoDAO {
             throw new PersistenciaException("Error al intentar consultar el medico por su id");
         }
     }
+        @Override
+    public int consultarMedicoPorNombre(String Nombre) throws PersistenciaException {
+        String sentenciaSQL = "SELECT IDMedico FROM medicos WHERE nombresMedico = ?";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+            ps.setString(1, Nombre);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("IDMedico");
+            }else {
+                return 0;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(MedicoDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al intentar consultar el medico por su Nombre");
+          
+        }
+    }
 }

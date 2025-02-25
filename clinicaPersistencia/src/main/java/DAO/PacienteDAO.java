@@ -16,6 +16,8 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 import java.util.logging.Level;
 import javax.swing.JOptionPane;
@@ -117,32 +119,29 @@ public class PacienteDAO implements IPacienteDAO {
 
     /*
     Metodo para consultar el id del paciente que corresponde con el correo y la contraseña.
-    Ejecuta 2 consultas, la primera consulta el correo en la tabla pacientes, si el correo coincide con uno almacenado
-    en la BD, obtiene el id del paciente, muestra un error en caso contrario.
-    La segunda consulta busca el usuario que tenga una contraseña que coincida en la base de datos
-    Si encuentra un usuario que tenga una contraseña que coincida, obtiene el id, muestra un error en caso contrario.
-    Al encontrar los 2 IDs que coinciden, estos se comparan, si ambos son iguales, entonces el correo y la contraseña
-    estan correctos, dando lugar al logeo.
+    Si el ID existe y la contraseña coincide, devuelve el id para acceder al sistema.
+    Devuelve un 0 y un error en caso contrario.
      */
     @Override
     public int consultarIDPacientePorContrasenaCorreo(String correoIngresado, String contrasenaIngresada) throws PersistenciaException {
 
         try (Connection con = conexion.crearConexion()) {
-            String sentenciaSQL = "SELECT IDPaciente,IDUsuario, FROM pacientes INNER JOIN Usuarios ON IDPaciente=IDUsuario WHERE correo = ?  AND contrasenaUsuario = ?";
+            String sentenciaSQL = "SELECT IDPaciente,IDUsuario FROM pacientes INNER JOIN Usuarios ON IDPaciente=IDUsuario WHERE correo = ?  AND contrasenaUsuario = ?";
             PreparedStatement psID1 = con.prepareStatement(sentenciaSQL);
             psID1.setString(1, correoIngresado);
             psID1.setString(2, contrasenaIngresada);
-            ResultSet rs = psID1.executeQuery();
-            if (rs.getString(1).isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Error: El correo no esta registrado en el Sistema.");
-                return 0;
-            } else if (rs.getString(2).isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Error: La contraseña es incorrecta.");
-                return 0;
-            } else {
-                return Integer.parseInt(rs.getString(1));
-            }
+            try {
+                ResultSet rs = psID1.executeQuery();
+                if (this.VerificarContrasena(contrasenaIngresada) == true) {
+                    return Integer.parseInt(rs.getString(1));
+                } else {
+                    JOptionPane.showMessageDialog(null, "Error: La contraseña es incorrecta.");
+                }
 
+            } catch (SQLException s) {
+                Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, "Error: Consulta que devuelve resultados vacios", s);
+                JOptionPane.showMessageDialog(null, "Error: La dirección de correo o la contraseña son inexistentes");
+            }
         } catch (SQLException ex) {
             Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, "Error: Espacios vacios", ex);
             JOptionPane.showMessageDialog(null, "Error: error al intentar consultar el paciente");
@@ -174,15 +173,21 @@ public class PacienteDAO implements IPacienteDAO {
 
     public boolean VerificarContrasena(String contrasenaIngresada) throws PersistenciaException {
         try (Connection con = conexion.crearConexion()) {
-            String sentenciaSQL = "SELECT IDUsuario FROM pacientes WHERE contrasenaUsuario = ?";
+            String sentenciaSQL = "SELECT contrasenaUsuario FROM Usuarios WHERE contrasenaUsuario = ?";
             PreparedStatement psID1 = con.prepareStatement(sentenciaSQL);
             psID1.setString(1, contrasenaIngresada);
-            ResultSet rs = psID1.executeQuery();
-            if (rs.getString(1).isEmpty()) {
-                JOptionPane.showMessageDialog(null, "Error: la contrasena esta vacia.");
-                return false;
-            } else {
-                return true;
+            try {
+                ResultSet rs = psID1.executeQuery();
+                if (encriptador.Match(contrasenaIngresada, rs.getString(1))) {
+                    return true;
+
+                } else {
+                    return false;
+                }
+
+            } catch (SQLException s) {
+                Logger.getLogger(PacienteDAO.class.getName()).log(Level.SEVERE, "Error: Consulta con resultado vacio", s);
+                JOptionPane.showMessageDialog(null, "Error: La contraseña no se encuentra en el sistema.");
             }
 
         } catch (SQLException ex) {
@@ -215,4 +220,5 @@ public class PacienteDAO implements IPacienteDAO {
         }
         return 0;
     }
+
 }
