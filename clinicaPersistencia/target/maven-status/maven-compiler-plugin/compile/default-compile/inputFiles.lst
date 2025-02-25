@@ -1,19 +1,19 @@
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\entidades\Direccion.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\com\clinicapersistencia\ClinicaPersistencia.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\conexion\IConexion.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\DAO\IUsuarioDAO.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\DAO\IMedicoDAO.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\DAO\CitaDAO.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\DAO\UsuarioDAO.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\entidades\Medico.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\entidades\Consulta.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\entidades\Horario.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\DAO\ICitaDAO.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\conexion\Conexion.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\DAO\MedicoDAO.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\entidades\Usuario.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\DAO\PacienteDAO.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\DAO\IPacienteDAO.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\entidades\Cita.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\entidades\Paciente.java
-C:\Users\INSPIRON\Documents\GitHub\saludITSON\clinicaPersistencia\src\main\java\excepciones\PersistenciaException.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\DAO\MedicoDAO.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\entidades\Paciente.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\conexion\IConexion.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\DAO\CitaDAO.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\DAO\IPacienteDAO.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\DAO\UsuarioDAO.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\entidades\Medico.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\com\clinicapersistencia\ClinicaPersistencia.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\DAO\PacienteDAO.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\entidades\Horario.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\entidades\Cita.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\entidades\Direccion.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\excepciones\PersistenciaException.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\DAO\ICitaDAO.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\entidades\Usuario.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\conexion\Conexion.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\entidades\Consulta.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\DAO\IMedicoDAO.java
+C:\Users\Alici\OneDrive\Escritorio\Trabajos ITSON\Semestre IV\Bases de datos avanzada\Proyecto unidad 1\saludITSON\clinicaPersistencia\src\main\java\DAO\IUsuarioDAO.java

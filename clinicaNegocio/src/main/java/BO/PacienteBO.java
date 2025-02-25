@@ -59,7 +59,7 @@ public class PacienteBO {
             throw new NegocioException(mensaje);
         }
         // Uso de Mapper para convertir a Entidad y Encriptación de contraseña.
-        Paciente paciente = mapperPaciente.ConvertirAEntidad(pacienteNuevo);
+        Paciente paciente = mapperPaciente.convertirAEntidad(pacienteNuevo);
         String contrasenaEncriptada = encriptador.encriptar(pacienteNuevo.getContrasenaUsuario());
         paciente.setContrasenaUsuario(contrasenaEncriptada);
         // Registrar
@@ -116,7 +116,7 @@ public class PacienteBO {
         if (!correo.matches("^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             return "El correo electrónico ingresado no está en el formato correcto";
         }
-        if (!nombresPaciente.matches("[a-zA-Z ]+") || !apellidoPaternoPaciente.matches("[a-zA-Z]+") || !apellidoMaternoPaciente.matches("[a-zA-Z]+")) {
+        if (!nombresPaciente.matches("[a-zA-Záéíóú ]+") || !apellidoPaternoPaciente.matches("[a-zA-Záéíóú]+") || !apellidoMaternoPaciente.matches("[a-zA-Z]+")) {
             return "Nombre en formato incorrecto, puede ingresar sus nombres pero solo ingrese un apellido por campo";
         }
 
@@ -126,14 +126,16 @@ public class PacienteBO {
     public static boolean esCampoValido(String campo) {
         return campo != null && !campo.trim().isEmpty();
     }
-     public String obtenerNombreCompletoPaciente(int idPaciente) throws NegocioException {
+
+    public String obtenerNombreCompletoPaciente(int idPaciente) throws NegocioException {
         try {
             return pacienteDAO.consultarNombreCompletoPaciente(idPaciente);
         } catch (PersistenciaException e) {
             throw new NegocioException(null + e.getMessage(), e);
         }
     }
-     private String validarDatosPacienteActualizar(PacienteActualizarDTO paciente) {
+
+    private String validarDatosPacienteActualizar(PacienteActualizarDTO paciente) {
         String nombresPaciente = paciente.getNombresPaciente();
         String apellidoPaternoPaciente = paciente.getApellidoPaternoPaciente();
         String apellidoMaternoPaciente = paciente.getApellidoMaternoPaciente();
@@ -146,9 +148,9 @@ public class PacienteBO {
         String codigoPostal = direccion.getCodigoPostal();
 
         if (!esCampoValido(nombresPaciente) || !esCampoValido(apellidoPaternoPaciente)
-            || !esCampoValido(apellidoMaternoPaciente) || !esCampoValido(telefono)
-            || !esCampoValido(calle) || !esCampoValido(numero) || !esCampoValido(colonia)
-            || !esCampoValido(codigoPostal) || fechaNacimiento == null) {
+                || !esCampoValido(apellidoMaternoPaciente) || !esCampoValido(telefono)
+                || !esCampoValido(calle) || !esCampoValido(numero) || !esCampoValido(colonia)
+                || !esCampoValido(codigoPostal) || fechaNacimiento == null) {
             return "Se ha dejado algún campo en blanco";
         }
 
@@ -172,66 +174,53 @@ public class PacienteBO {
             return "Los nombres y apellidos no deben exceder los 100 y 50 caracteres, respectivamente";
         }
 
-        if (!nombresPaciente.matches("[a-zA-Z ]+") || !apellidoPaternoPaciente.matches("[a-zA-Z]+") || !apellidoMaternoPaciente.matches("[a-zA-Z]+")) {
+        if (!nombresPaciente.matches("[a-zA-Záéíóú ]+") || !apellidoPaternoPaciente.matches("[a-zA-Záéíóú]+") || !apellidoMaternoPaciente.matches("[a-zA-Z]+")) {
             return "Nombre en formato incorrecto, solo ingrese letras y un espacio entre los nombres";
         }
 
         if (calle.length() > 100 || colonia.length() > 50) {
             return "La calle y la colonia no deben exceder los 100 y 50 caracteres respectivamente";
         }
-    return "validos";
-}
-     
-     public boolean actualizarPaciente(PacienteActualizarDTO pacienteDTO) throws NegocioException {
-    try {
-        if (pacienteDTO == null) {
-            throw new NegocioException("El paciente no puede ser nulo");
-        }
-        String mensaje = validarDatosPacienteActualizar(pacienteDTO);
-        if (!mensaje.equals("validos")) {
-            throw new NegocioException(mensaje);
-        }
-        if (pacienteDAO.tieneCitasActivas(pacienteDTO.getIdPaciente())) {
-            throw new NegocioException("No se puede actualizar: el paciente tiene citas activas");
-        }
-        int idPaciente = pacienteDTO.getIdPaciente();
-        String nombres = pacienteDTO.getNombresPaciente();
-        String apellidoPaterno = pacienteDTO.getApellidoPaternoPaciente();
-        String apellidoMaterno = pacienteDTO.getApellidoMaternoPaciente();
-        String telefono = pacienteDTO.getTelefono();
-        LocalDate fechaNacimiento = pacienteDTO.getFechaNacimiento();
-        int idDireccion = pacienteDTO.getDireccion().getIdDireccion();
-        String calle = pacienteDTO.getDireccion().getCalle();
-        String numero = pacienteDTO.getDireccion().getNumero();
-        String colonia = pacienteDTO.getDireccion().getColonia();
-        String codigoPostal = pacienteDTO.getDireccion().getCodigoPostal();
-        return pacienteDAO.actualizarPaciente(
-            idPaciente, nombres, apellidoPaterno, apellidoMaterno,
-             telefono, fechaNacimiento,idDireccion, calle, numero, colonia, codigoPostal
-        );
+        return "validos";
+    }
 
-    } catch (PersistenciaException e) {
-        throw new NegocioException(e.getMessage());
-    }
-}
-     public int obtenerIdDireccionPorPaciente(int idPaciente) throws NegocioException {
-    try {
-        return pacienteDAO.obtenerIdDireccionPorPaciente(idPaciente);
-    } catch (PersistenciaException e) {
-        throw new NegocioException("No se pudo obtener el ID de la dirección: " + e.getMessage());
-    }
-}
-     
-     public PacienteActualizarDTO obtenerDatosPaciente(int idPaciente) throws NegocioException {
-    try {
-        Paciente paciente = pacienteDAO.obtenerDatosPaciente(idPaciente);
-        if (paciente == null) {
-            throw new NegocioException("No se encontró un paciente con el ID: " + idPaciente);
+    public boolean actualizarPaciente(PacienteActualizarDTO pacienteDTO) throws NegocioException {
+        try {
+            if (pacienteDTO == null) {
+                throw new NegocioException("El paciente no puede ser nulo");
+            }
+            String mensaje = validarDatosPacienteActualizar(pacienteDTO);
+            if (!mensaje.equals("validos")) {
+                throw new NegocioException(mensaje);
+            }
+            if (pacienteDAO.tieneCitasActivas(pacienteDTO.getIdPaciente())) {
+                throw new NegocioException("No se puede actualizar: el paciente tiene citas activas");
+            }
+            return pacienteDAO.actualizarPaciente(mapperPaciente.convertirAEntidad(pacienteDTO));
+
+        } catch (PersistenciaException e) {
+            throw new NegocioException(e.getMessage());
         }
-        return mapperPaciente.convertirAPacienteActualizarDTO(paciente);
-    } catch (PersistenciaException e) {
-        throw new NegocioException("Error al obtener los datos del paciente: " + e.getMessage(), e);
     }
-}
-     
+
+    public int obtenerIdDireccionPorPaciente(int idPaciente) throws NegocioException {
+        try {
+            return pacienteDAO.obtenerIdDireccionPorPaciente(idPaciente);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("No se pudo obtener el ID de la dirección: " + e.getMessage());
+        }
+    }
+
+    public PacienteActualizarDTO obtenerDatosPaciente(int idPaciente) throws NegocioException {
+        try {
+            Paciente paciente = pacienteDAO.obtenerDatosPaciente(idPaciente);
+            if (paciente == null) {
+                throw new NegocioException("No se encontró un paciente con el ID: " + idPaciente);
+            }
+            return mapperPaciente.convertirAPacienteActualizarDTO(paciente);
+        } catch (PersistenciaException e) {
+            throw new NegocioException("Error al obtener los datos del paciente: " + e.getMessage(), e);
+        }
+    }
+
 }
