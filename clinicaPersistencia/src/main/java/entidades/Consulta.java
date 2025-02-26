@@ -10,6 +10,7 @@ package entidades;
  */
 public class Consulta {
 
+    // Atributos de la clase
     private int IDConsulta;
     private String diagnostico;
     private String tratamiento;

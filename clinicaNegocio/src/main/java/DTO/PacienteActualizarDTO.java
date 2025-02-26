@@ -19,18 +19,7 @@ public class PacienteActualizarDTO {
     private LocalDate fechaNacimiento;
     private DireccionDTO direccion;
 
-    /**
-     * Constructor con todos los parámetros.
-     * 
-     * @param idPaciente El ID único del paciente.
-     * @param nombresPaciente El nombre del paciente.
-     * @param apellidoPaternoPaciente El apellido paterno del paciente.
-     * @param apellidoMaternoPaciente El apellido materno del paciente.
-     * @param telefono El número de teléfono del paciente.
-     * @param fechaNacimiento La fecha de nacimiento del paciente.
-     * @param direccion La dirección del paciente.
-     */
-    public PacienteActualizarDTO(int idPaciente, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String telefono, LocalDate fechaNacimiento, DireccionDTO direccion) {
+    public PacienteActualizarDTO(int idPaciente, String nombresPaciente, String apellidoPaternoPaciente,String apellidoMaternoPaciente, String telefono, LocalDate fechaNacimiento,DireccionDTO direccion) {
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
@@ -39,136 +28,66 @@ public class PacienteActualizarDTO {
         this.direccion = direccion;
     }
 
-    /**
-     * Constructor vacío para la clase PacienteActualizarDTO.
-     */
     public PacienteActualizarDTO() {
     }
-
-    /**
-     * Obtiene el ID del paciente.
-     * 
-     * @return El ID del paciente.
-     */
+    
+    
     public int getIdPaciente() {
         return idPaciente;
     }
 
-    /**
-     * Establece el ID del paciente.
-     * 
-     * @param idPaciente El nuevo ID del paciente.
-     */
     public void setIdPaciente(int idPaciente) {
         this.idPaciente = idPaciente;
     }
 
-    /**
-     * Obtiene el nombre del paciente.
-     * 
-     * @return El nombre del paciente.
-     */
     public String getNombresPaciente() {
         return nombresPaciente;
     }
 
-    /**
-     * Establece el nombre del paciente.
-     * 
-     * @param nombresPaciente El nuevo nombre del paciente.
-     */
     public void setNombresPaciente(String nombresPaciente) {
         this.nombresPaciente = nombresPaciente;
     }
 
-    /**
-     * Obtiene el apellido paterno del paciente.
-     * 
-     * @return El apellido paterno del paciente.
-     */
     public String getApellidoPaternoPaciente() {
         return apellidoPaternoPaciente;
     }
 
-    /**
-     * Establece el apellido paterno del paciente.
-     * 
-     * @param apellidoPaternoPaciente El nuevo apellido paterno del paciente.
-     */
     public void setApellidoPaternoPaciente(String apellidoPaternoPaciente) {
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
     }
 
-    /**
-     * Obtiene el apellido materno del paciente.
-     * 
-     * @return El apellido materno del paciente.
-     */
     public String getApellidoMaternoPaciente() {
         return apellidoMaternoPaciente;
     }
 
-    /**
-     * Establece el apellido materno del paciente.
-     * 
-     * @param apellidoMaternoPaciente El nuevo apellido materno del paciente.
-     */
     public void setApellidoMaternoPaciente(String apellidoMaternoPaciente) {
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
     }
 
-    /**
-     * Obtiene el número de teléfono del paciente.
-     * 
-     * @return El número de teléfono del paciente.
-     */
     public String getTelefono() {
         return telefono;
     }
 
-    /**
-     * Establece el número de teléfono del paciente.
-     * 
-     * @param telefono El nuevo número de teléfono del paciente.
-     */
     public void setTelefono(String telefono) {
         this.telefono = telefono;
     }
 
-    /**
-     * Obtiene la fecha de nacimiento del paciente.
-     * 
-     * @return La fecha de nacimiento del paciente.
-     */
     public LocalDate getFechaNacimiento() {
         return fechaNacimiento;
     }
 
-    /**
-     * Establece la fecha de nacimiento del paciente.
-     * 
-     * @param fechaNacimiento La nueva fecha de nacimiento del paciente.
-     */
     public void setFechaNacimiento(LocalDate fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
 
-    /**
-     * Obtiene la dirección del paciente.
-     * 
-     * @return La dirección del paciente.
-     */
     public DireccionDTO getDireccion() {
         return direccion;
     }
 
-    /**
-     * Establece la dirección del paciente.
-     * 
-     * @param direccion La nueva dirección del paciente.
-     */
     public void setDireccion(DireccionDTO direccion) {
         this.direccion = direccion;
     }
+    
+    
+    
 }
-
