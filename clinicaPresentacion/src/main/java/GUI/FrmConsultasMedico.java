@@ -16,14 +16,15 @@ import sesion.ManejadorSesion;
  * @author Alici
  */
 public class FrmConsultasMedico extends javax.swing.JFrame {
+
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
+
     /**
      * Creates new form FrmCitas
      */
     public FrmConsultasMedico() {
         initComponents();
         cargarNombreMedico();
-        cargarEstadoMedicoYActualizarBotones();
     }
 
     /**
@@ -38,10 +39,7 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
         panelBarraLateral = new javax.swing.JPanel();
         lblAvatar = new javax.swing.JLabel();
         lblCerrarSesion = new javax.swing.JLabel();
-        btnConsultaPrevia = new javax.swing.JButton();
-        btnBajaTemporal = new javax.swing.JButton();
         btnCitas = new javax.swing.JButton();
-        btnActivarCuenta = new javax.swing.JButton();
         lblNombreCompletoMedico = new javax.swing.JLabel();
         panelRedondo = new GUI.PanelRound();
         jScrollPane1 = new javax.swing.JScrollPane();
@@ -70,49 +68,12 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
             }
         });
 
-        btnConsultaPrevia.setBackground(new java.awt.Color(30, 98, 159));
-        btnConsultaPrevia.setForeground(new java.awt.Color(255, 255, 255));
-        btnConsultaPrevia.setText("Consultas previas");
-        btnConsultaPrevia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultaPreviaActionPerformed(evt);
-            }
-        });
-
-        btnBajaTemporal.setBackground(new java.awt.Color(195, 54, 29));
-        btnBajaTemporal.setForeground(new java.awt.Color(255, 255, 255));
-        btnBajaTemporal.setText("Baja temporal");
-        btnBajaTemporal.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnBajaTemporalMouseClicked(evt);
-            }
-        });
-        btnBajaTemporal.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnBajaTemporalActionPerformed(evt);
-            }
-        });
-
         btnCitas.setBackground(new java.awt.Color(30, 98, 159));
         btnCitas.setForeground(new java.awt.Color(255, 255, 255));
         btnCitas.setText("Citas");
         btnCitas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCitasActionPerformed(evt);
-            }
-        });
-
-        btnActivarCuenta.setBackground(new java.awt.Color(128, 204, 43));
-        btnActivarCuenta.setForeground(new java.awt.Color(255, 255, 255));
-        btnActivarCuenta.setText("Activar cuenta");
-        btnActivarCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnActivarCuentaMouseClicked(evt);
-            }
-        });
-        btnActivarCuenta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnActivarCuentaActionPerformed(evt);
             }
         });
 
@@ -127,12 +88,7 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
                     .addGroup(panelBarraLateralLayout.createSequentialGroup()
                         .addGap(10, 10, 10)
                         .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnBajaTemporal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnActivarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(panelBarraLateralLayout.createSequentialGroup()
                         .addGap(41, 41, 41)
@@ -151,13 +107,7 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
                 .addComponent(lblNombreCompletoMedico)
                 .addGap(12, 12, 12)
                 .addComponent(btnCitas)
-                .addGap(18, 18, 18)
-                .addComponent(btnConsultaPrevia)
-                .addGap(18, 18, 18)
-                .addComponent(btnBajaTemporal)
-                .addGap(18, 18, 18)
-                .addComponent(btnActivarCuenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 303, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -256,21 +206,8 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnActivarCuentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActivarCuentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnActivarCuentaActionPerformed
-
     private void btnCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCitasActionPerformed
-        // TODO add your handling code here:
     }//GEN-LAST:event_btnCitasActionPerformed
-
-    private void btnBajaTemporalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaTemporalActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnBajaTemporalActionPerformed
-
-    private void btnConsultaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPreviaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnConsultaPreviaActionPerformed
 
     private void lblCerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseEntered
         lblCerrarSesion.setForeground(new Color(30, 98, 159));
@@ -281,105 +218,31 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCerrarSesionMouseExited
 
     private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
-        cerrarSesion();
     }//GEN-LAST:event_lblCerrarSesionMouseClicked
-
-    private void btnBajaTemporalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBajaTemporalMouseClicked
-        bajaCuenta ();
-    }//GEN-LAST:event_btnBajaTemporalMouseClicked
-
-    private void btnActivarCuentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActivarCuentaMouseClicked
-        activarCuenta ();
-    }//GEN-LAST:event_btnActivarCuentaMouseClicked
     private void cargarNombreMedico() {
-    try {
-        String idUsuario = ManejadorSesion.getIdUsuario();
-        int idMedico = Integer.parseInt(idUsuario);
-        String nombreCompleto = medicoBO.obtenerNombreCompletoMedico(idMedico);
-        lblNombreCompletoMedico.setText(nombreCompleto);
-    } catch (NegocioException e) {
-       
+        try {
+            String idUsuario = ManejadorSesion.getIdUsuario();
+            int idMedico = Integer.parseInt(idUsuario);
+            String nombreCompleto = medicoBO.obtenerNombreCompletoMedico(idMedico);
+            lblNombreCompletoMedico.setText(nombreCompleto);
+        } catch (NegocioException e) {
+
         }
-}
+    }
+
+    private void citas() {
+        FrmCitasMedico frmCitasMedico = new FrmCitasMedico();
+        frmCitasMedico.setVisible(true);
+        this.dispose();
+    }
+
     private void cerrarSesion() {
         ManejadorSesion.borrarDatosSesion();
         FrmInicioSesion frmInicio = new FrmInicioSesion();
         frmInicio.setVisible(true);
         this.dispose();
     }
-    private void cargarEstadoMedicoYActualizarBotones() {
-    try {
-        String idUsuario = ManejadorSesion.getIdUsuario();
-        int idMedico = Integer.parseInt(idUsuario);
-        String estadoMedico = medicoBO.obtenerEstadoMedico(idMedico);
 
-        if (estadoMedico.equals("activo")) {
-            btnBajaTemporal.setEnabled(true);
-            btnActivarCuenta.setEnabled(false);
-        } else if (estadoMedico.equals("inactivo")) {
-            btnBajaTemporal.setEnabled(false);
-            btnActivarCuenta.setEnabled(true);
-        }
-    } catch (NegocioException e) {
-        JOptionPane.showMessageDialog(this, "Error al obtener el estado del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
-    private void bajaCuenta (){
-    int confirmacion = JOptionPane.showConfirmDialog(
-        this, 
-        "¿Estás seguro de que deseas desactivar tu cuenta?", 
-        "Confirmar baja temporal", 
-        JOptionPane.YES_NO_OPTION, 
-        JOptionPane.WARNING_MESSAGE
-    );
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        try {
-            String idUsuario = ManejadorSesion.getIdUsuario();
-            int idMedico = Integer.parseInt(idUsuario);
-
-            boolean exito = medicoBO.darDeBajaTemporal(idMedico);
-            if (exito) {
-                JOptionPane.showMessageDialog(this, "Médico dado de baja temporalmente correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarEstadoMedicoYActualizarBotones(); 
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo dar de baja temporalmente al médico.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al dar de baja temporalmente al médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
-    }  
-    }
-    
-    public void activarCuenta (){
-    int confirmacion = JOptionPane.showConfirmDialog(
-        this, 
-        "¿Estás seguro de que deseas reactivar tu cuenta?", 
-        "Confirmar reactivación", 
-        JOptionPane.YES_NO_OPTION, 
-        JOptionPane.WARNING_MESSAGE
-    );
-
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        try {
-            String idUsuario = ManejadorSesion.getIdUsuario();
-            int idMedico = Integer.parseInt(idUsuario);
-
-            boolean exito = medicoBO.reactivarCuenta(idMedico);
-            if (exito) {
-                JOptionPane.showMessageDialog(this, "Cuenta del médico reactivada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarEstadoMedicoYActualizarBotones(); // Actualizar botones después de la operación
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo reactivar la cuenta del médico.", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al reactivar la cuenta del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    } else {
-        JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
-    }
-    }
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -431,10 +294,7 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
 //    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnActivarCuenta;
-    private javax.swing.JButton btnBajaTemporal;
     private javax.swing.JButton btnCitas;
-    private javax.swing.JButton btnConsultaPrevia;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAvatar;
     private javax.swing.JLabel lblCerrarSesion;

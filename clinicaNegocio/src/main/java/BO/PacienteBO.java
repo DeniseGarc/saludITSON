@@ -5,7 +5,6 @@
 package BO;
 
 import DAO.IPacienteDAO;
-import DAO.IUsuarioDAO;
 import DAO.PacienteDAO;
 import DTO.DireccionDTO;
 import DTO.PacienteActualizarDTO;
@@ -22,6 +21,7 @@ import excepciones.PersistenciaException;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import DAO.IUsuarioDAO;
 
 /**
  *

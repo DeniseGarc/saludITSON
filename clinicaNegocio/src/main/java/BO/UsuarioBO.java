@@ -4,7 +4,6 @@
  */
 package BO;
 
-import DAO.IUsuarioDAO;
 import DAO.UsuarioDAO;
 import DTO.UsuarioIniciarSesionDTO;
 import Encriptado.Encriptador;
@@ -17,6 +16,7 @@ import excepciones.PersistenciaException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import DAO.IUsuarioDAO;
 
 /**
  *

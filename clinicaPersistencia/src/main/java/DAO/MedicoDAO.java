@@ -32,36 +32,7 @@ public class MedicoDAO implements IMedicoDAO {
     public MedicoDAO(IConexion conexion) {
         this.conexion = conexion;
     }
-    // lo dejamos? No es algo que sea necesario implementar ya que no se pidió en los requerimientos  
-
-//    @Override
-//    public Medico registrarMedico(Medico medico) throws PersistenciaException {
-//        String procedimientoSQL = "{CALL registrar_medico(?, ?, ?, ?, ?, ?)}";
-//
-//        try (Connection con = conexion.crearConexion();
-//             CallableStatement cs = con.prepareCall(procedimientoSQL)) {
-//
-//            // Establecer los parámetros del procedimiento almacenado
-//            cs.setString(1, medico.getNombresMedico());
-//            cs.setString(2, medico.getApellidoPaternoMedico());
-//            cs.setString(3, medico.getApellidoMaternoMedico());
-//            cs.setString(4, medico.getCedulaProfesional());
-//            cs.setString(5, medico.getEspecialidad());
-//            cs.setString(6, medico.getContrasenaUsuario()); // Contraseña
-//
-//            // Enviar los horarios, cada uno en su correspondiente parámetro
-//
-//            // Ejecutar el procedimiento almacenado
-//            cs.executeUpdate();
-//            logger.info("Médico registrado exitosamente.");
-//
-//            return medico;
-//
-//        } catch (SQLException e) {
-//            logger.log(Level.SEVERE, "Error al registrar médico", e);
-//            throw new PersistenciaException("Error al registrar el médico en la base de datos.", e);
-//        }
-//    }
+   
     @Override
     public List<Medico> consultarMedicosPorEspecialidad(String especialidad) throws PersistenciaException {
         ArrayList<Medico> medicos = new ArrayList<>();
@@ -115,7 +86,7 @@ public class MedicoDAO implements IMedicoDAO {
             while (resultados.next()) {
                 horariosDisponibles.add(resultados.getTime(1, null).toLocalTime());
             }
-            return horariosDisponibles;
+            return horariosDisponibles.stream().filter(hora -> hora.isAfter(LocalTime.now())).toList();
         } catch (SQLException ex) {
             if ("45000".equals(ex.getSQLState())) {
                 throw new PersistenciaException(ex.getMessage());

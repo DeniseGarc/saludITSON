@@ -45,10 +45,8 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         initComponents();
         cargarNombreMedico();
         cargarEstadoMedicoYActualizarBotones();
-//        cargarCitasPrevias();
-//        cargarCitasEmergencia();
-            tablaCitasEmergencia.removeColumn(tablaCitasEmergencia.getColumnModel().getColumn(0));
-            tablaCitas.removeColumn(tablaCitas.getColumnModel().getColumn(0));
+        tablaCitasEmergencia.removeColumn(tablaCitasEmergencia.getColumnModel().getColumn(0));
+        tablaCitas.removeColumn(tablaCitas.getColumnModel().getColumn(0));
 
         timer.schedule(new TimerTask() {
             @Override
@@ -72,7 +70,6 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         lblAvatar = new javax.swing.JLabel();
         btnActivarCuenta = new javax.swing.JButton();
         btnConsultaPrevia = new javax.swing.JButton();
-        btnCitas = new javax.swing.JButton();
         lblCerrarSesion = new javax.swing.JLabel();
         btnBajaTemporal = new javax.swing.JButton();
         lblNombreCompletoMedico = new javax.swing.JLabel();
@@ -97,36 +94,23 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/avatar.png"))); // NOI18N
         lblAvatar.setPreferredSize(new java.awt.Dimension(30, 30));
 
-        btnActivarCuenta.setText("Activar cuenta");
         btnActivarCuenta.setBackground(new java.awt.Color(128, 204, 43));
         btnActivarCuenta.setForeground(new java.awt.Color(255, 255, 255));
         btnActivarCuenta.setText("Activar cuenta");
-        btnActivarCuenta.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnActivarCuentaMouseClicked(evt);
-            }
-        });
+        btnActivarCuenta.setMaximumSize(new java.awt.Dimension(72, 23));
+        btnActivarCuenta.setMinimumSize(new java.awt.Dimension(72, 23));
         btnActivarCuenta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnActivarCuentaActionPerformed(evt);
             }
         });
 
-        btnConsultaPrevia.setText("Consultas previas");
         btnConsultaPrevia.setBackground(new java.awt.Color(30, 98, 159));
         btnConsultaPrevia.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultaPrevia.setText("Consultas previas");
         btnConsultaPrevia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaPreviaActionPerformed(evt);
-            }
-        });
-
-        btnCitas.setText("Citas");
-        btnCitas.setBackground(new java.awt.Color(30, 98, 159));
-        btnCitas.setForeground(new java.awt.Color(255, 255, 255));
-        btnCitas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCitasActionPerformed(evt);
             }
         });
 
@@ -143,17 +127,11 @@ public class FrmCitasMedico extends javax.swing.JFrame {
             }
         });
 
-        btnBajaTemporal.setText("Baja temporal");
         btnBajaTemporal.setBackground(new java.awt.Color(195, 54, 29));
         btnBajaTemporal.setForeground(new java.awt.Color(255, 255, 255));
+        btnBajaTemporal.setText("Baja temporal");
         btnBajaTemporal.setMaximumSize(new java.awt.Dimension(72, 23));
         btnBajaTemporal.setMinimumSize(new java.awt.Dimension(72, 23));
-        btnBajaTemporal.setText("Baja temporal");
-        btnBajaTemporal.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnBajaTemporalMouseClicked(evt);
-            }
-        });
         btnBajaTemporal.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnBajaTemporalActionPerformed(evt);
@@ -166,38 +144,21 @@ public class FrmCitasMedico extends javax.swing.JFrame {
         panelBarraLateral.setLayout(panelBarraLateralLayout);
         panelBarraLateralLayout.setHorizontalGroup(
             panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelBarraLateralLayout.createSequentialGroup()
+                .addGap(10, 10, 10)
+                .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(71, Short.MAX_VALUE))
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnBajaTemporal, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                    .addComponent(btnActivarCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                            .addGap(41, 41, 41)
-                            .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblNombreCompletoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                        .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(51, 51, 51)))
-                .addContainerGap(9, Short.MAX_VALUE))
-            .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(btnActivarCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, 119, Short.MAX_VALUE)
-                    .addComponent(btnBajaTemporal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addGap(43, 43, 43)
+                .addGap(51, 51, 51)
                 .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(50, Short.MAX_VALUE))
+            .addGroup(panelBarraLateralLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnBajaTemporal, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnActivarCuenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(lblNombreCompletoMedico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelBarraLateralLayout.setVerticalGroup(
@@ -205,17 +166,15 @@ public class FrmCitasMedico extends javax.swing.JFrame {
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
                 .addGap(21, 21, 21)
                 .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNombreCompletoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(btnCitas)
-                .addGap(18, 18, 18)
+                .addComponent(lblNombreCompletoMedico, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23)
                 .addComponent(btnConsultaPrevia)
                 .addGap(18, 18, 18)
                 .addComponent(btnBajaTemporal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(btnActivarCuenta)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 304, Short.MAX_VALUE)
+                .addComponent(btnActivarCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(15, 15, 15))
         );
@@ -253,12 +212,12 @@ public class FrmCitasMedico extends javax.swing.JFrame {
             tablaCitas.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        lblCitasProximas.setText("Citas próximas");
         lblCitasProximas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblCitasProximas.setText("Citas próximas");
 
-        btnAtenderCitaProxima.setText("Atender cita");
         btnAtenderCitaProxima.setBackground(new java.awt.Color(128, 204, 43));
         btnAtenderCitaProxima.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtenderCitaProxima.setText("Atender cita");
         btnAtenderCitaProxima.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtenderCitaProximaActionPerformed(evt);
@@ -287,7 +246,7 @@ public class FrmCitasMedico extends javax.swing.JFrame {
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAtenderCitaProxima)
-                .addContainerGap(12, Short.MAX_VALUE))
+                .addContainerGap(18, Short.MAX_VALUE))
         );
 
         panelRedondoCitasE.setBackground(new java.awt.Color(255, 255, 255));
@@ -330,12 +289,12 @@ public class FrmCitasMedico extends javax.swing.JFrame {
             tablaCitasEmergencia.getColumnModel().getColumn(2).setResizable(false);
         }
 
-        lblCitasEmergencia.setText("Citas emergencia");
         lblCitasEmergencia.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        lblCitasEmergencia.setText("Citas emergencia");
 
-        btnAtenderCitaEmergencia.setText("Atender cita");
         btnAtenderCitaEmergencia.setBackground(new java.awt.Color(128, 204, 43));
         btnAtenderCitaEmergencia.setForeground(new java.awt.Color(255, 255, 255));
+        btnAtenderCitaEmergencia.setText("Atender cita");
         btnAtenderCitaEmergencia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAtenderCitaEmergenciaActionPerformed(evt);
@@ -398,14 +357,11 @@ public class FrmCitasMedico extends javax.swing.JFrame {
 activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
 
     private void btnConsultaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPreviaActionPerformed
-        // TODO add your handling code here:
+        consultas();
     }//GEN-LAST:event_btnConsultaPreviaActionPerformed
 
-    private void btnCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCitasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCitasActionPerformed
-
     private void btnBajaTemporalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBajaTemporalActionPerformed
+        bajaCuenta();
     }//GEN-LAST:event_btnBajaTemporalActionPerformed
 
     private void btnAtenderCitaEmergenciaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAtenderCitaEmergenciaActionPerformed
@@ -425,145 +381,110 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
     }//GEN-LAST:event_lblCerrarSesionMouseEntered
 
     private void lblCerrarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseExited
-        lblCerrarSesion.setForeground(new Color(0, 0,0));
+        lblCerrarSesion.setForeground(new Color(0, 0, 0));
     }//GEN-LAST:event_lblCerrarSesionMouseExited
 
-    private void btnBajaTemporalMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnBajaTemporalMouseClicked
-     bajaCuenta();    }//GEN-LAST:event_btnBajaTemporalMouseClicked
-
-    private void btnActivarCuentaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnActivarCuentaMouseClicked
-        activarCuenta ();
-    }//GEN-LAST:event_btnActivarCuentaMouseClicked
-   
-    private void cargarNombreMedico() {
-    try {
-        String idUsuario = ManejadorSesion.getIdUsuario();
-        int idMedico = Integer.parseInt(idUsuario);
-        String nombreCompleto = medicoBO.obtenerNombreCompletoMedico(idMedico);
-        lblNombreCompletoMedico.setText(nombreCompleto);
-    } catch (NegocioException e) {
-       
+    private void consultas() {
+        FrmConsultasMedico frmConsultasMedico = new FrmConsultasMedico();
+        frmConsultasMedico.setVisible(true);
+        this.dispose();
     }
-    
-}
+
+    private void cargarNombreMedico() {
+        try {
+            String idUsuario = ManejadorSesion.getIdUsuario();
+            int idMedico = Integer.parseInt(idUsuario);
+            String nombreCompleto = medicoBO.obtenerNombreCompletoMedico(idMedico);
+            lblNombreCompletoMedico.setText(nombreCompleto);
+        } catch (NegocioException e) {
+
+        }
+
+    }
+
     private void cerrarSesion() {
         ManejadorSesion.borrarDatosSesion();
-        FrmInicioSesion frmInicio = new FrmInicioSesion(); 
+        FrmInicioSesion frmInicio = new FrmInicioSesion();
         frmInicio.setVisible(true);
         this.dispose();
     }
-    
+
     private void cargarEstadoMedicoYActualizarBotones() {
-    try {
-        String idUsuario = ManejadorSesion.getIdUsuario();
-        int idMedico = Integer.parseInt(idUsuario);
-        String estadoMedico = medicoBO.obtenerEstadoMedico(idMedico);
-
-        // Habilitar o deshabilitar botones según el estado
-        if (estadoMedico.equals("activo")) {
-            btnBajaTemporal.setEnabled(true);
-            btnActivarCuenta.setEnabled(false);
-        } else if (estadoMedico.equals("inactivo")) {
-            btnBajaTemporal.setEnabled(false);
-            btnActivarCuenta.setEnabled(true);
-        }
-    } catch (NegocioException e) {
-        JOptionPane.showMessageDialog(this, "Error al obtener el estado del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-    }
-}
-    private void bajaCuenta (){
-    int confirmacion = JOptionPane.showConfirmDialog(
-        this, 
-        "¿Estás seguro de que deseas desactivar tu cuenta?", 
-        "Confirmar baja temporal", 
-        JOptionPane.YES_NO_OPTION, 
-        JOptionPane.WARNING_MESSAGE
-    );
-    if (confirmacion == JOptionPane.YES_OPTION) {
         try {
             String idUsuario = ManejadorSesion.getIdUsuario();
             int idMedico = Integer.parseInt(idUsuario);
+            String estadoMedico = medicoBO.obtenerEstadoMedico(idMedico);
 
-            boolean exito = medicoBO.darDeBajaTemporal(idMedico);
-            if (exito) {
-                JOptionPane.showMessageDialog(this, "Médico dado de baja temporalmente correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarEstadoMedicoYActualizarBotones(); 
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo dar de baja temporalmente al médico.", "Error", JOptionPane.ERROR_MESSAGE);
+            // Habilitar o deshabilitar botones según el estado
+            if (estadoMedico.equals("activo")) {
+                btnBajaTemporal.setEnabled(true);
+                btnActivarCuenta.setEnabled(false);
+            } else if (estadoMedico.equals("inactivo")) {
+                btnBajaTemporal.setEnabled(false);
+                btnActivarCuenta.setEnabled(true);
             }
         } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al dar de baja temporalmente al médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Error al obtener el estado del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
-    }  
     }
-    
-    public void activarCuenta (){
-    int confirmacion = JOptionPane.showConfirmDialog(
-        this, 
-        "¿Estás seguro de que deseas reactivar tu cuenta?", 
-        "Confirmar reactivación", 
-        JOptionPane.YES_NO_OPTION, 
-        JOptionPane.WARNING_MESSAGE
-    );
 
-    if (confirmacion == JOptionPane.YES_OPTION) {
-        try {
-            String idUsuario = ManejadorSesion.getIdUsuario();
-            int idMedico = Integer.parseInt(idUsuario);
+    private void bajaCuenta() {
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Estás seguro de que deseas desactivar tu cuenta?",
+                "Confirmar baja temporal",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                String idUsuario = ManejadorSesion.getIdUsuario();
+                int idMedico = Integer.parseInt(idUsuario);
 
-            boolean exito = medicoBO.reactivarCuenta(idMedico);
-            if (exito) {
-                JOptionPane.showMessageDialog(this, "Cuenta del médico reactivada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                cargarEstadoMedicoYActualizarBotones(); // Actualizar botones después de la operación
-            } else {
-                JOptionPane.showMessageDialog(this, "No se pudo reactivar la cuenta del médico.", "Error", JOptionPane.ERROR_MESSAGE);
+                boolean exito = medicoBO.darDeBajaTemporal(idMedico);
+                if (exito) {
+                    JOptionPane.showMessageDialog(this, "Médico dado de baja temporalmente correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    cargarEstadoMedicoYActualizarBotones();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo dar de baja temporalmente al médico.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NegocioException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-        } catch (NegocioException e) {
-            JOptionPane.showMessageDialog(this, "Error al reactivar la cuenta del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
         }
-    } else {
-        JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
     }
+
+    public void activarCuenta() {
+        int confirmacion = JOptionPane.showConfirmDialog(
+                this,
+                "¿Estás seguro de que deseas reactivar tu cuenta?",
+                "Confirmar reactivación",
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.WARNING_MESSAGE
+        );
+
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                String idUsuario = ManejadorSesion.getIdUsuario();
+                int idMedico = Integer.parseInt(idUsuario);
+
+                boolean exito = medicoBO.reactivarCuenta(idMedico);
+                if (exito) {
+                    JOptionPane.showMessageDialog(this, "Cuenta del médico reactivada correctamente.", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    cargarEstadoMedicoYActualizarBotones(); // Actualizar botones después de la operación
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo reactivar la cuenta del médico.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NegocioException e) {
+                JOptionPane.showMessageDialog(this, "Error al reactivar la cuenta del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
+        }
     }
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(FrmCitasMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(FrmCitasMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(FrmCitasMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(FrmCitasMedico.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new FrmCitasMedico().setVisible(true);
-//            }
-//        });
-//    }
+
     public void cargarCitasPrevias() {
         DefaultTableModel modeloTablaPrevias = (DefaultTableModel) tablaCitas.getModel();
         modeloTablaPrevias.setRowCount(0); // Limpiar la tabla
@@ -572,7 +493,6 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             List<CitaDTO> citasPrevias = citaBO.citasActivasMedico(ManejadorSesion.getIdUsuario()).stream().filter(citaDTO -> citaDTO.getTipo().equals("previa")).sorted(Comparator.comparing(CitaDTO::getFechaHora)).toList();
 
             // Ocultar columna ID
-
             for (CitaDTO cita : citasPrevias) {
 
                 modeloTablaPrevias.addRow(new Object[]{
@@ -651,7 +571,6 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
     private javax.swing.JButton btnAtenderCitaEmergencia;
     private javax.swing.JButton btnAtenderCitaProxima;
     private javax.swing.JButton btnBajaTemporal;
-    private javax.swing.JButton btnCitas;
     private javax.swing.JButton btnConsultaPrevia;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;

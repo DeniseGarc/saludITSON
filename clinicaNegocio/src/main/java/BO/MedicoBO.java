@@ -49,7 +49,7 @@ public class MedicoBO {
         return true; 
     } catch (PersistenciaException e) {
         logger.log(Level.SEVERE, "Error al dar de baja temporalmente al médico", e);
-        throw new NegocioException("Error al dar de baja temporalmente al médico: " + e.getMessage());
+        throw new NegocioException(e.getMessage());
     }
     }
     
@@ -66,14 +66,14 @@ public class MedicoBO {
         return true;   
     } catch (PersistenciaException e) {
         logger.log(Level.SEVERE, "Error al reactivar la cuenta del médico", e);
-        throw new NegocioException("Error al reactivar la cuenta del médico: " + e.getMessage());
+        throw new NegocioException(e.getMessage());
     }
 }
     public String obtenerEstadoMedico(int idMedico) throws NegocioException {
         try {
             return medicoDAO.obtenerEstadoMedico(idMedico);
         } catch (PersistenciaException e) {
-            throw new NegocioException("Error al obtener el estado del médico: " + e.getMessage());
+            throw new NegocioException(e.getMessage());
         }
     }
 
