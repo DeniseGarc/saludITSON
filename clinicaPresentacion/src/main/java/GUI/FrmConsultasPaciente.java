@@ -7,7 +7,11 @@ package GUI;
 import BO.CitaBO;
 import DTO.ConsultaDTO;
 import configuracion.DependencyInjector;
+import excepciones.PersistenciaException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -23,6 +27,8 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
     public FrmConsultasPaciente(int id) {
         initComponents();
         idPaciente = id;
+        this.cargarTabla();
+        this.especialidades();
     }
 
     /**
@@ -61,27 +67,27 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/avatar.png"))); // NOI18N
         lblAvatar.setPreferredSize(new java.awt.Dimension(30, 30));
 
+        btnGenerarConsulta.setText("Generar consulta");
         btnGenerarConsulta.setBackground(new java.awt.Color(128, 204, 43));
         btnGenerarConsulta.setForeground(new java.awt.Color(255, 255, 255));
-        btnGenerarConsulta.setText("Generar consulta");
         btnGenerarConsulta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGenerarConsultaActionPerformed(evt);
             }
         });
 
+        btnConsultaPrevia.setText("Consultas previas");
         btnConsultaPrevia.setBackground(new java.awt.Color(30, 98, 159));
         btnConsultaPrevia.setForeground(new java.awt.Color(255, 255, 255));
-        btnConsultaPrevia.setText("Consultas previas");
         btnConsultaPrevia.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnConsultaPreviaActionPerformed(evt);
             }
         });
 
+        btnCitas.setText("Citas");
         btnCitas.setBackground(new java.awt.Color(30, 98, 159));
         btnCitas.setForeground(new java.awt.Color(255, 255, 255));
-        btnCitas.setText("Citas");
         btnCitas.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnCitasActionPerformed(evt);
@@ -136,20 +142,20 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
 
         tablaConsultas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha y hora", "Especialidad", "Médico", "Diagnóstico", "Tratamiento", "Estado"
+                "Fecha", "Hora", "Especialidad", "Médico", "Diagnóstico", "Tratamiento", "Estado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -169,20 +175,19 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
             tablaConsultas.getColumnModel().getColumn(3).setResizable(false);
             tablaConsultas.getColumnModel().getColumn(4).setResizable(false);
             tablaConsultas.getColumnModel().getColumn(5).setResizable(false);
+            tablaConsultas.getColumnModel().getColumn(6).setResizable(false);
         }
 
-        lblCitasProximas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         lblCitasProximas.setText("Consultas previas");
+        lblCitasProximas.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
         lblDesde.setText("Desde");
 
         lblHasta.setText("Hasta");
 
-        cBoxEspecialidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
+        btnFiltrar.setText("Filtrar");
         btnFiltrar.setBackground(new java.awt.Color(128, 204, 43));
         btnFiltrar.setForeground(new java.awt.Color(255, 255, 255));
-        btnFiltrar.setText("Filtrar");
         btnFiltrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnFiltrarActionPerformed(evt);
@@ -271,42 +276,52 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnConsultaPreviaActionPerformed
 
     private void btnCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCitasActionPerformed
-        // TODO add your handling code here:
+        this.citas();
     }//GEN-LAST:event_btnCitasActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
+        this.cargarTablaFiltro();
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     public void cargarTabla(){
-        // Obtener el modelo de la tabla y limpiar cualquier dato previo
-        DefaultTableModel modelo = (DefaultTableModel) this.tablaConsultas.getModel();
-        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+        try {
+            
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaConsultas.getModel();
+            modelo = this.citaBO.ObtenerConsultasPrevias(tablaConsultas, idPaciente);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: error al cargar los datos");
+        }
 
-//        try {
-//            // Obtener la lista de Citas desde la capa de negocio (BO)
-//            List<ConsultaDTO> lista = citaBO.(String.valueOf(idPaciente));
-//
-//            // Recorrer la lista de Citas y las agrega como filas en la tabla
-//            for (CitaDTO citas : lista) {
-//                if (citas.getEstado().equalsIgnoreCase("activa")) { // Valida que solo llene la tabla con citas que tengan el estado "Activa".
-//                    modelo.addRow(new Object[]{
-//                        citas.getFechaHora().toLocalDate(),
-//                        citas.getFechaHora().toLocalTime(), // Fecha y hora de la cita.
-//                        citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
-//                        citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
-//                    });
-//                } else {
-//
-//                }
-//
-//            }
-//        } catch (NegocioException ex) {
-//            // Manejo de errores en caso de que falle la obtención de datos
-//            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
-//            JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//        }
+    }
+      public void cargarTablaFiltro(){
+        try {
+            
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaConsultas.getModel();
+            modelo = this.citaBO.ObtenerConsultasPreviasFiltro(tablaConsultas, this.idPaciente, this.dtPkrDesde.getDate(), this.dtPkrHasta.getDate(), this.cBoxEspecialidad.getItemAt(this.cBoxEspecialidad.getSelectedIndex()));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: error al cargar los datos filtrados");
+        }
 
+    }
+    public void citas(){
+        FrmCitasPaciente citas = new FrmCitasPaciente(this.idPaciente);
+        citas.setVisible(true);
+        this.dispose();
+    }
+    public void especialidades(){
+        List<String> listaEspecialidades;
+        try{
+           listaEspecialidades=this.citaBO.obtenerEspecialidades();
+        for (int i = 0; i < listaEspecialidades.size(); i++) {
+            this.cBoxEspecialidad.addItem(listaEspecialidades.get(i));
+        } 
+        }catch(Exception e){
+            Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error: No hay especialidades disponibles");
+        }
+        
     }
 //    /**
 //     * @param args the command line arguments
