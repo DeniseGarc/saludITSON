@@ -55,6 +55,7 @@ public class PacienteDAO implements IPacienteDAO {
 
         try (Connection con = conexion.crearConexion(); CallableStatement cs = con.prepareCall(procedimientoSQL)) {
 
+            // Establecer los parámetros del procedimiento almacenado
             cs.setString(1, paciente.getNombresPaciente());
             cs.setString(2, paciente.getApellidoPaternoPaciente());
             cs.setString(3, paciente.getApellidoMaternoPaciente());
@@ -88,7 +89,7 @@ public class PacienteDAO implements IPacienteDAO {
     @Override
     public boolean consultarPacientePorTelefono(String telefono) throws PersistenciaException {
         String sentenciaSQL = "SELECT telefono FROM pacientes WHERE telefono = ?";
-        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
             ps.setString(1, telefono);
             ResultSet resultado = ps.executeQuery();
             return resultado.next();
@@ -113,8 +114,14 @@ public class PacienteDAO implements IPacienteDAO {
                 ResultSet rs = psPaciente.executeQuery();
                 Paciente paciente = null;
                 if (rs.next()) {
-                    paciente = new Paciente(rs.getInt("IDPaciente"),null,rs.getString("nombresPaciente"),rs.getString("apellidoPaternoPaciente"),rs.getString("apellidoMaternoPaciente"),
-                            rs.getString("correo"),rs.getString("telefono"),rs.getDate("fechaNacimiento").toLocalDate(),
+                    paciente = new Paciente(rs.getInt("IDPaciente"),
+                            null,
+                            rs.getString("nombresPaciente"),
+                            rs.getString("apellidoPaternoPaciente"),
+                            rs.getString("apellidoMaternoPaciente"),
+                            rs.getString("correo"),
+                            rs.getString("telefono"),
+                            rs.getDate("fechaNacimiento").toLocalDate(),
                             new Direccion(rs.getInt("idDireccion"), null, null, null, null));
                 }
 
@@ -173,7 +180,9 @@ public class PacienteDAO implements IPacienteDAO {
     @Override
     public boolean tieneCitasActivas(int idPaciente) throws PersistenciaException {
         String sentenciasql = "SELECT COUNT(*) FROM Citas WHERE idPaciente = ? AND estadoCita = 'activa'";
+
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciasql)) {
+
             ps.setInt(1, idPaciente);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -271,6 +280,7 @@ public class PacienteDAO implements IPacienteDAO {
             if (!rs.next()) {
                 throw new PersistenciaException("No se encontró un paciente con ID: " + idPaciente);
             }
+
             Paciente paciente = new Paciente();
             paciente.setNombresPaciente(rs.getString("nombresPaciente"));
             paciente.setApellidoPaternoPaciente(rs.getString("apellidoPaternoPaciente"));

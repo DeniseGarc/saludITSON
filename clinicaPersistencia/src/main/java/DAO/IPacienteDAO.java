@@ -8,38 +8,14 @@ import excepciones.PersistenciaException;
  * @author benjy
  */
 public interface IPacienteDAO {
-    
-    /**
-     * Registra un nuevo paciente en la base de datos.
-     * 
-     * @param paciente Objeto Paciente que contiene la información del paciente a registrar.
-     * @return El paciente registrado.
-     * @throws PersistenciaException Si ocurre un error al registrar el paciente.
-     */
+
+    //metodo para registrar usuario
     public Paciente registrarPaciente(Paciente paciente) throws PersistenciaException;
-    /**
-     * Verifica si un paciente existe en la base de datos a partir de su teléfono.
-     * 
-     * @param telefono Número de teléfono del paciente.
-     * @return true si el paciente existe, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error al consultar el teléfono del paciente.
-     */
+
     public boolean consultarPacientePorTelefono(String telefono) throws PersistenciaException;
-    /**
-     * Consulta los datos de un paciente por su ID.
-     * 
-     * @param id ID del paciente a consultar.
-     * @return Objeto Paciente con los datos del paciente consultado.
-     * @throws PersistenciaException Si ocurre un error en la consulta.
-     */
+
     public Paciente consultarPacientePorId(int id) throws PersistenciaException;
-    /**
-     * Consulta el nombre completo de un paciente a partir de su ID.
-     * 
-     * @param idPaciente ID del paciente a consultar.
-     * @return Nombre completo del paciente en formato "Nombre ApellidoPaterno ApellidoMaterno".
-     * @throws PersistenciaException Si ocurre un error en la consulta o el paciente no es encontrado.
-     */
+    
     public String consultarNombreCompletoPaciente(int idPaciente) throws PersistenciaException;
     /**
      * Actualiza los datos de un paciente en la base de datos, incluyendo su dirección.

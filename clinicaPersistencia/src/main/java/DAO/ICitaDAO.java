@@ -20,13 +20,7 @@ import javax.swing.table.DefaultTableModel;
  * @author Alici
  */
 public interface ICitaDAO {
-    /**
-     * Agenda una nueva cita en la base de datos.
-     * 
-     * @param cita objeto que contiene los detalles de la cita a agendar.
-     * @return true si la cita se agendó correctamente, false en caso contrario.
-     * @throws PersistenciaException si ocurre un error en la base de datos.
-     */
+
     public boolean agendarCita(Cita cita) throws PersistenciaException;
 
     /**

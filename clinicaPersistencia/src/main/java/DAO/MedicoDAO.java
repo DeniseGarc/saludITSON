@@ -22,6 +22,7 @@ import java.util.logging.Logger;
  * @author benjy
  */
 public class MedicoDAO implements IMedicoDAO {
+
     IConexion conexion;
     private static final Logger logger = Logger.getLogger(PacienteDAO.class.getName());
 
