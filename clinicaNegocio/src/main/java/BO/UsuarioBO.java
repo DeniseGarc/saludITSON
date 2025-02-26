@@ -28,6 +28,11 @@ public class UsuarioBO {
     private static final Logger logger = Logger.getLogger(UsuarioBO.class.getName());
     private final IUsuarioDAO usuarioDAO;
     private final UsuarioMapper mapper = new UsuarioMapper();
+    /**
+     * Constructor que inicializa el DAO de usuario.
+     * 
+     * @param conexion La conexión utilizada para acceder a la base de datos.
+     */ 
     public UsuarioBO(IConexion conexion) {
         this.usuarioDAO = new UsuarioDAO(conexion);
     }

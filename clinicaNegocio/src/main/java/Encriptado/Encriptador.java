@@ -9,12 +9,17 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
  * @author joelr
  */
 public class Encriptador implements IEncriptador {
-    
-    
+
+    /**
+     * Encripta una contraseña utilizando el algoritmo BCrypt.
+     * 
+     * @param contrasena La contraseña en texto claro que se desea encriptar.
+     * @return La contraseña encriptada.
+     */
     @Override
-    public String encriptar(String contrasena){
-        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-        String contrasenaEncriptada = encoder.encode(contrasena);
-        return contrasenaEncriptada;
+    public String encriptar(String contrasena) {
+        BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();  // Instancia del encriptador BCrypt.
+        String contrasenaEncriptada = encoder.encode(contrasena);     // Encripta la contraseña.
+        return contrasenaEncriptada;                                  // Devuelve la contraseña encriptada.
     }
 }
