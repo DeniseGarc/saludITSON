@@ -383,13 +383,17 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
     private void lblCerrarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseExited
         lblCerrarSesion.setForeground(new Color(0, 0, 0));
     }//GEN-LAST:event_lblCerrarSesionMouseExited
-
+    /**
+    * Método que abre la ventana de consultas del médico y cierra la ventana actual.
+    */
     private void consultas() {
         FrmConsultasMedico frmConsultasMedico = new FrmConsultasMedico();
         frmConsultasMedico.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Método que carga el nombre completo del médico basado en el ID del usuario en la sesión.
+    */
     private void cargarNombreMedico() {
         try {
             String idUsuario = ManejadorSesion.getIdUsuario();
@@ -401,14 +405,18 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
         }
 
     }
-
+    /**
+    * Método que cierra la sesión del usuario y redirige a la pantalla de inicio de sesión.
+    */
     private void cerrarSesion() {
         ManejadorSesion.borrarDatosSesion();
         FrmInicioSesion frmInicio = new FrmInicioSesion();
         frmInicio.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Método que carga el estado del médico y actualiza los botones según el estado.
+    */
     private void cargarEstadoMedicoYActualizarBotones() {
         try {
             String idUsuario = ManejadorSesion.getIdUsuario();
@@ -427,7 +435,9 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, "Error al obtener el estado del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    /**
+    * Método que permite dar de baja temporal al médico después de una confirmación.
+    */
     private void bajaCuenta() {
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
@@ -455,7 +465,9 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
+    /**
+    * Método que permite reactivar la cuenta del médico después de una confirmación.
+    */
     public void activarCuenta() {
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
@@ -484,7 +496,9 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
+    /**
+    * Método que carga las citas previas del médico y las muestra en la tabla.
+    */
     public void cargarCitasPrevias() {
         DefaultTableModel modeloTablaPrevias = (DefaultTableModel) tablaCitas.getModel();
         modeloTablaPrevias.setRowCount(0); // Limpiar la tabla
@@ -506,7 +520,9 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    /**
+    * Método que carga las citas de emergencia del médico y las muestra en la tabla.
+    */
     public void cargarCitasEmergencia() {
         DefaultTableModel modeloTablaEmergencia = (DefaultTableModel) tablaCitasEmergencia.getModel();
         modeloTablaEmergencia.setRowCount(0); // Limpiar la tabla
@@ -527,7 +543,10 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    /**
+    * Método que permite atender una cita seleccionada, abriendo el formulario para registrar la consulta.
+    * @param filaseleccionada El ID de la cita seleccionada.
+    */
     public void atenderCita(String filaseleccionada) {
         if (filaseleccionada == null) {
             JOptionPane.showMessageDialog(this, "Seleccione la cita a atender", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -548,7 +567,10 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
         }
     }
 
-    // Método para obtener el ID de la cita al seleccionar una fila
+    /**
+    * Método que obtiene el ID de la cita seleccionada en la tabla de citas previas.
+    * @return El ID de la cita seleccionada, o null si no hay ninguna selección.
+    */
     public String obtenerIdCitaSeleccionadaCitasPrevias() {
         int filaSeleccionada = tablaCitas.getSelectedRow();
         if (filaSeleccionada != -1) {
@@ -556,7 +578,10 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
         }
         return null;
     }
-
+    /**
+    * Método que obtiene el ID de la cita seleccionada en la tabla de citas de emergencia.
+    * @return El ID de la cita seleccionada, o null si no hay ninguna selección.
+    */
     public String obtenerIdCitaSeleccionadaCitasEmergencia() {
         int filaSeleccionada = tablaCitasEmergencia.getSelectedRow();
         if (filaSeleccionada != -1) {

@@ -207,11 +207,20 @@ public class FrmInicioSesion extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    /**
+    * Método que abre la ventana de registro de paciente y cierra la ventana actual.
+    */
     private void registroPaciente() {
         FrmRegistro frmRegistrarPaciente = new FrmRegistro();
         frmRegistrarPaciente.setVisible(true);
         dispose();
     }
+    /**
+    * Método que maneja el inicio de sesión. Toma los datos de usuario y contraseña, 
+    * verifica si son correctos mediante el servicio correspondiente, y redirige
+    * al usuario a la pantalla correspondiente según su tipo (Paciente o Médico).
+    * Si ocurre un error, se muestra un mensaje de error.
+    */
     private void iniciarSesion() {
     try {
         String nombreUsuario = txtUsuario.getText().trim();

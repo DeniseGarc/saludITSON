@@ -273,13 +273,20 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         actualizar();
     }//GEN-LAST:event_btnActualizarActionPerformed
-
+    /**
+    * Redirige a la pantalla principal de citas del paciente.
+    * Cierra la ventana actual y muestra el formulario de citas.
+    */
     public void regresar() {
         FrmCitasPaciente frmInicio = new FrmCitasPaciente();
         frmInicio.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Actualiza los datos del paciente en la base de datos con la información proporcionada en los campos del formulario.
+    * Si la actualización es exitosa, muestra un mensaje de éxito y redirige a la pantalla de citas.
+    * Si ocurre un error, muestra un mensaje de error.
+    */
     public void actualizar() {
         try {
             int idDireccion = pacienteBO.obtenerIdDireccionPorPaciente(idUsuario);
@@ -292,7 +299,6 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
             pacienteDTO.setFechaNacimiento(dtPikrfechaNacimiento.getDate());
             pacienteDTO.setIdPaciente(idUsuario);
 
-            // Establecer la dirección
             DireccionDTO direccionDTO = new DireccionDTO();
             direccionDTO.setIdDireccion(idDireccion);
             direccionDTO.setCalle(txtCalle.getText());
@@ -300,7 +306,6 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
             direccionDTO.setColonia(txtColonia.getText());
             direccionDTO.setCodigoPostal(txtCodigoPostal.getText());
 
-            // Asignar la dirección al pacienteDTO
             pacienteDTO.setDireccion(direccionDTO);
 
             boolean exito = pacienteBO.actualizarPaciente(pacienteDTO);
@@ -315,7 +320,11 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
             javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
     }
-
+    /**
+    * Carga los datos del paciente desde la base de datos y los muestra en los campos del formulario.
+    *
+    * @param idUsuario El ID del usuario para obtener los datos del paciente.
+    */
     public void cargarDatosPaciente(int idUsuario) {
         try {
             PacienteActualizarDTO pacienteDTO = pacienteBO.obtenerDatosPaciente(idUsuario);

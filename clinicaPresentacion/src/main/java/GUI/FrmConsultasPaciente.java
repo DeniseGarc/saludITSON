@@ -315,7 +315,9 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
     private void lblAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvatarMouseClicked
         actualizarDatos();       
     }//GEN-LAST:event_lblAvatarMouseClicked
-    
+    /**
+    * Método que carga el nombre completo del usuario basado en el ID del usuario en la sesión.
+    */
     private void cargarNombrePaciente() {
     try {
         String idUsuario = ManejadorSesion.getIdUsuario();
@@ -326,12 +328,18 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
        
     }
     }
+        /**
+        * Método que cierra la sesión del usuario y redirige a la pantalla de inicio de sesión.
+        */
         private void cerrarSesion() {
         ManejadorSesion.borrarDatosSesion();
         FrmInicioSesion frmInicio = new FrmInicioSesion(); 
         frmInicio.setVisible(true);
         this.dispose();
     }
+         /**
+        * Método que abre la ventana para actualizar los datos del paciente y cierra la ventana actual.
+        */
         private void actualizarDatos(){
         FrmActualizarDatosPaciente frmActualizar = new FrmActualizarDatosPaciente();
         frmActualizar.setVisible(true);

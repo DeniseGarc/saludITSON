@@ -219,6 +219,9 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
 
     private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
     }//GEN-LAST:event_lblCerrarSesionMouseClicked
+    /**
+    * Método que carga el nombre completo del médico basado en el ID del usuario en la sesión.
+    */
     private void cargarNombreMedico() {
         try {
             String idUsuario = ManejadorSesion.getIdUsuario();
