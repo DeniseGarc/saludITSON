@@ -10,6 +10,17 @@ import excepciones.NegocioException;
 import java.awt.Color;
 import javax.swing.JOptionPane;
 import sesion.ManejadorSesion;
+import excepciones.NegocioException;
+import excepciones.PersistenciaException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -18,12 +29,18 @@ import sesion.ManejadorSesion;
 public class FrmCitasPaciente extends javax.swing.JFrame {
 
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
+    private int citaSeleccionada = 0;
+  
     /**
-     * Creates new form FrmCitas
+     * Form de las citas del paciente, aqui se muestra una tabla con las citas
+     * proximas del paciente. Utiliza el ID obtenido del login del
+     * frmInicioSesion para mostrar las citas del paciente logeado.
      */
-    public FrmCitasPaciente() {
+    public FrmCitasPaciente(int id) {
         initComponents();
-        cargarNombrePaciente();
+        idPaciente = id;
+        this.cargarCitas();
     }
 
     /**
@@ -158,20 +175,22 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
 
         tablaCitas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Fecha y hora", "Especialidad", "Médico"
+                "Fecha", "Hora", "Especialidad", "Médico"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -182,12 +201,20 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tablaCitas.setColumnSelectionAllowed(true);
         tablaCitas.getTableHeader().setReorderingAllowed(false);
+        tablaCitas.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablaCitasMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(tablaCitas);
+        tablaCitas.getColumnModel().getSelectionModel().setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
         if (tablaCitas.getColumnModel().getColumnCount() > 0) {
             tablaCitas.getColumnModel().getColumn(0).setResizable(false);
             tablaCitas.getColumnModel().getColumn(1).setResizable(false);
             tablaCitas.getColumnModel().getColumn(2).setResizable(false);
+            tablaCitas.getColumnModel().getColumn(3).setResizable(false);
         }
 
         btnAgendarCita.setBackground(new java.awt.Color(30, 98, 159));
@@ -282,8 +309,13 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgendarCitaActionPerformed
 
     private void btnCancelarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarCitaActionPerformed
-        // TODO add your handling code here:
+        this.CancelarCita();
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
+
+    private void tablaCitasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCitasMouseClicked
+        this.citaSeleccionada = this.tablaCitas.getSelectedRow();
+
+    }//GEN-LAST:event_tablaCitasMouseClicked
 
     private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
         cerrarSesion();
@@ -324,42 +356,6 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         this.dispose();
     }
 
-    
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(FrmCitasPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(FrmCitasPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(FrmCitasPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(FrmCitasPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new FrmCitasPaciente().setVisible(true);
-//            }
-//        });
-//    }
     private void agendarCita() {
         FrmAgendarCita frmAgendarCita = new FrmAgendarCita();
         frmAgendarCita.setVisible(true);
@@ -371,6 +367,70 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         frmGenerarConsulta.setVisible(true);
         dispose();
     }
+
+    private void consultasPrevias() {
+        FrmConsultasPaciente consultasPaciente = new FrmConsultasPaciente(this.idPaciente);
+        consultasPaciente.setVisible(true);
+        this.dispose();
+    }
+
+     /**
+     * Metodo para mostrar los datos de las citas del paciente en la tabla.
+     */
+    private void cargarCitas() {
+        //        citaBO.cargarActivistas(tablaCitas, idPaciente);
+                // Obtener el modelo de la tabla y limpiar cualquier dato previo
+                DefaultTableModel modelo = (DefaultTableModel) this.tablaCitas.getModel();
+                modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+        
+                try {
+                    // Obtener la lista de Citas desde la capa de negocio (BO)
+                    List<CitaDTO> lista = citaBO.citasActivasPaciente(String.valueOf(idPaciente));
+        
+                    // Recorrer la lista de Citas y las agrega como filas en la tabla
+                    for (CitaDTO citas : lista) {
+                        if (citas.getEstado().equalsIgnoreCase("activa")) { // Valida que solo llene la tabla con citas que tengan el estado "Activa".
+                            modelo.addRow(new Object[]{
+                                citas.getFechaHora().toLocalDate(),
+                                citas.getFechaHora().toLocalTime(), // Fecha y hora de la cita.
+                                citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
+                                citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
+                            });
+                        } else {
+        
+                        }
+        
+                    }
+                } catch (NegocioException ex) {
+                    // Manejo de errores en caso de que falle la obtención de datos
+                    Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+                    JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                }
+        
+            }
+        
+            private void CancelarCita() {
+                // Si no hay ningun espacio seleccionado y se presiona el boton cancelar, muestra un error.
+                if (this.citaSeleccionada < 0) {
+                    JOptionPane.showMessageDialog(null, "Error: No ha seleccionado una cita para eliminar");
+                } else {
+                    // Crear variables para tomar los valores de la cita seleccionada para posteriormente usarlos.    
+                    String nombreMedico = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 3));
+                    String fecha = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 0));
+                    String hora = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 1));
+                    String fechaHora = fecha + " " + hora + ":00"; // Separa la fecha y la hora debido a un problema con el formato.
+                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+                    LocalDateTime fechaHoraConvertido = LocalDateTime.parse(fechaHora, formato); //Convierte el string con al fecha y hora en localdatetime.
+                    try {
+                        int idMedico = this.citaBO.ObtenerMedicoPorNombre(nombreMedico); //Obtiene el id del medico de la cita seleccionada.
+                        this.citaBO.ActualizarEstadoCancelarCita(idMedico, fechaHoraConvertido); //Posteriormente toma el id del medico y busca la cita seleccionada 
+                        this.cargarCitas();// Despues de eliminar la cita, actualiza la tabla. // para eliminarla
+                    } catch (PersistenciaException ex) {
+                        Logger.getLogger(FrmCitasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                        JOptionPane.showMessageDialog(null, "Error: error al obtener los datos de la tabla");
+                    }
+                }
+            }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgendarCita;

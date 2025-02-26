@@ -123,13 +123,13 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnGenerarConsulta">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Generar consulta"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="2b" green="cc" red="80" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Generar consulta"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnGenerarConsultaActionPerformed"/>
@@ -137,13 +137,13 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnConsultaPrevia">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Consultas previas"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="9f" green="62" red="1e" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Consultas previas"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnConsultaPreviaActionPerformed"/>
@@ -249,14 +249,20 @@
             <Component class="javax.swing.JTable" name="tablaCitas">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="3" rowCount="4">
-                    <Column editable="false" title="Fecha y hora" type="java.lang.Object"/>
+                  <Table columnCount="4" rowCount="6">
+                    <Column editable="false" title="Fecha" type="java.lang.Object"/>
+                    <Column editable="false" title="Hora" type="java.lang.Object"/>
                     <Column editable="false" title="Especialidad" type="java.lang.String"/>
                     <Column editable="false" title="M&#xe9;dico" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
-                  <TableColumnModel selectionModel="0">
+                  <TableColumnModel selectionModel="1">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
+                      <Title/>
+                      <Editor/>
+                      <Renderer/>
+                    </Column>
                     <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
@@ -274,22 +280,26 @@
                     </Column>
                   </TableColumnModel>
                 </Property>
+                <Property name="columnSelectionAllowed" type="boolean" value="true"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="tablaCitasMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
         <Component class="javax.swing.JButton" name="btnAgendarCita">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Agendar Cita"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="9f" green="62" red="1e" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Agendar Cita"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnAgendarCitaActionPerformed"/>
@@ -297,21 +307,21 @@
         </Component>
         <Component class="javax.swing.JLabel" name="lblCitasProximas">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Citas pr&#xf3;ximas"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Citas pr&#xf3;ximas"/>
           </Properties>
         </Component>
         <Component class="javax.swing.JButton" name="btnCancelarCita">
           <Properties>
+            <Property name="text" type="java.lang.String" value="Cancelar cita"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="1d" green="36" red="c3" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Cancelar cita"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarCitaActionPerformed"/>

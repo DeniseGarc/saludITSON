@@ -1,14 +1,17 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package GUI;
-
+import BO.CitaBO;
+import DTO.ConsultaDTO;
 import BO.PacienteBO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
 import java.awt.Color;
 import sesion.ManejadorSesion;
+import excepciones.PersistenciaException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -158,20 +161,20 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
 
         tablaConsultas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha y hora", "Especialidad", "Médico", "Diagnóstico", "Tratamiento", "Estado"
+                "Fecha", "Hora", "Especialidad", "Médico", "Diagnóstico", "Tratamiento", "Estado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -191,6 +194,7 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
             tablaConsultas.getColumnModel().getColumn(3).setResizable(false);
             tablaConsultas.getColumnModel().getColumn(4).setResizable(false);
             tablaConsultas.getColumnModel().getColumn(5).setResizable(false);
+            tablaConsultas.getColumnModel().getColumn(6).setResizable(false);
         }
 
         lblCitasProximas.setText("Consultas previas");
@@ -199,8 +203,6 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         lblDesde.setText("Desde");
 
         lblHasta.setText("Hasta");
-
-        cBoxEspecialidad.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         btnFiltrar.setText("Filtrar");
         btnFiltrar.setBackground(new java.awt.Color(128, 204, 43));
@@ -337,47 +339,46 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         frmActualizar.setVisible(true);
         this.dispose();
     }
-//    /**
-//     * @param args the command line arguments
-//     */
-//    public static void main(String args[]) {
-//        /* Set the Nimbus look and feel */
-//        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-//        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-//         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-//         */
-//        try {
-//            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-//                if ("Nimbus".equals(info.getName())) {
-//                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-//                    break;
-//                }
-//            }
-//        } catch (ClassNotFoundException ex) {
-//            java.util.logging.Logger.getLogger(FrmConsultasPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (InstantiationException ex) {
-//            java.util.logging.Logger.getLogger(FrmConsultasPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (IllegalAccessException ex) {
-//            java.util.logging.Logger.getLogger(FrmConsultasPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-//            java.util.logging.Logger.getLogger(FrmConsultasPaciente.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-//        }
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//        //</editor-fold>
-//
-//        /* Create and display the form */
-//        java.awt.EventQueue.invokeLater(new Runnable() {
-//            public void run() {
-//                new FrmConsultasPaciente().setVisible(true);
-//            }
-//        });
-//    }
+    public void cargarTabla(){
+        try {
+            
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaConsultas.getModel();
+            modelo = this.citaBO.ObtenerConsultasPrevias(tablaConsultas, idPaciente);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: error al cargar los datos");
+        }
+
+    }
+      public void cargarTablaFiltro(){
+        try {
+            
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaConsultas.getModel();
+            modelo = this.citaBO.ObtenerConsultasPreviasFiltro(tablaConsultas, this.idPaciente, this.dtPkrDesde.getDate(), this.dtPkrHasta.getDate(), this.cBoxEspecialidad.getItemAt(this.cBoxEspecialidad.getSelectedIndex()));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: error al cargar los datos filtrados");
+        }
+
+    }
+    public void citas(){
+        FrmCitasPaciente citas = new FrmCitasPaciente(this.idPaciente);
+        citas.setVisible(true);
+        this.dispose();
+    }
+    public void especialidades(){
+        List<String> listaEspecialidades;
+        try{
+           listaEspecialidades=this.citaBO.obtenerEspecialidades();
+        for (int i = 0; i < listaEspecialidades.size(); i++) {
+            this.cBoxEspecialidad.addItem(listaEspecialidades.get(i));
+        } 
+        }catch(Exception e){
+            Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, null, e);
+            JOptionPane.showMessageDialog(null, "Error: No hay especialidades disponibles");
+        }
+        
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCitas;

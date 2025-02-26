@@ -6,6 +6,7 @@ package GUI;
 
 import BO.CitaBO;
 import DTO.CitaEmergenciaDTO;
+import DTO.ConsultaDTO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
 import java.util.List;
@@ -20,16 +21,18 @@ import sesion.ManejadorSesion;
  */
 public class FrmGenerarConsulta extends javax.swing.JFrame {
 
+    private int idPaciente;
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
 
     /**
      * Creates new form FrmGenerarConsulta
      */
-    public FrmGenerarConsulta() {
+    public FrmGenerarConsulta(int id) {
         initComponents();
         llenarComboEspecialidad();
         btnGenerarFolio.setEnabled(false);
         agregarListener();
+        idPaciente = id;
     }
 
     /**
@@ -305,12 +308,14 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
 //    }
     private void generarFolio() {
         try {
-            CitaEmergenciaDTO cita = citaBO.asignarCitaEmergencia(cBoxEspecialidad.getSelectedItem().toString(), ManejadorSesion.getIdUsuario());
+            CitaEmergenciaDTO cita = citaBO.asignarCitaEmergencia(cBoxEspecialidad.getSelectedItem().toString(), String.valueOf(this.idPaciente)); //Usa el idPaciente que se manda desde la otra clase, ya no usa el manejadorsesion.
             lblMedico.setText(cita.getMedicoDTO().getNombresMedico() + " " + cita.getMedicoDTO().getApellidoPaternoMedico() + " " + cita.getMedicoDTO().getApellidoMaternoMedico());
             lblHora.setText("Fecha: " + cita.getFechaHora().toLocalDate().toString() + " Hora: " + cita.getFechaHora().toLocalTime().toString());
             lblFolio.setText(cita.getFolioCita());
-            lblInfo3.setText("Su folio será valido hasta las "+cita.getFechaHora().toLocalTime().plusMinutes(10));
+            lblInfo3.setText("Su folio será valido hasta las " + cita.getFechaHora().toLocalTime().plusMinutes(10));
             btnGenerarFolio.setEnabled(false);
+
+
         } catch (NegocioException ex) {
             Logger.getLogger(FrmGenerarConsulta.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -348,7 +353,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
     private void regresar() {
 
         if (lblFolio.getText().isBlank()) {
-            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
             frmCitasPaciente.setVisible(true);
             dispose();
             return;
@@ -361,10 +366,18 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
                 Logger.getLogger(FrmGenerarConsulta.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
             frmCitasPaciente.setVisible(true);
             dispose();
         }
+    }
+
+    private void regresarNormal() {
+
+        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
+        frmCitasPaciente.setVisible(true);
+        dispose();
+
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -1,9 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package BO;
-
 import DAO.IPacienteDAO;
 import DAO.PacienteDAO;
 import DTO.DireccionDTO;
@@ -22,6 +17,7 @@ import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import DAO.IUsuarioDAO;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -46,9 +42,9 @@ public class PacienteBO {
      * (PacienteDTO).
      *
      * @param pacienteNuevo Objeto DTO que contiene la información del paciente
-     * a agregar.
+     *                      a agregar.
      * @return boolean Devuelve true si el paciente se agregó correctamente,
-     * false en caso contrario.
+     *         false en caso contrario.
      * @throws NegocioException Si hay problemas en las capas.
      */
     public boolean registrarPaciente(PacienteDTO pacienteNuevo) throws NegocioException {
@@ -89,6 +85,14 @@ public class PacienteBO {
         }
     }
 
+    /**
+     * Metodo que valida los datos del paciente, si uno de los datos introducidos no
+     * cumple con los
+     * requerimientos, devuelve el error correspondiente.
+     * 
+     * @param paciente
+     * @return
+     */
     private String validarDatosPaciente(PacienteDTO paciente) {
         String nombresPaciente = paciente.getNombresPaciente();
         String apellidoPaternoPaciente = paciente.getApellidoPaternoPaciente();
@@ -131,11 +135,44 @@ public class PacienteBO {
         if (!correo.matches("^[a-zA-Z0-9._]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$")) {
             return "El correo electrónico ingresado no está en el formato correcto";
         }
-        if (!nombresPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1 ]+") || !apellidoPaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+") || !apellidoMaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+")) {
+        if (!nombresPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1 ]+")
+                || !apellidoPaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+")
+                || !apellidoMaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+")) {
             return "Nombre en formato incorrecto, puede ingresar sus nombres pero solo ingrese un apellido por campo";
         }
 
         return "validos";
+    }
+
+    /*
+     * Metodo que se encarga de validar que el correo y la contraseña existen.
+     * Si si existen en la base de datos, el paciente se logea.
+     * Muestra un error correspondiente en caso contrario.
+     */
+    public int Login(String correo, String contrasena) throws NegocioException, PersistenciaException {
+        try {
+
+            // Validar que los campos no esten vacios.
+            if (correo == null || contrasena == null) {
+                throw new NegocioException(
+                        "Error: El correo o la contraseña son incorrectos o no se encuentran registados");
+
+            } else if (correo.isEmpty() || contrasena.isEmpty()) {
+                JOptionPane.showMessageDialog(null, "Error: Los campos estan vacios.");
+                return 0;
+            } else {
+                int id = pacienteDAO.consultarIDPacientePorContrasenaCorreo(correo, contrasena);
+                return id;
+            }
+
+        } catch (NegocioException pe) {
+            // Registro de error con el logger
+            logger.log(Level.SEVERE, "Error: error al obtener el ID en la base de datos", pe);
+            // Muestra excepcion con un mensaje
+
+            throw new NegocioException("Error al intentar registrar en el sistema.");
+
+        }
     }
 
     public static boolean esCampoValido(String campo) {
@@ -185,11 +222,14 @@ public class PacienteBO {
             return "El teléfono debe ser numérico y de máximo 10 dígitos";
         }
 
-        if (nombresPaciente.length() > 100 || apellidoPaternoPaciente.length() > 50 || apellidoMaternoPaciente.length() > 50) {
+        if (nombresPaciente.length() > 100 || apellidoPaternoPaciente.length() > 50
+                || apellidoMaternoPaciente.length() > 50) {
             return "Los nombres y apellidos no deben exceder los 100 y 50 caracteres, respectivamente";
         }
 
-        if (!nombresPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1 ]+") || !apellidoPaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+") || !apellidoMaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+")) {
+        if (!nombresPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1 ]+")
+                || !apellidoPaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+")
+                || !apellidoMaternoPaciente.matches("[a-zA-ZÁ-Ýá-ý\u00f1\u00d1]+")) {
             return "Nombre en formato incorrecto, solo ingrese letras y un espacio entre los nombres";
         }
 

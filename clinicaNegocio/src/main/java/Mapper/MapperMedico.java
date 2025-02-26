@@ -17,7 +17,7 @@ import java.util.List;
 public class MapperMedico {
 
     public MedicoDTO convertirADTO(Medico medico) {
-        return new MedicoDTO(String.valueOf(medico.getIDUsuario()), medico.getNombresMedico(), medico.getApellidoPaternoMedico(), medico.getApellidoMaternoMedico());
+        return new MedicoDTO(String.valueOf(medico.getIDUsuario()), medico.getNombresMedico(), medico.getApellidoPaternoMedico(), medico.getApellidoMaternoMedico(), medico.getEspecialidad());
     }
 
     public Medico convertirAEntidad(MedicoDTO medicoDTO) {

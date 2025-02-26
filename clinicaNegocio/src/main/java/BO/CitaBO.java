@@ -22,6 +22,11 @@ import entidades.Medico;
 import entidades.Cita;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -34,6 +39,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -172,6 +180,9 @@ public class CitaBO {
                 folio = generarFolio();
                 CitaEmergenciaDTO citaEmergencia = new CitaEmergenciaDTO(medicoHorarioCita.getValue(), folio, medicoCita, idPaciente);
                 Cita citaGenerada = citaDAO.generarCitaEmergencia(convertidorCita.convertirAEntidad(citaEmergencia));
+                //Cambio: Genera una consultaDTO para posteriormente usar el mapper, convertirlo a entidad y registrar la consulta.
+                ConsultaDTO consultaDTO = new ConsultaDTO("En espera","En espera","En espera",String.valueOf(citaGenerada.getIDCita()));
+                this.citaDAO.registrarConsulta(convertidorCita.convertirAEntidad(consultaDTO));
                 if (citaGenerada != null) {
                     return citaEmergencia;
                 }
@@ -182,7 +193,11 @@ public class CitaBO {
             throw new NegocioException(ex.getMessage());
         }
     }
-
+    /**
+     * Metodo que devuelve una lista de las horas disponibles del medico con el id correspondiente.
+     * @param idMedico
+     * @return 
+     */
     private List<LocalTime> obtenerHorasDisponiblesMedico(int idMedico) {
         // Tu implementación actual para obtener horas disponibles
         Medico medico = new Medico();
@@ -205,7 +220,14 @@ public class CitaBO {
             throw new NegocioException("No fue posible cancelar la cita");
         }
     }
-
+    /**
+     * Metodo que recibe un id por el cual actualiza el estado de las citas
+     * Si no ocurre ningun error regresa un true.
+     * Si ocurre un error devuelve false.
+     * @param id
+     * @return true si todo sale bien, false en caso contrario.
+     * @throws NegocioException 
+     */
     public boolean actualizarCitaPorId(String id) throws NegocioException {
         try {
             Cita cita = citaDAO.consultarCitaPorId(Integer.parseInt(id));
@@ -216,7 +238,9 @@ public class CitaBO {
             throw new NegocioException("No fue posible marcar como atendida la cita");
         }
     }
-
+    /**
+     * Metodo que valida los estaods de las citas.
+     */
     private void verificarValidezCitasActivas() {
         try {
             List<Cita> citasActivas = citaDAO.consultarCitasActivas();
@@ -233,7 +257,12 @@ public class CitaBO {
             Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, "Ha ocurrido un error al intentar cambiar el estado de la cita", ex);
         }
     }
-
+    /**
+     * Metodo que devuelve las citas activas del medico.
+     * @param idMedico
+     * @return
+     * @throws NegocioException 
+     */
     public List<CitaDTO> citasActivasMedico(String idMedico) throws NegocioException {
         try {
             List<Cita> citas = citaDAO.consultarCitasActivas().stream().filter(cita -> cita.getMedico().getIDUsuario() == Integer.parseInt(idMedico)).toList();
@@ -253,7 +282,12 @@ public class CitaBO {
             throw new NegocioException("Error al obtener las citas activas del paciente");
         }
     }
-
+    /**
+     * Metodo que obtiene una cita por su id.
+     * @param idMedico
+     * @return
+     * @throws NegocioException 
+     */
     public CitaDTO obtenerCitaPorId(String idMedico) throws NegocioException {
         try {
             return convertidorCita.convertirADTO(citaDAO.consultarCitaPorId(Integer.parseInt(idMedico)));
@@ -262,7 +296,13 @@ public class CitaBO {
             throw new NegocioException("No es posible obtener la cita con el id indicado");
         }
     }
-
+    /**
+     * Metodo que recibe consultaDTO para registrarla.
+     * Valida si la consulta es null o si tiene algun campo vacio, envia el mensaje correspondiente.
+     * @param consulta
+     * @return
+     * @throws NegocioException 
+     */
     public boolean registrarConsulta(ConsultaDTO consulta) throws NegocioException {
         if (consulta == null) {
             throw new NegocioException("Error al intentar registrar la consulta");
@@ -280,4 +320,89 @@ public class CitaBO {
             throw new NegocioException("Error al intentar registrar la consulta");
         }
     }
+    /**
+     * Metodo que instancia el metodo para eliminar la cita seleccionada.
+     * Devuelve true si no hay errores de persistencia.
+     * Devuelve false y un mensaje de error en caso contrario.
+     * @param idMedico
+     * @param FechaHora
+     * @return
+     * @throws PersistenciaException 
+     */
+    public boolean ActualizarEstadoCancelarCita(int idMedico,LocalDateTime FechaHora) throws PersistenciaException{
+        try{
+            citaDAO.ActualizarEstadoCancelarCita(idMedico, FechaHora);
+            return true;
+        }catch(PersistenciaException pe){
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, pe);
+           JOptionPane.showMessageDialog(null, "Error: error al eliminar cita.");
+           return false;
+        }
+        
+       
+        
+    }
+    /**
+     * Obtener Medico por su nombre.
+     * @param nombresMedico
+     * @return
+     * @throws PersistenciaException 
+     */
+     public int ObtenerMedicoPorNombre(String nombresMedico) throws PersistenciaException{
+         try{
+            int id = medicoDAO.consultarMedicoPorNombre(nombresMedico);
+             return id;
+         }catch(PersistenciaException pe){
+           Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, pe);
+           JOptionPane.showMessageDialog(null, "Error: error al obtener el medico.");
+           return 0;
+         }
+            
+        }
+        /**
+     * Metodo para obtener las consultas previas del Paciente.
+     * @param tabla
+     * @param id
+     * @return
+     * @throws PersistenciaException 
+     */
+    public DefaultTableModel ObtenerConsultasPrevias(JTable tabla, int id) throws PersistenciaException {
+        try {
+           return this.citaDAO.ObtenerConsultasPrevias(tabla, id);
+
+        } catch (PersistenciaException pe) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, pe);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+            
+        }
+    }
+            /**
+     * Metodo para obtener las consultas previas del Paciente.
+     * @param tabla
+     * @param id
+     * @param fechaDesde
+     * @param fechaHasta
+     * @param especialidad
+     * @return
+     * @throws PersistenciaException 
+     */
+    public DefaultTableModel ObtenerConsultasPreviasFiltro(JTable tabla, int id, LocalDate fechaDesde, LocalDate fechaHasta,String especialidad) throws PersistenciaException {
+        try {
+           return this.citaDAO.ObtenerConsultasPreviasFiltro(tabla, id, fechaDesde, fechaHasta, especialidad);
+
+        } catch (PersistenciaException pe) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, pe);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+            
+        }
+    }
+    public List<String> obtenerEspecialidades() throws PersistenciaException{
+        try {
+            return this.citaDAO.ObtenerEspecialidadesCitas();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al conseguir las especialidades");
+        }
+    }
 }
+

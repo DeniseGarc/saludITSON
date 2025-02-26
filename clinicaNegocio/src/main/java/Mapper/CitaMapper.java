@@ -51,12 +51,14 @@ public class CitaMapper {
         return new CitaDTO(
                 String.valueOf(cita.getIDCita()),
                 cita.getFechaHora(),
+                cita.getEstadoCita(),
                 cita.getFolioCita(),
                 cita.getTipo(),
                 new MedicoDTO(String.valueOf(cita.getMedico().getIDUsuario()),
                         cita.getMedico().getNombresMedico(),
                         cita.getMedico().getApellidoPaternoMedico(),
-                        cita.getMedico().getApellidoMaternoMedico()
+                        cita.getMedico().getApellidoMaternoMedico(),
+                        cita.getMedico().getEspecialidad()
                 ),
                 new PacienteSimpleDTO(
                         String.valueOf(cita.getPaciente().getIDUsuario()),

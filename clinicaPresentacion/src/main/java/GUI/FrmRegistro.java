@@ -1,10 +1,5 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
 package GUI;
 
-//import excepciones.NegocioException;
 import BO.PacienteBO;
 import DTO.PacienteDTO;
 import configuracion.DependencyInjector;
@@ -414,3 +409,4 @@ public class FrmRegistro extends javax.swing.JFrame {
     private javax.swing.JTextField txtTelefono;
     // End of variables declaration//GEN-END:variables
 }
+
