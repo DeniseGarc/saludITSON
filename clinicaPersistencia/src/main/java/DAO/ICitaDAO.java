@@ -45,4 +45,6 @@ public interface ICitaDAO {
     public List<String> ObtenerEspecialidadesCitas() throws PersistenciaException;
     
     public DefaultTableModel ObtenerConsultasPreviasMedico(JTable tabla, int id) throws PersistenciaException;
+    
+     public boolean CompararFechas(LocalDateTime fecha);
 }

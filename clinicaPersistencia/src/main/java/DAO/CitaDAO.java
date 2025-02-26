@@ -17,6 +17,7 @@ import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -407,6 +408,22 @@ public class CitaDAO implements ICitaDAO {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al conseguir las especialidades");
 
+        }
+    }
+    /**
+     * Metodo que compara 2 fechas para verificar si faltan menos de 24 horas para la cita.
+     * Regresa true si la fecha esta a menos de 24 horas.
+     * Regresa false si la fecha esta a mas de 24 horas de la fecha.
+     * @param fecha
+     * @return 
+     */
+    public boolean CompararFechas(LocalDateTime fecha){
+        LocalDateTime actual = LocalDateTime.now(); //Fecha y hora actual
+        Long horasTranscurridas = ChronoUnit.HOURS.between(actual, fecha); //Calcula las horas desde hoy hasta la fecha introducida.
+        if (horasTranscurridas<= 24) {
+            return true;
+        }else {
+            return false;
         }
     }
 }
