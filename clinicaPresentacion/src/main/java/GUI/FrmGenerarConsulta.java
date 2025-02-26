@@ -21,18 +21,16 @@ import sesion.ManejadorSesion;
  */
 public class FrmGenerarConsulta extends javax.swing.JFrame {
 
-    private int idPaciente;
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
 
     /**
      * Creates new form FrmGenerarConsulta
      */
-    public FrmGenerarConsulta(int id) {
+    public FrmGenerarConsulta() {
         initComponents();
         llenarComboEspecialidad();
         btnGenerarFolio.setEnabled(false);
         agregarListener();
-        idPaciente = id;
     }
 
     /**
@@ -308,7 +306,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
 //    }
     private void generarFolio() {
         try {
-            CitaEmergenciaDTO cita = citaBO.asignarCitaEmergencia(cBoxEspecialidad.getSelectedItem().toString(), String.valueOf(this.idPaciente)); //Usa el idPaciente que se manda desde la otra clase, ya no usa el manejadorsesion.
+            CitaEmergenciaDTO cita = citaBO.asignarCitaEmergencia(cBoxEspecialidad.getSelectedItem().toString(), ManejadorSesion.getIdUsuario()); //Usa el idPaciente que se manda desde la otra clase, ya no usa el manejadorsesion.
             lblMedico.setText(cita.getMedicoDTO().getNombresMedico() + " " + cita.getMedicoDTO().getApellidoPaternoMedico() + " " + cita.getMedicoDTO().getApellidoMaternoMedico());
             lblHora.setText("Fecha: " + cita.getFechaHora().toLocalDate().toString() + " Hora: " + cita.getFechaHora().toLocalTime().toString());
             lblFolio.setText(cita.getFolioCita());
@@ -353,7 +351,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
     private void regresar() {
 
         if (lblFolio.getText().isBlank()) {
-            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
             frmCitasPaciente.setVisible(true);
             dispose();
             return;
@@ -366,7 +364,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
                 Logger.getLogger(FrmGenerarConsulta.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
-            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
+            FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
             frmCitasPaciente.setVisible(true);
             dispose();
         }
@@ -374,7 +372,7 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
 
     private void regresarNormal() {
 
-        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
+        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
         frmCitasPaciente.setVisible(true);
         dispose();
 

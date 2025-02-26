@@ -13,6 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -27,12 +28,13 @@ import javax.swing.table.DefaultTableModel;
  * @author Alici
  */
 public class CitaDAO implements ICitaDAO {
+
     // Conexión a la base de datos
     IConexion conexion;
 
     /**
      * Constructor que inicializa la conexión a la base de datos.
-     * 
+     *
      * @param conexion Objeto que gestiona la conexión a la base de datos.
      */
     public CitaDAO(IConexion conexion) {
@@ -41,7 +43,7 @@ public class CitaDAO implements ICitaDAO {
 
     /**
      * Agenda una nueva cita en la base de datos.
-     * 
+     *
      * @param cita objeto que contiene los detalles de la cita a agendar.
      * @return true si la cita se agendó correctamente, false en caso contrario.
      * @throws PersistenciaException si ocurre un error en la base de datos.
@@ -66,7 +68,7 @@ public class CitaDAO implements ICitaDAO {
 
     /**
      * Genera una cita de emergencia y la guarda en la base de datos.
-     * 
+     *
      * @param cita objeto que contiene los detalles de la cita de emergencia.
      * @return la cita con el ID generado por la base de datos.
      * @throws PersistenciaException si ocurre un error en la base de datos.
@@ -95,12 +97,13 @@ public class CitaDAO implements ICitaDAO {
     }
 
     /**
-     * Consulta si existe una cita para un médico y una fecha y hora específicas.
-     * 
+     * Consulta si existe una cita para un médico y una fecha y hora
+     * específicas.
+     *
      * @param fechaHora fecha y hora de la cita a consultar.
-     * @param idMedico  ID del médico para el cual se consulta la cita.
-     * @return true si existe una cita con la misma fecha y hora para ese médico,
-     *         false en caso contrario.
+     * @param idMedico ID del médico para el cual se consulta la cita.
+     * @return true si existe una cita con la misma fecha y hora para ese
+     * médico, false en caso contrario.
      * @throws PersistenciaException si ocurre un error en la base de datos.
      */
     @Override
@@ -120,9 +123,10 @@ public class CitaDAO implements ICitaDAO {
 
     /**
      * Consulta una cita en base a su folio.
-     * 
+     *
      * @param folio folio de la cita a consultar.
-     * @return la cita si se encuentra, o un objeto Cita vacío si no se encuentra.
+     * @return la cita si se encuentra, o un objeto Cita vacío si no se
+     * encuentra.
      * @throws PersistenciaException si ocurre un error en la base de datos.
      */
     @Override
@@ -145,7 +149,7 @@ public class CitaDAO implements ICitaDAO {
 
     /**
      * Consulta una cita por su ID.
-     * 
+     *
      * @param id ID de la cita a consultar.
      * @return la cita correspondiente al ID, o null si no se encuentra.
      * @throws PersistenciaException si ocurre un error en la base de datos.
@@ -194,10 +198,10 @@ public class CitaDAO implements ICitaDAO {
 
     /**
      * Actualiza el estado de una cita existente.
-     * 
+     *
      * @param cita la cita cuyo estado se desea actualizar.
      * @return true si se actualizó correctamente el estado, false en caso
-     *         contrario.
+     * contrario.
      * @throws PersistenciaException si ocurre un error en la base de datos.
      */
     @Override
@@ -216,7 +220,7 @@ public class CitaDAO implements ICitaDAO {
 
     /**
      * Consulta todas las citas activas.
-     * 
+     *
      * @return una lista con todas las citas activas.
      * @throws PersistenciaException si ocurre un error en la base de datos.
      */
@@ -264,10 +268,10 @@ public class CitaDAO implements ICitaDAO {
 
     /**
      * Registra una consulta para una cita.
-     * 
+     *
      * @param consulta objeto que contiene los detalles de la consulta.
      * @return true si la consulta se registró correctamente, false en caso
-     *         contrario.
+     * contrario.
      * @throws PersistenciaException si ocurre un error en la base de datos.
      */
     @Override
@@ -334,14 +338,14 @@ public class CitaDAO implements ICitaDAO {
             // Recorre el resultSet hasta que ya no encuentre
             while (rs.next()) {
                 LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
-                modelo.addRow(new Object[] { // Añade los datos a la tabla
-                        fechaHora.toLocalDate(),
-                        fechaHora.toLocalTime(),
-                        rs.getString("especialidad"),
-                        rs.getString("nombresMedico"),
-                        rs.getString("diagnostico"),
-                        rs.getString("Tratamiento"),
-                        rs.getString("estadoCita")
+                modelo.addRow(new Object[]{ // Añade los datos a la tabla
+                    fechaHora.toLocalDate(),
+                    fechaHora.toLocalTime(),
+                    rs.getString("especialidad"),
+                    rs.getString("nombresMedico"),
+                    rs.getString("diagnostico"),
+                    rs.getString("Tratamiento"),
+                    rs.getString("estadoCita")
                 });
             }
             return modelo;
@@ -354,10 +358,9 @@ public class CitaDAO implements ICitaDAO {
     }
 
     /**
-     * Metodo que devuelve la tabla lista con las consultas previas del Paciente con
-     * el filtro
-     * seleccionado.
-     * 
+     * Metodo que devuelve la tabla lista con las consultas previas del Paciente
+     * con el filtro seleccionado.
+     *
      * @param tabla
      * @param id
      * @return
@@ -389,14 +392,14 @@ public class CitaDAO implements ICitaDAO {
                 LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
                 // Toma los valores de los filtros e introduce los datos que cumplan los
                 // requerimientos en la tabla.
-                modelo.addRow(new Object[] { // Añade los datos a la tabla
-                        fechaHora.toLocalDate(),
-                        fechaHora.toLocalTime(),
-                        rs.getString("especialidad"),
-                        rs.getString("nombresMedico"),
-                        rs.getString("diagnostico"),
-                        rs.getString("Tratamiento"),
-                        rs.getString("estadoCita")
+                modelo.addRow(new Object[]{ // Añade los datos a la tabla
+                    fechaHora.toLocalDate(),
+                    fechaHora.toLocalTime(),
+                    rs.getString("especialidad"),
+                    rs.getString("nombresMedico"),
+                    rs.getString("diagnostico"),
+                    rs.getString("Tratamiento"),
+                    rs.getString("estadoCita")
                 });
 
             }
@@ -410,12 +413,9 @@ public class CitaDAO implements ICitaDAO {
     }
 
     /**
-     * Metodo que devuelve una lista para obtener las consultas previas del Paciente
-     * con el filtro
-     * seleccionado.
+     * Metodo que devuelve una lista para obtener las consultas previas del
+     * Paciente con el filtro seleccionado.
      *
-     * @param tabla
-     * @param id
      * @return
      * @throws PersistenciaException
      */

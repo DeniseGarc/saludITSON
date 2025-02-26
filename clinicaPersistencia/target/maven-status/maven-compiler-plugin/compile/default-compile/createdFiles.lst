@@ -1,7 +1,9 @@
 entidades\Paciente.class
+Encriptado\IEncriptador.class
 DAO\CitaDAO.class
 DAO\UsuarioDAO.class
 excepciones\PersistenciaException.class
+Encriptado\Encriptador.class
 DAO\MedicoDAO.class
 DAO\ICitaDAO.class
 DAO\IMedicoDAO.class

@@ -4,17 +4,15 @@
  */
 package GUI;
 
+import BO.CitaBO;
 import BO.PacienteBO;
+import DTO.CitaDTO;
 import configuracion.DependencyInjector;
-import excepciones.NegocioException;
 import java.awt.Color;
-import javax.swing.JOptionPane;
 import sesion.ManejadorSesion;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.logging.Level;
@@ -30,16 +28,17 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
 
     private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
+
     private int citaSeleccionada = 0;
-  
+
     /**
      * Form de las citas del paciente, aqui se muestra una tabla con las citas
      * proximas del paciente. Utiliza el ID obtenido del login del
      * frmInicioSesion para mostrar las citas del paciente logeado.
      */
-    public FrmCitasPaciente(int id) {
+    public FrmCitasPaciente() {
         initComponents();
-        idPaciente = id;
+        cargarNombrePaciente();
         this.cargarCitas();
     }
 
@@ -52,120 +51,22 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        panelBarraLateral = new javax.swing.JPanel();
-        lblAvatar = new javax.swing.JLabel();
-        btnGenerarConsulta = new javax.swing.JButton();
-        btnConsultaPrevia = new javax.swing.JButton();
-        btnCitas = new javax.swing.JButton();
-        lblCerrarSesion = new javax.swing.JLabel();
-        lblNombreCompletoPaciente = new javax.swing.JLabel();
         panelRedondo = new GUI.PanelRound();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaCitas = new javax.swing.JTable();
         btnAgendarCita = new javax.swing.JButton();
         lblCitasProximas = new javax.swing.JLabel();
         btnCancelarCita = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        lblAvatar = new javax.swing.JLabel();
+        lblCerrarSesion = new javax.swing.JLabel();
+        btnGenerarConsulta = new javax.swing.JButton();
+        lblNombreCompletoPaciente = new javax.swing.JLabel();
+        btnConsultaPrevia = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
         setSize(new java.awt.Dimension(844, 579));
-
-        panelBarraLateral.setBackground(new java.awt.Color(103, 172, 244));
-
-        lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/avatar.png"))); // NOI18N
-        lblAvatar.setPreferredSize(new java.awt.Dimension(30, 30));
-        lblAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblAvatarMouseClicked(evt);
-            }
-        });
-
-        btnGenerarConsulta.setBackground(new java.awt.Color(128, 204, 43));
-        btnGenerarConsulta.setForeground(new java.awt.Color(255, 255, 255));
-        btnGenerarConsulta.setText("Generar consulta");
-        btnGenerarConsulta.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarConsultaActionPerformed(evt);
-            }
-        });
-
-        btnConsultaPrevia.setBackground(new java.awt.Color(30, 98, 159));
-        btnConsultaPrevia.setForeground(new java.awt.Color(255, 255, 255));
-        btnConsultaPrevia.setText("Consultas previas");
-        btnConsultaPrevia.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnConsultaPreviaActionPerformed(evt);
-            }
-        });
-
-        btnCitas.setBackground(new java.awt.Color(30, 98, 159));
-        btnCitas.setForeground(new java.awt.Color(255, 255, 255));
-        btnCitas.setText("Citas");
-        btnCitas.setMaximumSize(new java.awt.Dimension(121, 23));
-        btnCitas.setMinimumSize(new java.awt.Dimension(121, 23));
-        btnCitas.setPreferredSize(new java.awt.Dimension(121, 23));
-        btnCitas.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCitasActionPerformed(evt);
-            }
-        });
-
-        lblCerrarSesion.setText("<html><u>Cerrar Sesión</u></html>");
-        lblCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                lblCerrarSesionMouseClicked(evt);
-            }
-            public void mouseEntered(java.awt.event.MouseEvent evt) {
-                lblCerrarSesionMouseEntered(evt);
-            }
-            public void mouseExited(java.awt.event.MouseEvent evt) {
-                lblCerrarSesionMouseExited(evt);
-            }
-        });
-
-        lblNombreCompletoPaciente.setText("jLabel1");
-
-        javax.swing.GroupLayout panelBarraLateralLayout = new javax.swing.GroupLayout(panelBarraLateral);
-        panelBarraLateral.setLayout(panelBarraLateralLayout);
-        panelBarraLateralLayout.setHorizontalGroup(
-            panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                            .addGap(41, 41, 41)
-                            .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                            .addGap(10, 10, 10)
-                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(lblNombreCompletoPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(btnGenerarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(9, Short.MAX_VALUE))
-        );
-        panelBarraLateralLayout.setVerticalGroup(
-            panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(lblNombreCompletoPaciente)
-                .addGap(12, 12, 12)
-                .addComponent(btnGenerarConsulta)
-                .addGap(18, 18, 18)
-                .addComponent(btnConsultaPrevia)
-                .addGap(18, 18, 18)
-                .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 344, Short.MAX_VALUE)
-                .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
-        );
-
-        lblAvatar.getAccessibleContext().setAccessibleName("");
 
         panelRedondo.setBackground(new java.awt.Color(255, 255, 255));
         panelRedondo.setRoundBottomLeft(30);
@@ -269,23 +170,107 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
                 .addGap(19, 19, 19))
         );
 
+        jPanel1.setBackground(new java.awt.Color(103, 172, 244));
+        jPanel1.setToolTipText("");
+
+        lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/avatar.png"))); // NOI18N
+        lblAvatar.setPreferredSize(new java.awt.Dimension(30, 30));
+        lblAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAvatarMouseClicked(evt);
+            }
+        });
+
+        lblCerrarSesion.setText("<html><u>Cerrar Sesión</u></html>");
+        lblCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseExited(evt);
+            }
+        });
+
+        btnGenerarConsulta.setBackground(new java.awt.Color(128, 204, 43));
+        btnGenerarConsulta.setForeground(new java.awt.Color(255, 255, 255));
+        btnGenerarConsulta.setText("Generar consulta");
+        btnGenerarConsulta.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGenerarConsultaActionPerformed(evt);
+            }
+        });
+
+        lblNombreCompletoPaciente.setText("jLabel1");
+
+        btnConsultaPrevia.setBackground(new java.awt.Color(30, 98, 159));
+        btnConsultaPrevia.setForeground(new java.awt.Color(255, 255, 255));
+        btnConsultaPrevia.setText("Consultas previas");
+        btnConsultaPrevia.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnConsultaPreviaActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(lblNombreCompletoPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(14, 14, 14)
+                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnGenerarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, 134, Short.MAX_VALUE)))))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(55, 55, 55)
+                        .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 52, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(22, 22, 22)
+                .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(lblNombreCompletoPaciente)
+                .addGap(18, 18, 18)
+                .addComponent(btnGenerarConsulta)
+                .addGap(18, 18, 18)
+                .addComponent(btnConsultaPrevia)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(14, 14, 14))
+        );
+
+        lblAvatar.getAccessibleContext().setAccessibleName("");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(panelBarraLateral, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(panelRedondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 27, Short.MAX_VALUE))
+                .addGap(0, 26, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(panelBarraLateral, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(20, 20, 20)
+                .addGap(21, 21, 21)
                 .addComponent(panelRedondo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
         );
 
         pack();
@@ -297,12 +282,8 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGenerarConsultaActionPerformed
 
     private void btnConsultaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPreviaActionPerformed
-        // TODO add your handling code here:
+        consultasPrevias();
     }//GEN-LAST:event_btnConsultaPreviaActionPerformed
-
-    private void btnCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCitasActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCitasActionPerformed
 
     private void btnAgendarCitaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgendarCitaActionPerformed
         agendarCita();
@@ -326,32 +307,33 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCerrarSesionMouseEntered
 
     private void lblCerrarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseExited
-        lblCerrarSesion.setForeground(new Color(0, 0,0));
+        lblCerrarSesion.setForeground(new Color(0, 0, 0));
     }//GEN-LAST:event_lblCerrarSesionMouseExited
 
     private void lblAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvatarMouseClicked
         actualizarDatos();
     }//GEN-LAST:event_lblAvatarMouseClicked
     private void cargarNombrePaciente() {
-    try {
-        String idUsuario = ManejadorSesion.getIdUsuario();
-        int idPaciente = Integer.parseInt(idUsuario);
-        String nombreCompleto = pacienteBO.obtenerNombreCompletoPaciente(idPaciente);
-        lblNombreCompletoPaciente.setText(nombreCompleto);
-    } catch (NegocioException e) {
-       
+        try {
+            String idUsuario = ManejadorSesion.getIdUsuario();
+            int idPaciente = Integer.parseInt(idUsuario);
+            String nombreCompleto = pacienteBO.obtenerNombreCompletoPaciente(idPaciente);
+            lblNombreCompletoPaciente.setText(nombreCompleto);
+        } catch (NegocioException e) {
+
+        }
     }
-    }
+
     private void cerrarSesion() {
-        
+
         ManejadorSesion.borrarDatosSesion();
         FrmInicioSesion frmInicio = new FrmInicioSesion();
         frmInicio.setVisible(true);
         this.dispose();
     }
-    
-    private void actualizarDatos(){
-       FrmActualizarDatosPaciente frmActualizar = new FrmActualizarDatosPaciente();
+
+    private void actualizarDatos() {
+        FrmActualizarDatosPaciente frmActualizar = new FrmActualizarDatosPaciente();
         frmActualizar.setVisible(true);
         this.dispose();
     }
@@ -369,81 +351,80 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }
 
     private void consultasPrevias() {
-        FrmConsultasPaciente consultasPaciente = new FrmConsultasPaciente(this.idPaciente);
+        FrmConsultasPaciente consultasPaciente = new FrmConsultasPaciente();
         consultasPaciente.setVisible(true);
         this.dispose();
     }
 
-     /**
+    /**
      * Metodo para mostrar los datos de las citas del paciente en la tabla.
      */
     private void cargarCitas() {
         //        citaBO.cargarActivistas(tablaCitas, idPaciente);
-                // Obtener el modelo de la tabla y limpiar cualquier dato previo
-                DefaultTableModel modelo = (DefaultTableModel) this.tablaCitas.getModel();
-                modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
-        
-                try {
-                    // Obtener la lista de Citas desde la capa de negocio (BO)
-                    List<CitaDTO> lista = citaBO.citasActivasPaciente(String.valueOf(idPaciente));
-        
-                    // Recorrer la lista de Citas y las agrega como filas en la tabla
-                    for (CitaDTO citas : lista) {
-                        if (citas.getEstado().equalsIgnoreCase("activa")) { // Valida que solo llene la tabla con citas que tengan el estado "Activa".
-                            modelo.addRow(new Object[]{
-                                citas.getFechaHora().toLocalDate(),
-                                citas.getFechaHora().toLocalTime(), // Fecha y hora de la cita.
-                                citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
-                                citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
-                            });
-                        } else {
-        
-                        }
-        
-                    }
-                } catch (NegocioException ex) {
-                    // Manejo de errores en caso de que falle la obtención de datos
-                    Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
-                    JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-        
-            }
-        
-            private void CancelarCita() {
-                // Si no hay ningun espacio seleccionado y se presiona el boton cancelar, muestra un error.
-                if (this.citaSeleccionada < 0) {
-                    JOptionPane.showMessageDialog(null, "Error: No ha seleccionado una cita para eliminar");
+        // Obtener el modelo de la tabla y limpiar cualquier dato previo
+        DefaultTableModel modelo = (DefaultTableModel) this.tablaCitas.getModel();
+        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+
+        try {
+            // Obtener la lista de Citas desde la capa de negocio (BO)
+            List<CitaDTO> lista = citaBO.citasActivasPaciente(String.valueOf(ManejadorSesion.getIdUsuario()));
+
+            // Recorrer la lista de Citas y las agrega como filas en la tabla
+            for (CitaDTO citas : lista) {
+                if (citas.getEstado().equalsIgnoreCase("activa")) { // Valida que solo llene la tabla con citas que tengan el estado "Activa".
+                    modelo.addRow(new Object[]{
+                        citas.getFechaHora().toLocalDate(),
+                        citas.getFechaHora().toLocalTime(), // Fecha y hora de la cita.
+                        citas.getMedicoDTO().getEspecialidad(), // Especialidad del Medico de la cita
+                        citas.getMedicoDTO().getNombresMedico() // Nombres del Medico.
+                    });
                 } else {
-                    // Crear variables para tomar los valores de la cita seleccionada para posteriormente usarlos.    
-                    String nombreMedico = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 3));
-                    String fecha = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 0));
-                    String hora = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 1));
-                    String fechaHora = fecha + " " + hora + ":00"; // Separa la fecha y la hora debido a un problema con el formato.
-                    DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-                    LocalDateTime fechaHoraConvertido = LocalDateTime.parse(fechaHora, formato); //Convierte el string con al fecha y hora en localdatetime.
-                    try {
-                        int idMedico = this.citaBO.ObtenerMedicoPorNombre(nombreMedico); //Obtiene el id del medico de la cita seleccionada.
-                        this.citaBO.ActualizarEstadoCancelarCita(idMedico, fechaHoraConvertido); //Posteriormente toma el id del medico y busca la cita seleccionada 
-                        this.cargarCitas();// Despues de eliminar la cita, actualiza la tabla. // para eliminarla
-                    } catch (PersistenciaException ex) {
-                        Logger.getLogger(FrmCitasPaciente.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(null, "Error: error al obtener los datos de la tabla");
-                    }
+
                 }
+
             }
+        } catch (NegocioException ex) {
+            // Manejo de errores en caso de que falle la obtención de datos
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al cargar citas: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+    }
+
+    private void CancelarCita() {
+        // Si no hay ningun espacio seleccionado y se presiona el boton cancelar, muestra un error.
+        if (this.citaSeleccionada < 0) {
+            JOptionPane.showMessageDialog(null, "Error: No ha seleccionado una cita para eliminar");
+        } else {
+            // Crear variables para tomar los valores de la cita seleccionada para posteriormente usarlos.    
+            String nombreMedico = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 3));
+            String fecha = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 0));
+            String hora = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 1));
+            String fechaHora = fecha + " " + hora + ":00"; // Separa la fecha y la hora debido a un problema con el formato.
+            DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+            LocalDateTime fechaHoraConvertido = LocalDateTime.parse(fechaHora, formato); //Convierte el string con al fecha y hora en localdatetime.
+            try {
+                int idMedico = this.citaBO.ObtenerMedicoPorNombre(nombreMedico); //Obtiene el id del medico de la cita seleccionada.
+                this.citaBO.ActualizarEstadoCancelarCita(idMedico, fechaHoraConvertido); //Posteriormente toma el id del medico y busca la cita seleccionada 
+                this.cargarCitas();// Despues de eliminar la cita, actualiza la tabla. // para eliminarla
+            } catch (PersistenciaException ex) {
+                Logger.getLogger(FrmCitasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(null, "Error: error al obtener los datos de la tabla");
+            }
+        }
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgendarCita;
     private javax.swing.JButton btnCancelarCita;
-    private javax.swing.JButton btnCitas;
     private javax.swing.JButton btnConsultaPrevia;
     private javax.swing.JButton btnGenerarConsulta;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAvatar;
     private javax.swing.JLabel lblCerrarSesion;
     private javax.swing.JLabel lblCitasProximas;
     private javax.swing.JLabel lblNombreCompletoPaciente;
-    private javax.swing.JPanel panelBarraLateral;
     private GUI.PanelRound panelRedondo;
     private javax.swing.JTable tablaCitas;
     // End of variables declaration//GEN-END:variables

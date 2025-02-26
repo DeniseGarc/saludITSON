@@ -25,15 +25,13 @@ import sesion.ManejadorSesion;
  * @author Alici
  */
 public class FrmAgendarCita extends javax.swing.JFrame {
-    private int idPaciente;
     private CitaBO citaBO = DependencyInjector.crearCitaBO();
 
     /**
      * Creates new form FrmAgendarCita
      */
-    public FrmAgendarCita(int id) {
+    public FrmAgendarCita() {
         initComponents();
-        idPaciente=id;
         cBoxMedico.setEnabled(false);
         cBoxHora.setEnabled(false);
         btnAgendarCita.setEnabled(false);
@@ -383,7 +381,7 @@ public class FrmAgendarCita extends javax.swing.JFrame {
     }
 
     private void regresar() {
-        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente(idPaciente);
+        FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
         frmCitasPaciente.setVisible(true);
         dispose();
     }

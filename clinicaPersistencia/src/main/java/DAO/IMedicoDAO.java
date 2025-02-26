@@ -104,6 +104,6 @@ public interface IMedicoDAO {
      */
     public String obtenerEstadoMedico(int idMedico) throws PersistenciaException;
 
-    // public int consultarMedicoPorNombre(String Nombre) throws PersistenciaException;
+     public int consultarMedicoPorNombre(String Nombre) throws PersistenciaException;
 
 }

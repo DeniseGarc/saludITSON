@@ -26,7 +26,7 @@ public class Conexion implements IConexion {
     /**
      * Contraseña para la conexión a la base de datos.
      */
-    final String PASS = "root";
+    final String PASS = "itson";
 
     /**
      * Crea y devuelve una conexión a la base de datos.
