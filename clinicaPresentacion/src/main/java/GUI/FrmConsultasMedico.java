@@ -213,6 +213,7 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnCitasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCitasActionPerformed
+        citas();
     }//GEN-LAST:event_btnCitasActionPerformed
 
     private void lblCerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseEntered
@@ -224,6 +225,7 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
     }//GEN-LAST:event_lblCerrarSesionMouseExited
 
     private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
+        cerrarSesion();
     }//GEN-LAST:event_lblCerrarSesionMouseClicked
     /**
     * Carga el nombre completo del médico en la interfaz de usuario utilizando el ID del usuario.
