@@ -4,17 +4,29 @@
  */
 package GUI;
 
+import BO.CitaBO;
+import configuracion.DependencyInjector;
+import excepciones.PersistenciaException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Alici
  */
 public class FrmConsultasMedico extends javax.swing.JFrame {
-
+    int id;
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
     /**
      * Creates new form FrmCitas
      */
-    public FrmConsultasMedico() {
+    public FrmConsultasMedico(int id) {
         initComponents();
+        this.id = id;
+        this.cargarTabla();
+        
     }
 
     /**
@@ -134,20 +146,20 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
 
         tablaConsulta.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null},
-                {null, null, null, null, null, null}
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null}
             },
             new String [] {
-                "Fecha y hora", "Paciente", "Diagnóstico", "Observaciones", "Tratamiento", "Estado"
+                "Fecha", "Hora", "Paciente", "Diagnóstico", "Observaciones", "Tratamiento", "Estado"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                java.lang.Object.class, java.lang.Object.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -167,6 +179,7 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
             tablaConsulta.getColumnModel().getColumn(3).setResizable(false);
             tablaConsulta.getColumnModel().getColumn(4).setResizable(false);
             tablaConsulta.getColumnModel().getColumn(5).setResizable(false);
+            tablaConsulta.getColumnModel().getColumn(6).setResizable(false);
         }
 
         lblConsultas.setText("Consultas previas");
@@ -233,7 +246,17 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
     private void btnConsultaPreviaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConsultaPreviaActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btnConsultaPreviaActionPerformed
+      public void cargarTabla(){
+        try {
+            
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaConsulta.getModel();
+            modelo = this.citaBO.ObtenerConsultasPreviasMedico(this.tablaConsulta, this.id);
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: error al cargar los datos");
+        }
 
+    }
 //    /**
 //     * @param args the command line arguments
 //     */
