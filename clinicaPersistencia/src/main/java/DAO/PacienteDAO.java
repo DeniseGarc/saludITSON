@@ -27,28 +27,17 @@ public class PacienteDAO implements IPacienteDAO {
     IConexion conexion;
     private static final Logger logger = Logger.getLogger(PacienteDAO.class.getName());
 
-    /**
-     * Constructor que inicializa la conexión a la base de datos.
-     * 
-     * @param conexion Objeto que gestiona la conexión a la base de datos.
-     */
     public PacienteDAO(IConexion conexion) {
         this.conexion = conexion;
     }
 
-    /**
-     * Registra un nuevo paciente en la base de datos.
-     * 
-     * @param paciente Objeto Paciente que contiene la información del paciente a registrar.
-     * @return El paciente registrado.
-     * @throws PersistenciaException Si ocurre un error al registrar el paciente.
-     */
     @Override
     public Paciente registrarPaciente(Paciente paciente) throws PersistenciaException {
         String procedimientoSQL = "CALL registrar_paciente(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection con = conexion.crearConexion(); CallableStatement cs = con.prepareCall(procedimientoSQL)) {
 
+            // Establecer los parámetros del procedimiento almacenado
             cs.setString(1, paciente.getNombresPaciente());
             cs.setString(2, paciente.getApellidoPaternoPaciente());
             cs.setString(3, paciente.getApellidoMaternoPaciente());
@@ -60,7 +49,8 @@ public class PacienteDAO implements IPacienteDAO {
             cs.setString(9, paciente.getDireccion().getColonia());
             cs.setString(10, paciente.getDireccion().getCodigoPostal());
             cs.setString(11, paciente.getContrasenaUsuario());
-            
+
+            // Ejecutar el procedimiento almacenado
             cs.executeUpdate();
             logger.info("Paciente registrado exitosamente.");
 
@@ -72,17 +62,10 @@ public class PacienteDAO implements IPacienteDAO {
         }
     }
 
-    /**
-     * Verifica si un paciente existe en la base de datos a partir de su teléfono.
-     * 
-     * @param telefono Número de teléfono del paciente.
-     * @return true si el paciente existe, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error al consultar el teléfono del paciente.
-     */
     @Override
     public boolean consultarPacientePorTelefono(String telefono) throws PersistenciaException {
         String sentenciaSQL = "SELECT telefono FROM pacientes WHERE telefono = ?";
-        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL)) {
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
             ps.setString(1, telefono);
             ResultSet resultado = ps.executeQuery();
             return resultado.next();
@@ -91,13 +74,7 @@ public class PacienteDAO implements IPacienteDAO {
             throw new PersistenciaException("Error al intentar consultar el telefono del paciente");
         }
     }
-    /**
-     * Consulta los datos de un paciente por su ID.
-     * 
-     * @param id ID del paciente a consultar.
-     * @return Objeto Paciente con los datos del paciente consultado.
-     * @throws PersistenciaException Si ocurre un error en la consulta.
-     */
+
     @Override
     public Paciente consultarPacientePorId(int id) throws PersistenciaException {
         String sentenciaSQL = "SELECT IDPaciente, nombresPaciente, apellidoPaternoPaciente, apellidoMaternoPaciente, correo, telefono, fechaNacimiento, idDireccion FROM pacientes WHERE IDPaciente = ?";
@@ -107,11 +84,16 @@ public class PacienteDAO implements IPacienteDAO {
                 ResultSet rs = psPaciente.executeQuery();
                 Paciente paciente = null;
                 if (rs.next()) {
-                    paciente = new Paciente(rs.getInt("IDPaciente"),null,rs.getString("nombresPaciente"),rs.getString("apellidoPaternoPaciente"),rs.getString("apellidoMaternoPaciente"),
-                            rs.getString("correo"),rs.getString("telefono"),rs.getDate("fechaNacimiento").toLocalDate(),
+                    paciente = new Paciente(rs.getInt("IDPaciente"),
+                            null,
+                            rs.getString("nombresPaciente"),
+                            rs.getString("apellidoPaternoPaciente"),
+                            rs.getString("apellidoMaternoPaciente"),
+                            rs.getString("correo"),
+                            rs.getString("telefono"),
+                            rs.getDate("fechaNacimiento").toLocalDate(),
                             new Direccion(rs.getInt("idDireccion"), null, null, null, null));
                 }
-                
                 String sentenciaSQL2 = "SELECT calle, numero, colonia, codigoPostal FROM direcciones WHERE IDDireccion = ?";
                 try (PreparedStatement psDireccion = con.prepareStatement(sentenciaSQL2)) {
                     psDireccion.setInt(1, paciente.getDireccion().getIDDireccion());
@@ -130,13 +112,6 @@ public class PacienteDAO implements IPacienteDAO {
         }
     }
 
-    /**
-     * Consulta el nombre completo de un paciente a partir de su ID.
-     * 
-     * @param idPaciente ID del paciente a consultar.
-     * @return Nombre completo del paciente en formato "Nombre ApellidoPaterno ApellidoMaterno".
-     * @throws PersistenciaException Si ocurre un error en la consulta o el paciente no es encontrado.
-     */
     @Override
     public String consultarNombreCompletoPaciente(int idPaciente) throws PersistenciaException {
         String sentenciaSQL = "SELECT CONCAT(nombresPaciente, ' ', apellidoPaternoPaciente, ' ', apellidoMaternoPaciente) AS nombreCompleto FROM pacientes WHERE IDPaciente = ?";
@@ -157,17 +132,12 @@ public class PacienteDAO implements IPacienteDAO {
         }
     }
 
-    /**
-     * Verifica si un paciente tiene citas activas en la base de datos.
-     * 
-     * @param idPaciente ID del paciente a verificar.
-     * @return true si el paciente tiene al menos una cita activa, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error en la consulta.
-     */
     @Override
     public boolean tieneCitasActivas(int idPaciente) throws PersistenciaException {
         String sentenciasql = "SELECT COUNT(*) FROM Citas WHERE idPaciente = ? AND estadoCita = 'activa'";
+
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciasql)) {
+
             ps.setInt(1, idPaciente);
             try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
@@ -179,13 +149,7 @@ public class PacienteDAO implements IPacienteDAO {
             throw new PersistenciaException("Error al verificar citas activas: " + e.getMessage());
         }
     }
-    /**
-     * Actualiza los datos de un paciente en la base de datos, incluyendo su dirección.
-     * 
-     * @param paciente Objeto Paciente con los datos actualizados.
-     * @return true si la actualización fue exitosa, false en caso contrario.
-     * @throws PersistenciaException Si ocurre un error al actualizar los datos del paciente.
-     */
+
     @Override
     public boolean actualizarPaciente(Paciente paciente) throws PersistenciaException {
         String sqlDireccion = "UPDATE Direcciones SET calle = ?, numero = ?, colonia = ?, codigoPostal = ? WHERE IDDireccion = ?";
@@ -222,13 +186,7 @@ public class PacienteDAO implements IPacienteDAO {
             throw new PersistenciaException("Error al actualizar paciente: " + e.getMessage());
         }
     }
-    /**
-     * Obtiene el ID de la dirección de un paciente a partir de su ID de paciente.
-     * 
-     * @param idPaciente ID del paciente.
-     * @return El ID de la dirección asociada al paciente.
-     * @throws PersistenciaException Si ocurre un error al consultar la dirección del paciente.
-     */
+
     @Override
     public int obtenerIdDireccionPorPaciente(int idPaciente) throws PersistenciaException {
         String sql = "SELECT IDDireccion FROM Pacientes WHERE IDPaciente = ?";
@@ -245,13 +203,7 @@ public class PacienteDAO implements IPacienteDAO {
             throw new PersistenciaException("Error al obtener la dirección: " + e.getMessage());
         }
     }
-    /**
-     * Obtiene los datos completos de un paciente a partir de su ID, incluyendo su dirección.
-     * 
-     * @param idPaciente ID del paciente a consultar.
-     * @return Un objeto Paciente con todos sus datos completos, incluidos los de la dirección.
-     * @throws PersistenciaException Si ocurre un error al obtener los datos del paciente.
-     */
+
     @Override
     public Paciente obtenerDatosPaciente(int idPaciente) throws PersistenciaException {
         String sql = "SELECT p.nombresPaciente, p.apellidoPaternoPaciente, p.apellidoMaternoPaciente, p.telefono, p.fechaNacimiento, d.calle, d.numero, d.colonia, d.codigoPostal "
@@ -265,6 +217,7 @@ public class PacienteDAO implements IPacienteDAO {
             if (!rs.next()) {
                 throw new PersistenciaException("No se encontró un paciente con ID: " + idPaciente);
             }
+
             Paciente paciente = new Paciente();
             paciente.setNombresPaciente(rs.getString("nombresPaciente"));
             paciente.setApellidoPaternoPaciente(rs.getString("apellidoPaternoPaciente"));
