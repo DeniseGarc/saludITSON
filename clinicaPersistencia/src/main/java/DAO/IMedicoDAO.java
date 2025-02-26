@@ -26,4 +26,14 @@ public interface IMedicoDAO {
     public List<LocalTime> obtenerHorariosCitas(Medico medico, LocalDate fecha) throws PersistenciaException;
 
     public Medico consultarMedicoPorId(int id) throws PersistenciaException;
+    
+    public String consultarNombreCompletoMedico(int idMedico) throws PersistenciaException;
+    
+    public boolean tieneCitasActivas(int idMedico) throws PersistenciaException;
+    
+    public boolean bajaTemporal(int idMedico) throws PersistenciaException;
+    
+     public boolean reactivarCuenta(int idMedico) throws PersistenciaException;
+     
+     public String obtenerEstadoMedico(int idMedico) throws PersistenciaException;
 }

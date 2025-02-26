@@ -4,17 +4,26 @@
  */
 package GUI;
 
+import BO.PacienteBO;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
+import java.awt.Color;
+import javax.swing.JOptionPane;
+import sesion.ManejadorSesion;
+
 /**
  *
  * @author Alici
  */
 public class FrmCitasPaciente extends javax.swing.JFrame {
 
+    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
     /**
      * Creates new form FrmCitas
      */
     public FrmCitasPaciente() {
         initComponents();
+        cargarNombrePaciente();
     }
 
     /**
@@ -32,6 +41,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         btnConsultaPrevia = new javax.swing.JButton();
         btnCitas = new javax.swing.JButton();
         lblCerrarSesion = new javax.swing.JLabel();
+        lblNombreCompletoPaciente = new javax.swing.JLabel();
         panelRedondo = new GUI.PanelRound();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaCitas = new javax.swing.JTable();
@@ -47,6 +57,11 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
 
         lblAvatar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/avatar.png"))); // NOI18N
         lblAvatar.setPreferredSize(new java.awt.Dimension(30, 30));
+        lblAvatar.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblAvatarMouseClicked(evt);
+            }
+        });
 
         btnGenerarConsulta.setBackground(new java.awt.Color(128, 204, 43));
         btnGenerarConsulta.setForeground(new java.awt.Color(255, 255, 255));
@@ -79,26 +94,40 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         });
 
         lblCerrarSesion.setText("<html><u>Cerrar Sesión</u></html>");
+        lblCerrarSesion.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lblCerrarSesionMouseExited(evt);
+            }
+        });
+
+        lblNombreCompletoPaciente.setText("jLabel1");
 
         javax.swing.GroupLayout panelBarraLateralLayout = new javax.swing.GroupLayout(panelBarraLateral);
         panelBarraLateral.setLayout(panelBarraLateralLayout);
         panelBarraLateralLayout.setHorizontalGroup(
             panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                        .addGap(10, 10, 10)
-                        .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnGenerarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(btnCitas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                                .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(51, 51, 51))))
-                    .addGroup(panelBarraLateralLayout.createSequentialGroup()
-                        .addGap(43, 43, 43)
-                        .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
+                            .addGap(41, 41, 41)
+                            .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(panelBarraLateralLayout.createSequentialGroup()
+                            .addGap(10, 10, 10)
+                            .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(lblNombreCompletoPaciente, javax.swing.GroupLayout.PREFERRED_SIZE, 122, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(btnConsultaPrevia, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(btnGenerarConsulta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
+                    .addGroup(panelBarraLateralLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(lblCerrarSesion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btnCitas, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(9, Short.MAX_VALUE))
         );
         panelBarraLateralLayout.setVerticalGroup(
@@ -106,7 +135,9 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
             .addGroup(panelBarraLateralLayout.createSequentialGroup()
                 .addGap(19, 19, 19)
                 .addComponent(lblAvatar, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblNombreCompletoPaciente)
+                .addGap(12, 12, 12)
                 .addComponent(btnGenerarConsulta)
                 .addGap(18, 18, 18)
                 .addComponent(btnConsultaPrevia)
@@ -254,6 +285,46 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
+    private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
+        cerrarSesion();
+    }//GEN-LAST:event_lblCerrarSesionMouseClicked
+
+    private void lblCerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseEntered
+        lblCerrarSesion.setForeground(new Color(30, 98, 159));
+    }//GEN-LAST:event_lblCerrarSesionMouseEntered
+
+    private void lblCerrarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseExited
+        lblCerrarSesion.setForeground(new Color(0, 0,0));
+    }//GEN-LAST:event_lblCerrarSesionMouseExited
+
+    private void lblAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvatarMouseClicked
+        actualizarDatos();
+    }//GEN-LAST:event_lblAvatarMouseClicked
+    private void cargarNombrePaciente() {
+    try {
+        String idUsuario = ManejadorSesion.getIdUsuario();
+        int idPaciente = Integer.parseInt(idUsuario);
+        String nombreCompleto = pacienteBO.obtenerNombreCompletoPaciente(idPaciente);
+        lblNombreCompletoPaciente.setText(nombreCompleto);
+    } catch (NegocioException e) {
+       
+    }
+    }
+    private void cerrarSesion() {
+        
+        ManejadorSesion.borrarDatosSesion();
+        FrmInicioSesion frmInicio = new FrmInicioSesion();
+        frmInicio.setVisible(true);
+        this.dispose();
+    }
+    
+    private void actualizarDatos(){
+       FrmActualizarDatosPaciente frmActualizar = new FrmActualizarDatosPaciente();
+        frmActualizar.setVisible(true);
+        this.dispose();
+    }
+
+    
 //    /**
 //     * @param args the command line arguments
 //     */
@@ -311,6 +382,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     private javax.swing.JLabel lblAvatar;
     private javax.swing.JLabel lblCerrarSesion;
     private javax.swing.JLabel lblCitasProximas;
+    private javax.swing.JLabel lblNombreCompletoPaciente;
     private javax.swing.JPanel panelBarraLateral;
     private GUI.PanelRound panelRedondo;
     private javax.swing.JTable tablaCitas;

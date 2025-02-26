@@ -31,12 +31,12 @@ public class UsuarioDAO implements IUsuarioDAO {
 
     @Override
     public Usuario consultarUsuarioPorCorreo(String correo) throws PersistenciaException {
-        String sentenciaSQL = "SELECT nombreUsuario, contrasenaUsuario FROM usuarios WHERE nombreUsuario = ?";
+        String sentenciaSQL = "SELECT idUsuario, nombreUsuario, contrasenaUsuario FROM usuarios WHERE nombreUsuario = ?";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
             ps.setString(1, correo);
             ResultSet resultados = ps.executeQuery();
             if (resultados.next()) {
-                Usuario usuario = new Usuario(resultados.getString("nombreUsuario"), resultados.getString("contrasenaUsuario"));
+                Usuario usuario = new Usuario(resultados.getInt("idUsuario"),resultados.getString("nombreUsuario"), resultados.getString("contrasenaUsuario"));
                 return usuario;
             } else {
                 return null;
@@ -45,7 +45,7 @@ public class UsuarioDAO implements IUsuarioDAO {
             logger.log(Level.SEVERE, "Error al consultar usuario", e);
             throw new PersistenciaException("Error al consultar usuario", e);
         }
-    }
+    }  
 }
 /* Sera necesario??
     

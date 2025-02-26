@@ -11,5 +11,5 @@ package Encriptado;
 public interface IEncriptador {
 
     String encriptar(String contrasena);
-    
+
 }

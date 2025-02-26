@@ -60,10 +60,6 @@
               <Group type="102" attributes="0">
                   <Group type="103" groupAlignment="0" attributes="0">
                       <Group type="102" alignment="0" attributes="0">
-                          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
-                          <Component id="lblAvatar" min="-2" pref="50" max="-2" attributes="0"/>
-                      </Group>
-                      <Group type="102" alignment="0" attributes="0">
                           <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="103" alignment="0" groupAlignment="0" max="-2" attributes="0">
@@ -77,6 +73,14 @@
                               <Component id="lblCerrarSesion" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                       </Group>
+                      <Group type="102" alignment="0" attributes="0">
+                          <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                          <Component id="lblAvatar" min="-2" pref="50" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="102" alignment="1" attributes="0">
+                          <EmptySpace max="-2" attributes="0"/>
+                          <Component id="lblNombreCompletoMedico" min="-2" pref="121" max="-2" attributes="0"/>
+                      </Group>
                   </Group>
                   <EmptySpace pref="10" max="32767" attributes="0"/>
               </Group>
@@ -87,7 +91,9 @@
               <Group type="102" alignment="0" attributes="0">
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
                   <Component id="lblAvatar" min="-2" pref="50" max="-2" attributes="0"/>
-                  <EmptySpace min="-2" pref="34" max="-2" attributes="0"/>
+                  <EmptySpace max="-2" attributes="0"/>
+                  <Component id="lblNombreCompletoMedico" min="-2" max="-2" attributes="0"/>
+                  <EmptySpace min="-2" pref="12" max="-2" attributes="0"/>
                   <Component id="btnCitas" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnConsultaPrevia" min="-2" max="-2" attributes="0"/>
@@ -95,7 +101,7 @@
                   <Component id="btnBajaTemporal" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="btnActivarCuenta" min="-2" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="303" max="32767" attributes="0"/>
                   <Component id="lblCerrarSesion" min="-2" max="-2" attributes="0"/>
                   <EmptySpace min="-2" pref="15" max="-2" attributes="0"/>
               </Group>
@@ -120,6 +126,11 @@
           <Properties>
             <Property name="text" type="java.lang.String" value="&lt;html&gt;&lt;u&gt;Cerrar Sesi&#xf3;n&lt;/u&gt;&lt;/html&gt;"/>
           </Properties>
+          <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblCerrarSesionMouseClicked"/>
+            <EventHandler event="mouseEntered" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblCerrarSesionMouseEntered"/>
+            <EventHandler event="mouseExited" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="lblCerrarSesionMouseExited"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="btnConsultaPrevia">
           <Properties>
@@ -146,6 +157,7 @@
             <Property name="text" type="java.lang.String" value="Baja temporal"/>
           </Properties>
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnBajaTemporalMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnBajaTemporalActionPerformed"/>
           </Events>
         </Component>
@@ -174,8 +186,14 @@
             <Property name="text" type="java.lang.String" value="Activar cuenta"/>
           </Properties>
           <Events>
+            <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="btnActivarCuentaMouseClicked"/>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnActivarCuentaActionPerformed"/>
           </Events>
+        </Component>
+        <Component class="javax.swing.JLabel" name="lblNombreCompletoMedico">
+          <Properties>
+            <Property name="text" type="java.lang.String" value="jLabel1"/>
+          </Properties>
         </Component>
       </SubComponents>
     </Container>
@@ -281,10 +299,10 @@
         </Container>
         <Component class="javax.swing.JLabel" name="lblConsultas">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Consultas previas"/>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="12" style="1"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Consultas previas"/>
           </Properties>
         </Component>
       </SubComponents>

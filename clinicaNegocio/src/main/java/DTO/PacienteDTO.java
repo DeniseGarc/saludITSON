@@ -10,8 +10,8 @@ import java.time.LocalDate;
  *
  * @author joelr
  */
-public class PacienteNuevoDTO extends UsuarioDTO {
-
+public class PacienteDTO extends UsuarioDTO {
+    
     private String nombresPaciente;
     private String apellidoPaternoPaciente;
     private String apellidoMaternoPaciente;
@@ -24,10 +24,10 @@ public class PacienteNuevoDTO extends UsuarioDTO {
     private String codigoPostal;
 
     //Constructor vacio.
-    public PacienteNuevoDTO() {
+    public PacienteDTO() {
     }
 
-    public PacienteNuevoDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, String calle, String numero, String colonia, String codigoPostal, String nombreUsuario, String contrasenaUsuario) {
+    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, String calle, String numero, String colonia, String codigoPostal, String nombreUsuario, String contrasenaUsuario) {
         super(nombreUsuario, contrasenaUsuario);
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;

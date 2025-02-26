@@ -4,11 +4,23 @@
  */
 package GUI;
 
+import BO.PacienteBO;
+import DTO.DireccionDTO;
+import DTO.PacienteActualizarDTO;
+import Mapper.PacienteMapper;
+import configuracion.DependencyInjector;
+import excepciones.NegocioException;
+import javax.swing.JOptionPane;
+import sesion.ManejadorSesion;
+
 /**
  *
  * @author Alici
  */
 public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
+
+    private PacienteBO pacienteBO = DependencyInjector.crearPacienteBO();
+    int idUsuario = Integer.parseInt(ManejadorSesion.getIdUsuario());
 
     /**
      * Creates new form FrmRegistro
@@ -16,6 +28,7 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
     public FrmActualizarDatosPaciente() {
         initComponents();
         this.setLocationRelativeTo(null);
+        cargarDatosPaciente(idUsuario);
     }
 
     /**
@@ -48,8 +61,6 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
         dtPikrfechaNacimiento = new com.github.lgooddatepicker.components.DatePicker();
         lblTelefono = new javax.swing.JLabel();
         txtTelefono = new javax.swing.JTextField();
-        lblContrasena = new javax.swing.JLabel();
-        txtContrasena = new javax.swing.JTextField();
         btnActualizar = new javax.swing.JButton();
         btnRegresar = new javax.swing.JButton();
 
@@ -104,13 +115,16 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
             }
         });
 
-        lblContrasena.setText("Contraseña");
-
         btnActualizar.setText("Actualizar");
         btnActualizar.setAutoscrolls(true);
         btnActualizar.setBackground(new java.awt.Color(44, 44, 44));
         btnActualizar.setBorder(null);
         btnActualizar.setForeground(new java.awt.Color(255, 255, 255));
+        btnActualizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnActualizarActionPerformed(evt);
+            }
+        });
 
         btnRegresar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/flechaRegresar.png"))); // NOI18N
         btnRegresar.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 1, 1, 1));
@@ -169,12 +183,10 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
                                 .addGroup(panelRedondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addComponent(lblCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(txtCodigoPostal)))))
-                    .addComponent(lblContrasena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 94, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(panelRedondoLayout.createSequentialGroup()
                         .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(txtContrasena, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(30, Short.MAX_VALUE))
         );
         panelRedondoLayout.setVerticalGroup(
@@ -214,11 +226,7 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
                 .addGroup(panelRedondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(dtPikrfechaNacimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(lblContrasena)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 142, Short.MAX_VALUE)
                 .addGroup(panelRedondoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(btnRegresar, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
                     .addComponent(btnActualizar, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -259,8 +267,71 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_txtTelefonoActionPerformed
 
     private void btnRegresarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRegresarActionPerformed
-        // TODO add your handling code here:
+        regresar();
     }//GEN-LAST:event_btnRegresarActionPerformed
+
+    private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
+        actualizar();
+    }//GEN-LAST:event_btnActualizarActionPerformed
+
+    public void regresar() {
+        FrmCitasPaciente frmInicio = new FrmCitasPaciente();
+        frmInicio.setVisible(true);
+        this.dispose();
+    }
+
+    public void actualizar() {
+        try {
+            int idDireccion = pacienteBO.obtenerIdDireccionPorPaciente(idUsuario);
+
+            PacienteActualizarDTO pacienteDTO = new PacienteActualizarDTO();
+            pacienteDTO.setNombresPaciente(txtNombre.getText());
+            pacienteDTO.setApellidoPaternoPaciente(txtApellidoPaterno.getText());
+            pacienteDTO.setApellidoMaternoPaciente(txtApellidoMaterno.getText());
+            pacienteDTO.setTelefono(txtTelefono.getText());
+            pacienteDTO.setFechaNacimiento(dtPikrfechaNacimiento.getDate());
+            pacienteDTO.setIdPaciente(idUsuario);
+
+            // Establecer la dirección
+            DireccionDTO direccionDTO = new DireccionDTO();
+            direccionDTO.setIdDireccion(idDireccion);
+            direccionDTO.setCalle(txtCalle.getText());
+            direccionDTO.setNumero(txtNumero.getText());
+            direccionDTO.setColonia(txtColonia.getText());
+            direccionDTO.setCodigoPostal(txtCodigoPostal.getText());
+
+            // Asignar la dirección al pacienteDTO
+            pacienteDTO.setDireccion(direccionDTO);
+
+            boolean exito = pacienteBO.actualizarPaciente(pacienteDTO);
+
+            if (exito) {
+                javax.swing.JOptionPane.showMessageDialog(this, "Datos actualizados con éxito");
+                regresar();
+            } else {
+                javax.swing.JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los datos");
+            }
+        } catch (NegocioException ex) {
+            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+        }
+    }
+
+    public void cargarDatosPaciente(int idUsuario) {
+        try {
+            PacienteActualizarDTO pacienteDTO = pacienteBO.obtenerDatosPaciente(idUsuario);
+            txtNombre.setText(pacienteDTO.getNombresPaciente());
+            txtApellidoPaterno.setText(pacienteDTO.getApellidoPaternoPaciente());
+            txtApellidoMaterno.setText(pacienteDTO.getApellidoMaternoPaciente());
+            dtPikrfechaNacimiento.setDate(pacienteDTO.getFechaNacimiento());
+            txtTelefono.setText(pacienteDTO.getTelefono());
+            txtCalle.setText(pacienteDTO.getDireccion().getCalle());
+            txtNumero.setText(pacienteDTO.getDireccion().getNumero());
+            txtColonia.setText(pacienteDTO.getDireccion().getColonia());
+            txtCodigoPostal.setText(pacienteDTO.getDireccion().getCodigoPostal());
+        } catch (NegocioException e) {
+            JOptionPane.showMessageDialog(null, "Error al cargar los datos del paciente: " + e.getMessage());
+        }
+    }
 
 //    /**
 //     * @param args the command line arguments
@@ -308,7 +379,6 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
     private javax.swing.JLabel lblCalle;
     private javax.swing.JLabel lblCodigoPostal;
     private javax.swing.JLabel lblColonia;
-    private javax.swing.JLabel lblContrasena;
     private javax.swing.JLabel lblDireccion;
     private javax.swing.JLabel lblFechaNacimiento;
     private javax.swing.JLabel lblNombre;
@@ -320,7 +390,6 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
     private javax.swing.JTextField txtCalle;
     private javax.swing.JTextField txtCodigoPostal;
     private javax.swing.JTextField txtColonia;
-    private javax.swing.JTextField txtContrasena;
     private javax.swing.JTextField txtNombre;
     private javax.swing.JTextField txtNumero;
     private javax.swing.JTextField txtTelefono;
