@@ -4,11 +4,16 @@
  */
 package GUI;
 
+import BO.CitaBO;
 import BO.MedicoBO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
+import excepciones.PersistenciaException;
 import java.awt.Color;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 import sesion.ManejadorSesion;
 
 /**
@@ -18,13 +23,14 @@ import sesion.ManejadorSesion;
 public class FrmConsultasMedico extends javax.swing.JFrame {
 
     private MedicoBO medicoBO = DependencyInjector.crearMedicoBO();
-
+    private CitaBO citaBO = DependencyInjector.crearCitaBO();
     /**
      * Creates new form FrmCitas
      */
     public FrmConsultasMedico() {
         initComponents();
         cargarNombreMedico();
+        this.cargarTabla();
     }
 
     /**
@@ -242,7 +248,17 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
         frmInicio.setVisible(true);
         this.dispose();
     }
+     public void cargarTabla(){
+        try {
+            
+            DefaultTableModel modelo = (DefaultTableModel) this.tablaConsulta.getModel();
+            modelo = this.citaBO.ObtenerConsultasPreviasMedico(this.tablaConsulta, Integer.parseInt(ManejadorSesion.getIdUsuario()));
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error: error al cargar los datos");
+        }
 
+    }
 //    /**
 //     * @param args the command line arguments
 //     */

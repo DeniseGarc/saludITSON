@@ -274,7 +274,7 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCitasActionPerformed
 
     private void btnFiltrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFiltrarActionPerformed
-        // TODO add your handling code here:
+        this.cargarTablaFiltro();
     }//GEN-LAST:event_btnFiltrarActionPerformed
 
     private void lblCerrarSesionMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseEntered
