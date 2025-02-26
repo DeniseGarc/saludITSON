@@ -15,20 +15,68 @@ import java.util.List;
  * @author Alici
  */
 public interface ICitaDAO {
-
+    /**
+     * Agenda una nueva cita en la base de datos.
+     * 
+     * @param cita objeto que contiene los detalles de la cita a agendar.
+     * @return true si la cita se agendó correctamente, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     public boolean agendarCita(Cita cita) throws PersistenciaException;
-
+    /**
+     * Consulta si existe una cita para un médico y una fecha y hora específicas.
+     * 
+     * @param fechaHora fecha y hora de la cita a consultar.
+     * @param idMedico ID del médico para el cual se consulta la cita.
+     * @return true si existe una cita con la misma fecha y hora para ese médico, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     public boolean consultarCitaPorFechaHora(LocalDateTime fechaHora, String idMedico) throws PersistenciaException;
-
+    /**
+     * Consulta una cita en base a su folio.
+     * 
+     * @param folio folio de la cita a consultar.
+     * @return la cita si se encuentra, o un objeto Cita vacío si no se encuentra.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     public Cita consultarCitaPorFolio(String folio) throws PersistenciaException;
-
+    /**
+     * Genera una cita de emergencia y la guarda en la base de datos.
+     * 
+     * @param cita objeto que contiene los detalles de la cita de emergencia.
+     * @return la cita con el ID generado por la base de datos.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     public Cita generarCitaEmergencia(Cita cita) throws PersistenciaException;
-
+    /**
+     * Actualiza el estado de una cita existente.
+     * 
+     * @param cita la cita cuyo estado se desea actualizar.
+     * @return true si se actualizó correctamente el estado, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */ 
     public boolean actualizarEstadoCita(Cita cita) throws PersistenciaException;
-
+    /**
+     * Consulta una cita por su ID.
+     * 
+     * @param id ID de la cita a consultar.
+     * @return la cita correspondiente al ID, o null si no se encuentra.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     public Cita consultarCitaPorId(int id) throws PersistenciaException;
-
+    /**
+     * Consulta todas las citas activas.
+     * 
+     * @return una lista con todas las citas activas.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     public List<Cita> consultarCitasActivas() throws PersistenciaException;
-    
+    /**
+     * Registra una consulta para una cita.
+     * 
+     * @param consulta objeto que contiene los detalles de la consulta.
+     * @return true si la consulta se registró correctamente, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     public boolean registrarConsulta(Consulta consulta)throws PersistenciaException;
 }

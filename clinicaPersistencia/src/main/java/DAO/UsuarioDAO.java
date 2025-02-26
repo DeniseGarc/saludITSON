@@ -24,11 +24,22 @@ public class UsuarioDAO implements IUsuarioDAO {
 
     IConexion conexion;
     private static final Logger logger = Logger.getLogger(PacienteDAO.class.getName());
-
+    
+    /**
+     * Constructor que inicializa la conexión a la base de datos.
+     * 
+     * @param conexion Objeto que gestiona la conexión a la base de datos.
+     */
     public UsuarioDAO(IConexion conexion) {
         this.conexion = conexion;
     }
-
+    /**
+    * Consulta un usuario en la base de datos utilizando su nombre de usuario.
+    *
+    * @param correo El correo electrónico del usuario a consultar. 
+    * @return Un objeto `Usuario` con los datos del usuario encontrado, o `null` si no se encuentra ningún usuario con el nombre de usuario proporcionado.
+    * @throws PersistenciaException Si ocurre algún error en la consulta a la base de datos.
+    */
     @Override
     public Usuario consultarUsuarioPorCorreo(String correo) throws PersistenciaException {
         String sentenciaSQL = "SELECT idUsuario, nombreUsuario, contrasenaUsuario FROM usuarios WHERE nombreUsuario = ?";
@@ -47,26 +58,3 @@ public class UsuarioDAO implements IUsuarioDAO {
         }
     }  
 }
-/* Sera necesario??
-    
-//    @Override
-
-//    public Usuario registrarUsuario(Usuario usuario) throws PersistenciaException {
-//        String sentenciaSQL = "{CALL registrar_usuario(?, ?)}";
-//
-//        try (
-//                Connection con = conexion.crearConexion(); CallableStatement cs = con.prepareCall(sentenciaSQL)) {
-//            // Establecer los parámetros
-//            cs.setString(1, usuario.getNombreUsuario());
-//            cs.setString(2, usuario.getContrasenaUsuario());
-//
-//            cs.execute();
-//            logger.info("Usuario agregado exitosamente.");
-//            return usuario;
-//
-//        } catch (SQLException e) {
-//            logger.log(Level.SEVERE, "Error al registrar usuario", e);
-//            throw new PersistenciaException("Error al registrar el usuario", e);
-//        }
-//    }
- }*/

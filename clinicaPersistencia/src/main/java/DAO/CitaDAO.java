@@ -24,13 +24,23 @@ import java.util.logging.Logger;
  * @author Alici
  */
 public class CitaDAO implements ICitaDAO {
-
+    // Conexión a la base de datos
     IConexion conexion;
-
+    /**
+     * Constructor que inicializa la conexión a la base de datos.
+     * 
+     * @param conexion Objeto que gestiona la conexión a la base de datos.
+     */
     public CitaDAO(IConexion conexion) {
         this.conexion = conexion;
     }
-
+    /**
+     * Agenda una nueva cita en la base de datos.
+     * 
+     * @param cita objeto que contiene los detalles de la cita a agendar.
+     * @return true si la cita se agendó correctamente, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     @Override
     public boolean agendarCita(Cita cita) throws PersistenciaException {
         String sentenciaSQL = "CALL agendar_cita(?,?,?)";
@@ -48,7 +58,13 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("Ocurrió un error al agendar cita");
         }
     }
-
+    /**
+     * Genera una cita de emergencia y la guarda en la base de datos.
+     * 
+     * @param cita objeto que contiene los detalles de la cita de emergencia.
+     * @return la cita con el ID generado por la base de datos.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     @Override
     public Cita generarCitaEmergencia(Cita cita) throws PersistenciaException {
         String sentenciaSQL = "CALL generar_cita_emergencia(?,?,?,?,?)";
@@ -70,7 +86,14 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("Ocurrió un error al agendar cita de emergencia");
         }
     }
-
+    /**
+     * Consulta si existe una cita para un médico y una fecha y hora específicas.
+     * 
+     * @param fechaHora fecha y hora de la cita a consultar.
+     * @param idMedico ID del médico para el cual se consulta la cita.
+     * @return true si existe una cita con la misma fecha y hora para ese médico, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     @Override
     public boolean consultarCitaPorFechaHora(LocalDateTime fechaHora, String idMedico) throws PersistenciaException {
         String sentenciaSQL = "SELECT fechaHora FROM citas WHERE fechaHora = ? AND  idMedico = ? AND estadoCita != 'cancelada';";
@@ -84,7 +107,13 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("Ocurrió un error al intentar consultar las citas por fecha y hora");
         }
     }
-
+    /**
+     * Consulta una cita en base a su folio.
+     * 
+     * @param folio folio de la cita a consultar.
+     * @return la cita si se encuentra, o un objeto Cita vacío si no se encuentra.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     @Override
     public Cita consultarCitaPorFolio(String folio) throws PersistenciaException {
         String sentenciaSQL = "SELECT IDCita, folioCita FROM citas WHERE tipo = 'emergencia' AND folioCita = ?";
@@ -102,7 +131,13 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("Error al intentar consultar existencia de folio");
         }
     }
-
+    /**
+     * Consulta una cita por su ID.
+     * 
+     * @param id ID de la cita a consultar.
+     * @return la cita correspondiente al ID, o null si no se encuentra.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     @Override
     public Cita consultarCitaPorId(int id) throws PersistenciaException {
         String sentenciaSQL = "SELECT c.IDCita, c.fechaHora, c.estadoCita, c.folioCita, c.tipo, c.idMedico, m.nombresMedico, m.apellidoPaternoMedico, m.apellidoMaternoMedico, m.cedulaProfesional, m.especialidad, m.estado, c.idPaciente,p.nombresPaciente, p.apellidoPaternoPaciente, p.apellidoMaternoPaciente, p.correo, p.telefono,calcularEdad(p.fechaNacimiento) as 'edad' ,p.fechaNacimiento FROM citas c INNER JOIN pacientes p ON p.IDPaciente = c.idPaciente INNER JOIN medicos m ON m.IDMedico = c.idMedico WHERE IDCita = ?";
@@ -145,7 +180,13 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("Error al conseguir la cita por su id");
         }
     }
-
+     /**
+     * Actualiza el estado de una cita existente.
+     * 
+     * @param cita la cita cuyo estado se desea actualizar.
+     * @return true si se actualizó correctamente el estado, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */ 
     @Override
     public boolean actualizarEstadoCita(Cita cita) throws PersistenciaException {
         String sentenciaSQL = "UPDATE citas SET estadoCita = ?, folioCita = null WHERE IDCita = ?";
@@ -159,7 +200,12 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("Error al actualizar el estado de la cita");
         }
     }
-
+    /**
+     * Consulta todas las citas activas.
+     * 
+     * @return una lista con todas las citas activas.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     @Override
     public List<Cita> consultarCitasActivas() throws PersistenciaException {
         List<Cita> citas = new ArrayList<>();
@@ -202,7 +248,13 @@ public class CitaDAO implements ICitaDAO {
             throw new PersistenciaException("Error al conseguir las citas registradas");
         }
     }
-
+    /**
+     * Registra una consulta para una cita.
+     * 
+     * @param consulta objeto que contiene los detalles de la consulta.
+     * @return true si la consulta se registró correctamente, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     @Override
     public boolean registrarConsulta(Consulta consulta) throws PersistenciaException{
         String sentenciaSQL = "INSERT INTO consultas(diagnostico, tratamiento, observaciones, idCita) VALUES (?,?,?,?)";
