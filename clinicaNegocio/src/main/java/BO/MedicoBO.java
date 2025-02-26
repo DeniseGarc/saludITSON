@@ -21,12 +21,22 @@ import Mapper.MapperMedico;
 public class MedicoBO {
     private final IMedicoDAO medicoDAO;
     private final MapperMedico mapper = new MapperMedico();
-        private static final Logger logger = Logger.getLogger(PacienteBO.class.getName());
-
+    private static final Logger logger = Logger.getLogger(PacienteBO.class.getName());
+    /**
+    * Constructor para inicializar el objeto MedicoBO.
+    *
+    * @param conexion La conexión a la base de datos.
+    */
     public MedicoBO(IConexion conexion) {
         this.medicoDAO = new MedicoDAO(conexion);
     }
-    
+    /**
+    * Obtiene el nombre completo de un médico dado su identificador.
+    *
+    * @param idMedico El identificador del médico.
+    * @return El nombre completo del médico.
+    * @throws NegocioException Si ocurre un error al obtener el nombre del médico.
+    */    
     public String obtenerNombreCompletoMedico(int idMedico) throws NegocioException {
         try {
             return medicoDAO.consultarNombreCompletoMedico(idMedico);
@@ -35,7 +45,13 @@ public class MedicoBO {
         }
     }
     
-    
+    /**
+    * Da de baja temporal a un médico.
+    *
+    * @param idMedico El identificador del médico a dar de baja.
+    * @return {@code true} si se dio de baja correctamente, {@code false} si no se pudo realizar la baja.
+    * @throws NegocioException Si el ID del médico no es válido o si ocurre un error en la operación.
+    */
     public boolean darDeBajaTemporal(int idMedico) throws NegocioException {
     try {
         if (idMedico <= 0) {
@@ -52,7 +68,13 @@ public class MedicoBO {
         throw new NegocioException(e.getMessage());
     }
     }
-    
+    /**
+    * Reactiva la cuenta de un médico.
+    *
+    * @param idMedico El identificador del médico cuya cuenta se reactivará.
+    * @return true si la cuenta se reactivó correctamente, false si no se pudo realizar la reactivación.
+    * @throws NegocioException Si el ID del médico no es válido o si ocurre un error en la operación.
+    */
     public boolean reactivarCuenta(int idMedico) throws NegocioException {
     try {
         if (idMedico <= 0) {
@@ -69,6 +91,13 @@ public class MedicoBO {
         throw new NegocioException(e.getMessage());
     }
 }
+    /**
+    * Obtiene el estado de un médico.
+    *
+    * @param idMedico El identificador del médico cuyo estado se desea obtener.
+    * @return El estado del médico.
+    * @throws NegocioException Si ocurre un error al obtener el estado del médico.
+    */
     public String obtenerEstadoMedico(int idMedico) throws NegocioException {
         try {
             return medicoDAO.obtenerEstadoMedico(idMedico);

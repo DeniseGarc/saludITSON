@@ -292,7 +292,9 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
     private void lblAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvatarMouseClicked
         actualizarDatos();
     }//GEN-LAST:event_lblAvatarMouseClicked
-
+    /**
+    * Carga y muestra el nombre completo del paciente en el componente correspondiente.
+    */
     private void cargarNombrePaciente() {
         try {
             String nombreCompleto = pacienteBO.obtenerNombreCompletoPaciente(idPaciente);
@@ -301,20 +303,28 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
             Logger.getLogger(FrmConsultasPaciente.class.getName()).log(Level.SEVERE, "Error al cargar nombre del paciente", e);
         }
     }
-
+    /**
+    * Cierra la sesión del usuario actual.
+    * Borra los datos de la sesión y redirige al usuario a la pantalla de inicio de sesión.
+    */
     private void cerrarSesion() {
         ManejadorSesion.borrarDatosSesion();
         FrmInicioSesion frmInicio = new FrmInicioSesion();
         frmInicio.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Cierra la ventana actual y muestra la ventana de actualización de datos.
+    */
     private void actualizarDatos() {
         FrmActualizarDatosPaciente frmActualizar = new FrmActualizarDatosPaciente();
         frmActualizar.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Carga las consultas previas del paciente en la tabla de consultas.
+    * Si ocurre un error de persistencia, muestra un mensaje de error.
+    */
     public void cargarTabla() {
         try {
 
@@ -326,7 +336,10 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         }
 
     }
-
+    /**
+    * Carga las consultas previas filtradas en la tabla de consultas.
+    * Si ocurre un error de persistencia, muestra un mensaje de error.
+    */
     public void cargarTablaFiltro() {
         try {
 
@@ -338,13 +351,17 @@ public class FrmConsultasPaciente extends javax.swing.JFrame {
         }
 
     }
-
+    /**
+    * Abre el formulario de citas para el paciente y cierra el formulario actual.
+    */
     public void citas() {
         FrmCitasPaciente citas = new FrmCitasPaciente();
         citas.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Carga las especialidades disponibles en el combo box.
+    */
     public void especialidades() {
         List<String> listaEspecialidades;
         try {

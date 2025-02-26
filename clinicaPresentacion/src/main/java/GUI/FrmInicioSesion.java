@@ -169,12 +169,19 @@ public class FrmInicioSesion extends javax.swing.JFrame {
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
         iniciarSesion();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
-     
+     /**
+    * Método para abrir el formulario de registro de paciente.
+    * Cierra la ventana actual y abre el formulario de registro.
+    */
     private void registroPaciente() {
         FrmRegistro frmRegistrarPaciente = new FrmRegistro();
         frmRegistrarPaciente.setVisible(true);
         dispose();
     }
+    /**
+    * Método que maneja el inicio de sesión.
+    * Autentica al usuario y redirige a la pantalla correspondiente según el tipo de usuario.
+    */
     private void iniciarSesion() {
     try {
         String nombreUsuario = txtUsuario.getText().trim();

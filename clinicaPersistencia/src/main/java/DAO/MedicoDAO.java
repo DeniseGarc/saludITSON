@@ -286,7 +286,13 @@ public class MedicoDAO implements IMedicoDAO {
             throw new PersistenciaException("Error al obtener el estado del médico: " + e.getMessage());
         }
     }
-
+    /**
+    * Este método consulta la base de datos para obtener el ID de un médico a partir de su nombre.
+    * 
+    * @param Nombre El nombre del médico a consultar.
+    * @return El ID del médico si se encuentra, o 0 si no se encuentra.
+    * @throws PersistenciaException Si ocurre un error en la consulta o en la conexión con la base de datos.
+    */
      @Override
      public int consultarMedicoPorNombre(String Nombre) throws PersistenciaException {
          String sentenciaSQL = "SELECT IDMedico FROM medicos WHERE nombresMedico = ?";

@@ -313,6 +313,9 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     private void lblAvatarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblAvatarMouseClicked
         actualizarDatos();
     }//GEN-LAST:event_lblAvatarMouseClicked
+    /**
+    * Carga y muestra el nombre completo del paciente en el componente correspondiente.
+    */
     private void cargarNombrePaciente() {
         try {
             String idUsuario = ManejadorSesion.getIdUsuario();
@@ -323,7 +326,10 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
 
         }
     }
-
+    /**
+    * Cierra la sesión del usuario actual.
+    * Borra los datos de la sesión y redirige al usuario a la pantalla de inicio de sesión.
+    */
     private void cerrarSesion() {
 
         ManejadorSesion.borrarDatosSesion();
@@ -331,25 +337,33 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         frmInicio.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Cierra la ventana actual y muestra la ventana de actualización de datos.
+    */
     private void actualizarDatos() {
         FrmActualizarDatosPaciente frmActualizar = new FrmActualizarDatosPaciente();
         frmActualizar.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Cierra la ventana actual y muestra la ventana para agendar la cita.
+    */
     private void agendarCita() {
         FrmAgendarCita frmAgendarCita = new FrmAgendarCita();
         frmAgendarCita.setVisible(true);
         dispose();
     }
-
+    /**
+    * Cierra la ventana actual y muestra la ventana para generar consulta.
+    */
     private void generarFolio() {
         FrmGenerarConsulta frmGenerarConsulta = new FrmGenerarConsulta();
         frmGenerarConsulta.setVisible(true);
         dispose();
     }
-
+    /**
+    * Cierra la ventana actual y muestra la ventana para consultas previas.
+    */
     private void consultasPrevias() {
         FrmConsultasPaciente consultasPaciente = new FrmConsultasPaciente();
         consultasPaciente.setVisible(true);
@@ -390,7 +404,11 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         }
 
     }
-
+    /**
+    * Cancela una cita seleccionada por el paciente. Si no se ha seleccionado ninguna cita,
+    * muestra un mensaje de error. Si la cita está seleccionada, obtiene la información necesaria 
+    * de la cita y actualiza su estado a cancelada.
+    */
     private void CancelarCita() {
         // Si no hay ningun espacio seleccionado y se presiona el boton cancelar, muestra un error.
         if (this.citaSeleccionada < 0) {
@@ -413,7 +431,11 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
             }
         }
     }
-
+    /**
+    * Actualiza la selección de la cita en la tabla y ajusta el estado del botón de cancelar según el tiempo restante para la cita.
+    * Si la cita está a menos de 24 horas, deshabilita el botón de cancelar y lo pone gris.
+    * Si la cita tiene más de 24 horas, habilita el botón de cancelar y lo pone rojo.
+    */
     public void SeleccionarCampoTabla() {
         this.citaSeleccionada = this.tablaCitas.getSelectedRow();
         String fecha = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 0));

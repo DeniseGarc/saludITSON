@@ -174,11 +174,23 @@ public class PacienteBO {
 //
 //        }
 //    }
-
+    
+    /**
+    * Verifica si un campo es válido (no nulo ni vacío).
+    *
+    * @param campo El campo a verificar.
+    * @return true si el campo es válido, false en caso contrario.
+    */
     public static boolean esCampoValido(String campo) {
         return campo != null && !campo.trim().isEmpty();
     }
-
+    /**
+    * Obtiene el nombre completo de un paciente dado su ID.
+    *
+    * @param idPaciente El identificador del paciente.
+    * @return El nombre completo del paciente.
+    * @throws NegocioException Si ocurre un error al consultar el nombre del paciente.
+    */
     public String obtenerNombreCompletoPaciente(int idPaciente) throws NegocioException {
         try {
             return pacienteDAO.consultarNombreCompletoPaciente(idPaciente);
@@ -186,7 +198,12 @@ public class PacienteBO {
             throw new NegocioException(null + e.getMessage(), e);
         }
     }
-
+    /**
+    * Valida los datos de un paciente para su actualización.
+    *
+    * @param paciente El objeto que contiene los datos del paciente a actualizar.
+    * @return Un mensaje de error si algún dato es inválido, o "validos" si todos los datos son correctos.
+    */
     private String validarDatosPacienteActualizar(PacienteActualizarDTO paciente) {
         String nombresPaciente = paciente.getNombresPaciente();
         String apellidoPaternoPaciente = paciente.getApellidoPaternoPaciente();
@@ -238,7 +255,13 @@ public class PacienteBO {
         }
         return "validos";
     }
-
+    /**
+    * Actualiza los datos de un paciente, previa validación y verificación de citas activas.
+    *
+    * @param pacienteDTO El objeto con los datos a actualizar del paciente.
+    * @return true si la actualización fue exitosa, code false en caso contrario.
+    * @throws NegocioException Si los datos del paciente son inválidos, o si el paciente tiene citas activas.
+    */
     public boolean actualizarPaciente(PacienteActualizarDTO pacienteDTO) throws NegocioException {
         try {
             if (pacienteDTO == null) {
@@ -257,7 +280,13 @@ public class PacienteBO {
             throw new NegocioException(e.getMessage());
         }
     }
-
+    /**
+    * Obtiene el ID de la dirección de un paciente.
+    *
+    * @param idPaciente El ID del paciente.
+    * @return El ID de la dirección del paciente.
+    * @throws NegocioException Si ocurre un error al obtener el ID de la dirección.
+    */
     public int obtenerIdDireccionPorPaciente(int idPaciente) throws NegocioException {
         try {
             return pacienteDAO.obtenerIdDireccionPorPaciente(idPaciente);
@@ -265,7 +294,13 @@ public class PacienteBO {
             throw new NegocioException("No se pudo obtener el ID de la dirección: " + e.getMessage());
         }
     }
-
+    /**
+    * Obtiene los datos de un paciente por su ID.
+    *
+    * @param idPaciente El ID del paciente.
+    * @return Un objeto PacienteActualizarDTO con los datos del paciente.
+    * @throws NegocioException Si ocurre un error al obtener los datos o si el paciente no existe.
+    */
     public PacienteActualizarDTO obtenerDatosPaciente(int idPaciente) throws NegocioException {
         try {
             Paciente paciente = pacienteDAO.obtenerDatosPaciente(idPaciente);

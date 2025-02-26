@@ -21,12 +21,30 @@ public class Paciente extends Usuario {
     private LocalDate fechaNacimiento;
     private Direccion direccion;
 
-    //Constructor vacio
+    /**
+     * Constructor vacío, hereda el constructor vacío de Usuario.
+     */
     public Paciente() {
         super();
     }
 
-    public Paciente(int IDUsuario, String contrasenaUsuario, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, int edad, LocalDate fechaNacimiento, Direccion direccion) {
+    /**
+     * Constructor con todos los atributos, incluyendo los de la clase Usuario.
+     * 
+     * @param IDUsuario Identificador del usuario
+     * @param contrasenaUsuario Contraseña del usuario
+     * @param nombresPaciente Nombres del paciente
+     * @param apellidoPaternoPaciente Apellido paterno del paciente
+     * @param apellidoMaternoPaciente Apellido materno del paciente
+     * @param correo Correo del paciente
+     * @param telefono Teléfono del paciente
+     * @param edad Edad del paciente
+     * @param fechaNacimiento Fecha de nacimiento del paciente
+     * @param direccion Dirección del paciente
+     */
+    public Paciente(int IDUsuario, String contrasenaUsuario, String nombresPaciente, String apellidoPaternoPaciente, 
+                    String apellidoMaternoPaciente, String correo, String telefono, int edad, 
+                    LocalDate fechaNacimiento, Direccion direccion) {
         super(IDUsuario, correo, contrasenaUsuario);
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
@@ -37,10 +55,20 @@ public class Paciente extends Usuario {
         this.fechaNacimiento = fechaNacimiento;
         this.direccion = direccion;
     }
-    
-    
-    // constructor con los puros datos de paciente
-    public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
+
+    /**
+     * Constructor con solo los datos del paciente, sin información de usuario.
+     * 
+     * @param nombresPaciente Nombres del paciente
+     * @param apellidoPaternoPaciente Apellido paterno del paciente
+     * @param apellidoMaternoPaciente Apellido materno del paciente
+     * @param correo Correo del paciente
+     * @param telefono Teléfono del paciente
+     * @param fechaNacimiento Fecha de nacimiento del paciente
+     * @param direccion Dirección del paciente
+     */
+    public Paciente(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, 
+                    String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
         this.apellidoMaternoPaciente = apellidoMaternoPaciente;
@@ -50,9 +78,22 @@ public class Paciente extends Usuario {
         this.direccion = direccion;
     }
 
-    //constructor con todos los atributos de su clase padre Usuario y de paciente 
-    public Paciente(int IDUsuario, String contrasenaUsuario, String nombresPaciente, String apellidoPaternoPaciente,
-            String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
+    /**
+     * Constructor con todos los atributos de la clase Usuario y los del paciente.
+     * 
+     * @param IDUsuario Identificador del usuario
+     * @param contrasenaUsuario Contraseña del usuario
+     * @param nombresPaciente Nombres del paciente
+     * @param apellidoPaternoPaciente Apellido paterno del paciente
+     * @param apellidoMaternoPaciente Apellido materno del paciente
+     * @param correo Correo del paciente
+     * @param telefono Teléfono del paciente
+     * @param fechaNacimiento Fecha de nacimiento del paciente
+     * @param direccion Dirección del paciente
+     */
+    public Paciente(int IDUsuario, String contrasenaUsuario, String nombresPaciente, String apellidoPaternoPaciente, 
+                    String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, 
+                    Direccion direccion) {
         super(IDUsuario, correo, contrasenaUsuario);
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
@@ -61,12 +102,23 @@ public class Paciente extends Usuario {
         this.telefono = telefono;
         this.fechaNacimiento = fechaNacimiento;
         this.direccion = direccion;
-
     }
 
-    //constructor con todos los atributos menos el IDUsuario
-    public Paciente(String contrasenaUsuario, String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente,
-            String correo, String telefono, LocalDate fechaNacimiento, Direccion direccion) {
+    /**
+     * Constructor con los atributos del paciente pero sin IDUsuario.
+     * 
+     * @param contrasenaUsuario Contraseña del usuario
+     * @param nombresPaciente Nombres del paciente
+     * @param apellidoPaternoPaciente Apellido paterno del paciente
+     * @param apellidoMaternoPaciente Apellido materno del paciente
+     * @param correo Correo del paciente
+     * @param telefono Teléfono del paciente
+     * @param fechaNacimiento Fecha de nacimiento del paciente
+     * @param direccion Dirección del paciente
+     */
+    public Paciente(String contrasenaUsuario, String nombresPaciente, String apellidoPaternoPaciente, 
+                    String apellidoMaternoPaciente, String correo, String telefono, 
+                    LocalDate fechaNacimiento, Direccion direccion) {
         super(correo, contrasenaUsuario);
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
@@ -77,75 +129,156 @@ public class Paciente extends Usuario {
         this.direccion = direccion;
     }
 
-    public int getEdad() {
-        return edad;
-    }
+    /**
+    * Obtiene la edad del paciente.
+    * 
+    * @return la edad del paciente.
+    */
+   public int getEdad() {
+       return edad;
+   }
 
-    public void setEdad(int edad) {
-        this.edad = edad;
-    }
+   /**
+    * Establece la edad del paciente.
+    * 
+    * @param edad la edad del paciente.
+    */
+   public void setEdad(int edad) {
+       this.edad = edad;
+   }
 
-    //gets y sets
-    public String getNombresPaciente() {
-        return nombresPaciente;
-    }
+   /**
+    * Obtiene el nombre del paciente.
+    * 
+    * @return el nombre del paciente.
+    */
+   public String getNombresPaciente() {
+       return nombresPaciente;
+   }
 
-    public void setNombresPaciente(String nombresPaciente) {
-        this.nombresPaciente = nombresPaciente;
-    }
+   /**
+    * Establece el nombre del paciente.
+    * 
+    * @param nombresPaciente el nombre del paciente.
+    */
+   public void setNombresPaciente(String nombresPaciente) {
+       this.nombresPaciente = nombresPaciente;
+   }
 
-    public String getApellidoPaternoPaciente() {
-        return apellidoPaternoPaciente;
-    }
+   /**
+    * Obtiene el apellido paterno del paciente.
+    * 
+    * @return el apellido paterno del paciente.
+    */
+   public String getApellidoPaternoPaciente() {
+       return apellidoPaternoPaciente;
+   }
 
-    public void setApellidoPaternoPaciente(String apellidoPaternoPaciente) {
-        this.apellidoPaternoPaciente = apellidoPaternoPaciente;
-    }
+   /**
+    * Establece el apellido paterno del paciente.
+    * 
+    * @param apellidoPaternoPaciente el apellido paterno del paciente.
+    */
+   public void setApellidoPaternoPaciente(String apellidoPaternoPaciente) {
+       this.apellidoPaternoPaciente = apellidoPaternoPaciente;
+   }
 
-    public String getApellidoMaternoPaciente() {
-        return apellidoMaternoPaciente;
-    }
+   /**
+    * Obtiene el apellido materno del paciente.
+    * 
+    * @return el apellido materno del paciente.
+    */
+   public String getApellidoMaternoPaciente() {
+       return apellidoMaternoPaciente;
+   }
 
-    public void setApellidoMaternoPaciente(String apellidoMaternoPaciente) {
-        this.apellidoMaternoPaciente = apellidoMaternoPaciente;
-    }
+   /**
+    * Establece el apellido materno del paciente.
+    * 
+    * @param apellidoMaternoPaciente el apellido materno del paciente.
+    */
+   public void setApellidoMaternoPaciente(String apellidoMaternoPaciente) {
+       this.apellidoMaternoPaciente = apellidoMaternoPaciente;
+   }
 
-    public String getCorreo() {
-        return correo;
-    }
+   /**
+    * Obtiene el correo electrónico del paciente.
+    * 
+    * @return el correo electrónico del paciente.
+    */
+   public String getCorreo() {
+       return correo;
+   }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
+   /**
+    * Establece el correo electrónico del paciente.
+    * 
+    * @param correo el correo electrónico del paciente.
+    */
+   public void setCorreo(String correo) {
+       this.correo = correo;
+   }
 
-    public String getTelefono() {
-        return telefono;
-    }
+   /**
+    * Obtiene el teléfono del paciente.
+    * 
+    * @return el teléfono del paciente.
+    */
+   public String getTelefono() {
+       return telefono;
+   }
 
-    public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+   /**
+    * Establece el teléfono del paciente.
+    * 
+    * @param telefono el teléfono del paciente.
+    */
+   public void setTelefono(String telefono) {
+       this.telefono = telefono;
+   }
 
-    public LocalDate getFechaNacimiento() {
-        return fechaNacimiento;
-    }
+   /**
+    * Obtiene la fecha de nacimiento del paciente.
+    * 
+    * @return la fecha de nacimiento del paciente.
+    */
+   public LocalDate getFechaNacimiento() {
+       return fechaNacimiento;
+   }
 
-    public void setFechaNacimiento(LocalDate fechaNacimiento) {
-        this.fechaNacimiento = fechaNacimiento;
-    }
+   /**
+    * Establece la fecha de nacimiento del paciente.
+    * 
+    * @param fechaNacimiento la fecha de nacimiento del paciente.
+    */
+   public void setFechaNacimiento(LocalDate fechaNacimiento) {
+       this.fechaNacimiento = fechaNacimiento;
+   }
 
-    public Direccion getDireccion() {
-        return direccion;
-    }
+   /**
+    * Obtiene la dirección del paciente.
+    * 
+    * @return la dirección del paciente.
+    */
+   public Direccion getDireccion() {
+       return direccion;
+   }
 
-    public void setDireccion(Direccion direccion) {
-        this.direccion = direccion;
-    }
-
-    //toString 
+   /**
+    * Establece la dirección del paciente.
+    * 
+    * @param direccion la dirección del paciente.
+    */
+   public void setDireccion(Direccion direccion) {
+       this.direccion = direccion;
+   }
+    /**
+     * Devuelve una representación en cadena del paciente.
+     * 
+     * @return La información del paciente en formato de cadena.
+     */
     @Override
     public String toString() {
         return "Paciente{" + "nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", direccion=" + direccion + '}';
     }
-
 }

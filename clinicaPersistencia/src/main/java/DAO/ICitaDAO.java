@@ -20,7 +20,13 @@ import javax.swing.table.DefaultTableModel;
  * @author Alici
  */
 public interface ICitaDAO {
-
+    /**
+     * Agenda una nueva cita en la base de datos.
+     *
+     * @param cita objeto que contiene los detalles de la cita a agendar.
+     * @return true si la cita se agendó correctamente, false en caso contrario.
+     * @throws PersistenciaException si ocurre un error en la base de datos.
+     */
     public boolean agendarCita(Cita cita) throws PersistenciaException;
 
     /**
@@ -90,17 +96,60 @@ public interface ICitaDAO {
      * @throws PersistenciaException si ocurre un error en la base de datos.
      */
     public boolean registrarConsulta(Consulta consulta) throws PersistenciaException;
-
+    /**
+     * Metodo para actualizar el estado de la cita a cancelada cuando se cancela
+     * una cita.
+     *
+     * @param idMedico
+     * @param fechaHora
+     * @return
+     * @throws PersistenciaException
+     */
     public boolean ActualizarEstadoCancelarCita(int idMedico, LocalDateTime fechaHora) throws PersistenciaException;
-
+    /**
+     * Metodo que devuelve una tabla con las consultas previas del Paciente.
+     *
+     * @param tabla
+     * @param id
+     * @return
+     * @throws PersistenciaException
+     */
     public DefaultTableModel ObtenerConsultasPrevias(JTable tabla, int id) throws PersistenciaException;
-
+    /**
+     * Metodo que devuelve la tabla lista con las consultas previas del Paciente
+     * con el filtro seleccionado.
+     *
+     * @param tabla
+     * @param id
+     * @return
+     * @throws PersistenciaException
+     */
     public DefaultTableModel ObtenerConsultasPreviasFiltro(JTable tabla, int id, LocalDate fechaDesde,
             LocalDate fechaHasta, String especialidad) throws PersistenciaException;
-
+    /**
+     * Metodo que devuelve una lista para obtener las consultas previas del
+     * Paciente con el filtro seleccionado.
+     *
+     * @return
+     * @throws PersistenciaException
+     */
     public List<String> ObtenerEspecialidadesCitas() throws PersistenciaException;
-
+    /**
+     * Metodo que devuelve una tabla con las consultas previas del Medico.
+     *
+     * @param tabla
+     * @param id del Medico.
+     * @return
+     * @throws PersistenciaException
+     */
     public DefaultTableModel ObtenerConsultasPreviasMedico(JTable tabla, int id) throws PersistenciaException;
-
+    /**
+     * Metodo que compara 2 fechas para verificar si faltan menos de 24 horas
+     * para la cita. Regresa true si la fecha esta a menos de 24 horas. Regresa
+     * false si la fecha esta a mas de 24 horas de la fecha.
+     *
+     * @param fecha
+     * @return
+     */
     public boolean CompararFechas(LocalDateTime fecha);
 }

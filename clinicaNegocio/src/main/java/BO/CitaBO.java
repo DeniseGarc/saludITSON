@@ -55,7 +55,13 @@ public class CitaBO {
     private final MapperMedico convertidorMedico = new MapperMedico();
     private final CitaMapper convertidorCita = new CitaMapper();
     Timer timer = new Timer();
-
+    
+    /**
+    * Constructor de la clase CitaBO que inicializa los DAOs necesarios y configura un temporizador
+    * para verificar periódicamente la validez de las citas activas.
+    *
+    * @param conexion Objeto de conexión a la base de datos utilizado para inicializar los DAOs.
+    */
     public CitaBO(IConexion conexion) {
         this.citaDAO = new CitaDAO(conexion);
         this.medicoDAO = new MedicoDAO(conexion);
@@ -69,7 +75,12 @@ public class CitaBO {
         }, 0, 60000);
 
     }
-
+    /**
+    * Obtiene la lista de especialidades médicas disponibles.
+    *
+    * @return Lista de especialidades médicas.
+    * @throws NegocioException Si ocurre un error al consultar las especialidades en la capa de persistencia.
+    */
     public List<String> especialidadesMedicos() throws NegocioException {
         try {
             return medicoDAO.consultarEspecialidades();
@@ -78,7 +89,13 @@ public class CitaBO {
             throw new NegocioException("Error al consultar especialidades");
         }
     }
-
+    /**
+    * Obtiene una lista de médicos filtrados por especialidad.
+    *
+    * @param especialidad La especialidad médica por la cual se filtrarán los médicos.
+    * @return Lista de médicos que pertenecen a la especialidad indicada.
+    * @throws NegocioException Si ocurre un error al recuperar los médicos desde la capa de persistencia.
+    */
     public List<MedicoDTO> medicosFiltradosPorEspecialidad(String especialidad) throws NegocioException {
         try {
             return convertidorMedico.convertirADTO(medicoDAO.consultarMedicosPorEspecialidad(especialidad));
@@ -87,7 +104,14 @@ public class CitaBO {
             throw new NegocioException("Error al recuperar los medicos filtrados por su especialidad");
         }
     }
-
+    /**
+    * Obtiene una lista de horarios disponibles para citas de un médico en una fecha específica.
+    *
+    * @param medicoDTO El médico del cual se desean consultar los horarios.
+    * @param fecha La fecha en la que se buscan los horarios disponibles.
+    * @return Lista de horarios disponibles en formato de cadena.
+    * @throws NegocioException Si ocurre un error al recuperar los horarios desde la capa de persistencia.
+    */
     public List<String> horariosCitaMedico(MedicoDTO medicoDTO, LocalDate fecha) throws NegocioException {
         try {
             return convertidorMedico.convertirAListaString(medicoDAO.obtenerHorariosCitas(convertidorMedico.convertirAEntidad(medicoDTO), fecha));
@@ -97,7 +121,13 @@ public class CitaBO {
         }
 
     }
-
+    /**
+    * Agenda una nueva cita en el sistema, validando que no haya conflictos de horario y que la fecha sea válida.
+    *
+    * @param citaDTO Datos de la cita a agendar, incluyendo el médico, paciente y la fecha y hora de la cita.
+    * @return true si la cita se agenda exitosamente, false en caso contrario.
+    * @throws NegocioException Si los datos están incompletos, ya existe una cita en el mismo horario o la fecha es inválida.
+    */
     public boolean agendarCita(CitaRegistroDTO citaDTO) throws NegocioException {
         if (citaDTO == null || citaDTO.getIdMedico() == null || citaDTO.getIdPaciente() == null || citaDTO.getFechaHora() == null
                 || citaDTO.getIdMedico().isBlank() || citaDTO.getIdPaciente().isBlank()) {
@@ -118,7 +148,12 @@ public class CitaBO {
             throw new NegocioException(ex.getMessage());
         }
     }
-
+    /**
+    * Genera un folio único para una cita médica.
+    *
+    * @return Un folio de 8 dígitos que no esté registrado en el sistema.
+    * @throws NegocioException Si ocurre un error al verificar la existencia del folio en la base de datos.
+    */
     private String generarFolio() throws NegocioException {
         Random random = new Random();
         String folioEscrito;
@@ -134,7 +169,14 @@ public class CitaBO {
             throw new NegocioException("No fue posible generar un folio");
         }
     }
-
+    /**
+    * Asigna una cita de emergencia a un paciente según la especialidad requerida.
+    *
+    * @param especialidad La especialidad médica que necesita el paciente.
+    * @param idPaciente El identificador del paciente que requiere la cita de emergencia.
+    * @return Un objeto CitaEmergenciaDTO con los detalles de la cita asignada.
+    * @throws NegocioException Si no hay médicos disponibles en la especialidad o si ocurre un error en la asignación.
+    */
     public CitaEmergenciaDTO asignarCitaEmergencia(String especialidad, String idPaciente) throws NegocioException {
         if (especialidad == null || especialidad.isBlank()) {
             throw new NegocioException("No se ha seleccionado una especialidad");
@@ -195,12 +237,11 @@ public class CitaBO {
     }
 
     /**
-     * Metodo que devuelve una lista de las horas disponibles del medico con el
-     * id correspondiente.
-     *
-     * @param idMedico
-     * @return
-     */
+    * Obtiene la lista de horarios disponibles para un médico en la fecha actual.
+    *
+    * @param idMedico El identificador del médico.
+    * @return Una lista de objetos LocalTime con los horarios disponibles, o null si ocurre un error al obtenerlos.
+    */
     private List<LocalTime> obtenerHorasDisponiblesMedico(int idMedico) {
         // Tu implementación actual para obtener horas disponibles
         Medico medico = new Medico();
@@ -212,7 +253,13 @@ public class CitaBO {
             return null;
         }
     }
-
+    /**
+    * Cancela una cita mediante su folio.
+    *
+    * @param folio El folio de la cita a cancelar.
+    * @return true si la cita fue cancelada con éxito, false en caso contrario.
+    * @throws NegocioException Si ocurre un error al cancelar la cita.
+    */
     public boolean cancelarCitaPorFolio(String folio) throws NegocioException {
         try {
             Cita cita = citaDAO.consultarCitaPorFolio(folio);
@@ -245,7 +292,7 @@ public class CitaBO {
     }
 
     /**
-     * Metodo que valida los estaods de las citas.
+     * Metodo que valida los estados de las citas.
      */
     private void verificarValidezCitasActivas() {
         try {
@@ -413,7 +460,12 @@ public class CitaBO {
 
         }
     }
-
+    /**
+    * Método que obtiene la lista de especialidades disponibles en las citas.
+    *
+    * @return Lista de especialidades como objetos de tipo String.
+    * @throws PersistenciaException Si ocurre un error al recuperar las especialidades desde la base de datos.
+    */
     public List<String> obtenerEspecialidades() throws PersistenciaException {
         try {
             return this.citaDAO.ObtenerEspecialidadesCitas();

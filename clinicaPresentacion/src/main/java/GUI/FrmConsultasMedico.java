@@ -225,6 +225,9 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
 
     private void lblCerrarSesionMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseClicked
     }//GEN-LAST:event_lblCerrarSesionMouseClicked
+    /**
+    * Carga el nombre completo del médico en la interfaz de usuario utilizando el ID del usuario.
+    */
     private void cargarNombreMedico() {
         try {
             String idUsuario = ManejadorSesion.getIdUsuario();
@@ -248,6 +251,10 @@ public class FrmConsultasMedico extends javax.swing.JFrame {
         frmInicio.setVisible(true);
         this.dispose();
     }
+    /**
+    * Carga las consultas previas del médico en la tabla de consultas.
+    * Si ocurre un error de persistencia, muestra un mensaje de error.
+    */
      public void cargarTabla(){
         try {
             

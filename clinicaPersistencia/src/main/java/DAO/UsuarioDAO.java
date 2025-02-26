@@ -24,11 +24,23 @@ public class UsuarioDAO implements IUsuarioDAO {
 
     IConexion conexion;
     private static final Logger logger = Logger.getLogger(PacienteDAO.class.getName());
-
+    /**
+     * Constructor que inicializa la conexión a la base de datos.
+     *
+     * @param conexion Objeto que gestiona la conexión a la base de datos.
+     */
     public UsuarioDAO(IConexion conexion) {
         this.conexion = conexion;
     }
-
+    /**
+    * Consulta un usuario en la base de datos mediante su nombre de usuario.
+    * 
+    * @param correo 
+    * 
+    * @return Un objeto Usuario con los datos del usuario encontrado, o null si no se encuentra
+    * 
+    * @throws PersistenciaException Si ocurre un error durante la consulta a la base de datos.
+    */
     @Override
     public Usuario consultarUsuarioPorCorreo(String correo) throws PersistenciaException {
         String sentenciaSQL = "SELECT idUsuario, nombreUsuario, contrasenaUsuario FROM usuarios WHERE nombreUsuario = ?";

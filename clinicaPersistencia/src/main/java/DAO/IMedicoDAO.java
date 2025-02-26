@@ -103,7 +103,13 @@ public interface IMedicoDAO {
      *                               médico.
      */
     public String obtenerEstadoMedico(int idMedico) throws PersistenciaException;
-
-     public int consultarMedicoPorNombre(String Nombre) throws PersistenciaException;
+    /**
+    * Este método consulta la base de datos para obtener el ID de un médico a partir de su nombre.
+    * 
+    * @param Nombre El nombre del médico a consultar.
+    * @return El ID del médico si se encuentra, o 0 si no se encuentra.
+    * @throws PersistenciaException Si ocurre un error en la consulta o en la conexión con la base de datos.
+    */
+    public int consultarMedicoPorNombre(String Nombre) throws PersistenciaException;
 
 }

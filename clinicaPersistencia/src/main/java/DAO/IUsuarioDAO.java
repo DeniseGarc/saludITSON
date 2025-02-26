@@ -13,7 +13,14 @@ import excepciones.PersistenciaException;
  */
 public interface IUsuarioDAO {
 
-    //metodo para registrar un usuario
-    //public Usuario registrarUsuario(Usuario usuario) throws PersistenciaException;
+    /**
+    * Consulta un usuario en la base de datos mediante su nombre de usuario.
+    * 
+    * @param correo 
+    * 
+    * @return Un objeto Usuario con los datos del usuario encontrado, o null si no se encuentra
+    * 
+    * @throws PersistenciaException Si ocurre un error durante la consulta a la base de datos.
+    */
     public Usuario consultarUsuarioPorCorreo(String correo) throws PersistenciaException;
 }

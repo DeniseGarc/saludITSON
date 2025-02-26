@@ -260,6 +260,11 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+   
+    /**
+    * Método para registrar una consulta médica.
+    * Recoge los datos de la consulta e intenta registrarlos en la base de datos.
+    */
     private void registrarConsulta() {
         ConsultaDTO consulta = new ConsultaDTO(txtDiagnostico.getText(), txtAreaTratamiento.getText(), txtAreaObservaciones.getText(), cita.getIDCita());
         try {
@@ -277,7 +282,13 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Ha ocurrido un error al intentar realizar la consulta", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    /**
+    * Inicializa los campos del formulario según el tipo de cita.
+    * Si la cita es "previa", desactiva el botón de validación de folio y el campo de folio, y actualiza la cita.
+    * Si no es "previa", desactiva los campos de diagnóstico, tratamiento y observaciones.
+    * 
+    * Muestra un mensaje si ocurre un error al actualizar la cita.
+    */
     private void inicializarCampos() {
         if (cita.getTipo().equals("previa")) {
             btnValidarFolio.setEnabled(false);
@@ -294,14 +305,20 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
             txtDiagnostico.setEnabled(false);
         }
     }
-
+    /**
+    * Actualiza el estado del botón de registrar consulta según si los campos de diagnóstico, tratamiento y observaciones están completos.
+    * Si todos los campos están llenos, habilita el botón.
+    */
     private void actualizarEstadoBoton() {
         boolean camposLlenos = !txtDiagnostico.getText().trim().isEmpty()
                 && !txtAreaTratamiento.getText().trim().isEmpty()
                 && !txtAreaObservaciones.getText().trim().isEmpty();
         btnRegistrarConsulta.setEnabled(camposLlenos);
     }
-
+    /**
+    * Valida el folio ingresado. Si coincide con el de la cita, habilita los campos para registrar la consulta.
+    * Si no coincide, muestra un mensaje de error.
+    */
     private void validarFolio() {
         if (txtFolio.getText().equals(cita.getFolioCita())) {
             txtFolio.setEnabled(false);
@@ -320,7 +337,10 @@ public class FrmRegistrarConsulta extends javax.swing.JFrame {
         }
     }
 
-    // Listeners
+    /**
+    * Agrega listeners a los campos de texto para actualizar el estado del botón de registro 
+    * cuando se modifiquen los campos de diagnóstico, observaciones, tratamiento o folio.
+    */
     private void agregarListeners() {
         DocumentListener listener = new DocumentListener() {
             @Override

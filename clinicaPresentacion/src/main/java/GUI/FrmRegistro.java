@@ -295,7 +295,13 @@ public class FrmRegistro extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-    // boton registrar paciente
+
+    /**
+    * Registra un nuevo paciente con los datos proporcionados en el formulario.
+    * Los datos del paciente se recogen de los campos de texto, luego se crea un objeto PacienteDTO
+    * y se intenta registrar el paciente. Si el registro es exitoso, muestra un mensaje de éxito y regresa al formulario anterior.
+    * Si ocurre un error, se muestra un mensaje de error.
+    */
     private void registrarPaciente() {
         try {
             String apellidoPaterno = txtApellidoPaterno.getText();
@@ -323,13 +329,17 @@ public class FrmRegistro extends javax.swing.JFrame {
         }
     }
 
-    //boton regresar
+    /**
+    * Cierra el formulario actual y abre el formulario de inicio de sesión.
+    */
     private void regresar() {
         FrmInicioSesion frmInicioSesion = new FrmInicioSesion();
         frmInicioSesion.setVisible(true);
         dispose();
     }
-
+    /**
+    * Habilita o deshabilita el botón de registro según si todos los campos del formulario están completos.
+    */
     private void actualizarEstadoBoton() {
         boolean camposLlenos = !txtNombre.getText().trim().isEmpty()
                 && !txtApellidoPaterno.getText().trim().isEmpty()
@@ -345,8 +355,10 @@ public class FrmRegistro extends javax.swing.JFrame {
 
         btnRegistrarse.setEnabled(camposLlenos);
     }
-
-    // Listeners
+    /**
+    * Agrega listeners a los campos del formulario para actualizar el estado del botón de registro.
+    * Cada vez que se detecta un cambio en los campos, se valida si todos están llenos para habilitar el botón.
+    */
     private void agregarListeners() {
         DocumentListener listener = new DocumentListener() {
             @Override

@@ -11,7 +11,7 @@ import java.time.LocalDate;
  * @author joelr
  */
 public class PacienteDTO extends UsuarioDTO {
-    
+
     private String nombresPaciente;
     private String apellidoPaternoPaciente;
     private String apellidoMaternoPaciente;
@@ -23,11 +23,32 @@ public class PacienteDTO extends UsuarioDTO {
     private String colonia;
     private String codigoPostal;
 
-    //Constructor vacio.
+    /**
+     * Constructor vacío.
+     */
     public PacienteDTO() {
     }
 
-    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, String correo, String telefono, LocalDate fechaNacimiento, String calle, String numero, String colonia, String codigoPostal, String nombreUsuario, String contrasenaUsuario) {
+    /**
+     * Constructor con todos los atributos de un paciente.
+     * 
+     * @param nombresPaciente El nombre del paciente.
+     * @param apellidoPaternoPaciente El apellido paterno del paciente.
+     * @param apellidoMaternoPaciente El apellido materno del paciente.
+     * @param correo El correo electrónico del paciente.
+     * @param telefono El número de teléfono del paciente.
+     * @param fechaNacimiento La fecha de nacimiento del paciente.
+     * @param calle La calle donde vive el paciente.
+     * @param numero El número de la casa o departamento.
+     * @param colonia La colonia del paciente.
+     * @param codigoPostal El código postal del paciente.
+     * @param nombreUsuario El nombre de usuario del paciente.
+     * @param contrasenaUsuario La contraseña del paciente.
+     */
+    public PacienteDTO(String nombresPaciente, String apellidoPaternoPaciente, String apellidoMaternoPaciente, 
+                       String correo, String telefono, LocalDate fechaNacimiento, 
+                       String calle, String numero, String colonia, String codigoPostal, 
+                       String nombreUsuario, String contrasenaUsuario) {
         super(nombreUsuario, contrasenaUsuario);
         this.nombresPaciente = nombresPaciente;
         this.apellidoPaternoPaciente = apellidoPaternoPaciente;
@@ -41,7 +62,8 @@ public class PacienteDTO extends UsuarioDTO {
         this.codigoPostal = codigoPostal;
     }
 
-    //gets y sets
+    // Métodos get y set para los atributos
+
     public String getNombresPaciente() {
         return nombresPaciente;
     }
@@ -122,9 +144,13 @@ public class PacienteDTO extends UsuarioDTO {
         this.codigoPostal = codigoPostal;
     }
 
+    /**
+     * Devuelve una representación en cadena de los atributos del paciente.
+     * 
+     * @return Una cadena que representa los atributos del paciente.
+     */
     @Override
     public String toString() {
-        return "PacienteDTO{" + "nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente + ", correo=" + correo + ", telefono=" + telefono + ", fechaNacimiento=" + fechaNacimiento + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", codigoPostal=" + codigoPostal + '}';
+        return "PacienteDTO{" +"nombresPaciente=" + nombresPaciente + ", apellidoPaternoPaciente=" + apellidoPaternoPaciente + ", apellidoMaternoPaciente=" + apellidoMaternoPaciente +", correo=" + correo + ", telefono=" + telefono +", fechaNacimiento=" + fechaNacimiento + ", calle=" + calle + ", numero=" + numero + ", colonia=" + colonia + ", codigoPostal=" + codigoPostal + '}';
     }
-
 }

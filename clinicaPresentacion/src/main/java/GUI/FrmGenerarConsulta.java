@@ -304,6 +304,10 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
 //            }
 //        });
 //    }
+    
+    /**
+    * Genera un folio para la cita de emergencia, muestra los detalles y deshabilita el botón.
+    */
     private void generarFolio() {
         try {
             CitaEmergenciaDTO cita = citaBO.asignarCitaEmergencia(cBoxEspecialidad.getSelectedItem().toString(), ManejadorSesion.getIdUsuario()); //Usa el idPaciente que se manda desde la otra clase, ya no usa el manejadorsesion.
@@ -319,7 +323,9 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
+    /**
+    * Agrega un listener al JComboBox de especialidades para habilitar o deshabilitar el botón de generar folio.
+    */
     private void agregarListener() {
         // Listener para cBoxEspecialidad
         cBoxEspecialidad.addItemListener(e -> {
@@ -331,7 +337,10 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
         });
 
     }
-
+    /**
+     * Llena el JComboBox de especialidades con las especialidades disponibles.
+     * Si no hay especialidades, lanza una excepción y muestra un mensaje de error.
+     */
     private void llenarComboEspecialidad() {
         try {
             List<String> listaEspecialidades = citaBO.especialidadesMedicos();
@@ -347,7 +356,11 @@ public class FrmGenerarConsulta extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
+    /**
+    * Método para manejar el regreso al formulario de citas.
+    * Si hay un folio de consulta, pregunta al usuario si desea perderlo.
+    * Si el usuario acepta, cancela la cita y regresa a la pantalla de citas.
+    */
     private void regresar() {
 
         if (lblFolio.getText().isBlank()) {

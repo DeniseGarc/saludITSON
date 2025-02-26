@@ -273,13 +273,17 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
     private void btnActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnActualizarActionPerformed
         actualizar();
     }//GEN-LAST:event_btnActualizarActionPerformed
-
+    /**
+    * Navega a la ventana principal de Citas del Paciente y cierra la ventana actual.
+    */
     public void regresar() {
         FrmCitasPaciente frmInicio = new FrmCitasPaciente();
         frmInicio.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Actualiza los datos del paciente, incluyendo la dirección, y muestra un mensaje de éxito o error.
+    */
     public void actualizar() {
         try {
             int idDireccion = pacienteBO.obtenerIdDireccionPorPaciente(idUsuario);
@@ -306,16 +310,20 @@ public class FrmActualizarDatosPaciente extends javax.swing.JFrame {
             boolean exito = pacienteBO.actualizarPaciente(pacienteDTO);
 
             if (exito) {
-                javax.swing.JOptionPane.showMessageDialog(this, "Datos actualizados con éxito");
+                JOptionPane.showMessageDialog(this, "Datos actualizados con éxito");
                 regresar();
             } else {
-                javax.swing.JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los datos");
+                JOptionPane.showMessageDialog(this, "Hubo un problema al actualizar los datos");
             }
         } catch (NegocioException ex) {
-            javax.swing.JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage());
         }
     }
-
+    /**
+    * Carga los datos del paciente en los campos de la interfaz, a partir de su ID de usuario.
+    * 
+    * @param idUsuario El ID del paciente cuya información se desea cargar.
+    */
     public void cargarDatosPaciente(int idUsuario) {
         try {
             PacienteActualizarDTO pacienteDTO = pacienteBO.obtenerDatosPaciente(idUsuario);

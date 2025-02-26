@@ -383,13 +383,17 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
     private void lblCerrarSesionMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblCerrarSesionMouseExited
         lblCerrarSesion.setForeground(new Color(0, 0, 0));
     }//GEN-LAST:event_lblCerrarSesionMouseExited
-
+    /**
+    * Abre la ventana de consultas médicas y cierra la ventana actual.
+    */
     private void consultas() {
         FrmConsultasMedico frmConsultasMedico = new FrmConsultasMedico();
         frmConsultasMedico.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Carga el nombre completo del médico y lo muestra en el label correspondiente.
+    */
     private void cargarNombreMedico() {
         try {
             String idUsuario = ManejadorSesion.getIdUsuario();
@@ -399,16 +403,21 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
         } catch (NegocioException e) {
 
         }
-
     }
-
+    /**
+    * Cierra la sesión actual borrando los datos de sesión y redirige al formulario de inicio de sesión.
+    */
     private void cerrarSesion() {
         ManejadorSesion.borrarDatosSesion();
         FrmInicioSesion frmInicio = new FrmInicioSesion();
         frmInicio.setVisible(true);
         this.dispose();
     }
-
+    /**
+    * Carga el estado del médico según el ID de usuario de la sesión y actualiza el estado de los botones.
+    * Si el médico está activo, habilita el botón de baja temporal y deshabilita el de activar cuenta.
+    * Si el médico está inactivo, deshabilita el botón de baja temporal y habilita el de activar cuenta.
+    */
     private void cargarEstadoMedicoYActualizarBotones() {
         try {
             String idUsuario = ManejadorSesion.getIdUsuario();
@@ -427,7 +436,11 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, "Error al obtener el estado del médico: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    /**
+    * Realiza la baja temporal de la cuenta del médico tras una confirmación del usuario.
+    * Si la operación es exitosa, se muestra un mensaje de éxito y se actualiza el estado del médico.
+    * Si no es exitosa o ocurre un error, se muestra un mensaje de error.
+    */
     private void bajaCuenta() {
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
@@ -455,7 +468,11 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
+    /**
+    * Realiza la reactivación de la cuenta del médico tras una confirmación del usuario.
+    * Si la operación es exitosa, se muestra un mensaje de éxito y se actualiza el estado del médico.
+    * Si no es exitosa o ocurre un error, se muestra un mensaje de error.
+    */
     public void activarCuenta() {
         int confirmacion = JOptionPane.showConfirmDialog(
                 this,
@@ -484,7 +501,11 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, "Operación cancelada.", "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-
+    /**
+    * Carga las citas previas del médico, filtrando y ordenando por fecha. 
+    * Luego, muestra las citas en la tabla correspondiente, ocultando la columna de ID.
+    * Si ocurre un error durante el proceso, muestra un mensaje de error.
+    */
     public void cargarCitasPrevias() {
         DefaultTableModel modeloTablaPrevias = (DefaultTableModel) tablaCitas.getModel();
         modeloTablaPrevias.setRowCount(0); // Limpiar la tabla
@@ -506,7 +527,11 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    /**
+    *Carga las citas de emergencia del médico, filtrando y ordenando por fecha.
+    * Luego, muestra las citas en la tabla correspondiente.
+    * Si ocurre un error durante el proceso, muestra un mensaje de error.
+    */
     public void cargarCitasEmergencia() {
         DefaultTableModel modeloTablaEmergencia = (DefaultTableModel) tablaCitasEmergencia.getModel();
         modeloTablaEmergencia.setRowCount(0); // Limpiar la tabla
@@ -526,8 +551,14 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
         } catch (NegocioException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
+    }  
+    
+    /**
+    * Atiende la cita seleccionada, verificando si es el momento adecuado para hacerlo.
+    * Si la cita está programada para el futuro, muestra un mensaje informativo.
+    * Si no, abre el formulario para registrar la consulta.
+    * Si ocurre un error al obtener la cita, muestra un mensaje de error.
+    */
     public void atenderCita(String filaseleccionada) {
         if (filaseleccionada == null) {
             JOptionPane.showMessageDialog(this, "Seleccione la cita a atender", "Información", JOptionPane.INFORMATION_MESSAGE);
@@ -548,7 +579,12 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
         }
     }
 
-    // Método para obtener el ID de la cita al seleccionar una fila
+    /**
+    * Obtiene el ID de la cita seleccionada en la tabla de citas previas.
+    * Si no se selecciona ninguna fila, devuelve null.
+    *
+    * @return El ID de la cita seleccionada o null si no hay selección.
+    */
     public String obtenerIdCitaSeleccionadaCitasPrevias() {
         int filaSeleccionada = tablaCitas.getSelectedRow();
         if (filaSeleccionada != -1) {
@@ -556,7 +592,12 @@ activarCuenta();    }//GEN-LAST:event_btnActivarCuentaActionPerformed
         }
         return null;
     }
-
+    /**
+    * Obtiene el ID de la cita seleccionada en la tabla de citas de emergencia.
+    * Si no se selecciona ninguna fila, devuelve null.
+    *
+    * @return El ID de la cita seleccionada o null si no hay selección.
+    */
     public String obtenerIdCitaSeleccionadaCitasEmergencia() {
         int filaSeleccionada = tablaCitasEmergencia.getSelectedRow();
         if (filaSeleccionada != -1) {

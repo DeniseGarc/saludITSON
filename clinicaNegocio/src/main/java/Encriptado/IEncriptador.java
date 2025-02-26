@@ -9,7 +9,12 @@ package Encriptado;
  * @author joelr
  */
 public interface IEncriptador {
-
+    /**
+    * Método que encripta una contraseña utilizando el algoritmo BCrypt.
+    * 
+    * @param contrasena La contraseña en texto plano que se desea encriptar.
+    * @return La contraseña encriptada utilizando el algoritmo BCrypt.
+    */
     String encriptar(String contrasena);
 
 }
