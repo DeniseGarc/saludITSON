@@ -254,7 +254,7 @@ public class CitaDAO implements ICitaDAO {
      * Metodo que devuelve una tabla con las consultas previas del Paciente.
      *
      * @param tabla
-     * @param id
+     * @param id del Paciente.
      * @return
      * @throws PersistenciaException
      */
@@ -291,7 +291,46 @@ public class CitaDAO implements ICitaDAO {
 
         }
     }
+    /**
+     * Metodo que devuelve una tabla con las consultas previas del Medico.
+     *
+     * @param tabla
+     * @param id del Medico.
+     * @return
+     * @throws PersistenciaException
+     */
+    @Override
+    public DefaultTableModel ObtenerConsultasPreviasMedico(JTable tabla, int id) throws PersistenciaException {
+        // Obtener el modelo de la tabla y limpiar cualquier dato previo
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
 
+        String sentenciaSQL = "SELECT ci.fechaHora,p.nombresPaciente,c.diagnostico,c.observaciones, c.tratamiento, ci.estadoCita FROM consultas as c INNER JOIN citas as ci ON ci.idCita = c.idCita  INNER JOIN pacientes as p ON p.idPaciente = ci.idPaciente WHERE fechaHora<CURDATE() AND ci.idMedico = ?";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+           
+            // Recorre el resultSet hasta que ya no encuentre
+            while (rs.next()) {
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                modelo.addRow(new Object[]{ // Añade los datos a la tabla
+                    fechaHora.toLocalDate(), // Fecha
+                    fechaHora.toLocalTime(), // Hora
+                    rs.getString("nombresPaciente"),
+                    rs.getString("diagnostico"),
+                    rs.getString("observaciones"),
+                    rs.getString("Tratamiento"),
+                    rs.getString("estadoCita")
+                });
+            } 
+            return modelo;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+
+        }
+    }
     /**
      * Metodo que devuelve la tabla lista con las consultas previas del Paciente con el filtro
      * seleccionado.
@@ -306,11 +345,6 @@ public class CitaDAO implements ICitaDAO {
         // Obtener el modelo de la tabla y limpiar cualquier dato previo
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
-//         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//         DateTimeFormatter formatterLocal = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-//        String fechaComoString = fechaDesde.format(formatter) + " 01:00:00";
-//        LocalDateTime fechaHoraDesde = LocalDateTime.parse(fechaComoString,formatterLocal);
-        
         String sentenciaSQL = "SELECT ci.fechaHora,m.especialidad,m.nombresMedico,c.diagnostico, c.tratamiento, ci.estadoCita FROM consultas as c INNER JOIN citas as ci ON ci.idCita = c.idCita    INNER JOIN medicos as m ON m.idMedico = ci.idMedico WHERE fechaHora between ? AND ? AND  idPaciente=?";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
             ps.setObject(1, fechaDesde);
@@ -348,8 +382,6 @@ public class CitaDAO implements ICitaDAO {
      * Metodo que devuelve una lista para obtener las consultas previas del Paciente con el filtro
      * seleccionado.
      *
-     * @param tabla
-     * @param id
      * @return
      * @throws PersistenciaException
      */
