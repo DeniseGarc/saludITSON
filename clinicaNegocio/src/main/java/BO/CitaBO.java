@@ -422,4 +422,35 @@ public class CitaBO {
             throw new PersistenciaException("Error al conseguir las especialidades");
         }
     }
+
+    /**
+     * Metodo que devuelve una tabla con las consultas previas del Medico.
+     *
+     * @param tabla
+     * @param id del Medico.
+     * @return
+     * @throws PersistenciaException
+     */
+    public DefaultTableModel ObtenerConsultasPreviasMedico(JTable tabla, int id) throws PersistenciaException {
+        try {
+            return this.citaDAO.ObtenerConsultasPreviasMedico(tabla, id);
+
+        } catch (PersistenciaException pe) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, pe);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+
+        }
+    }
+
+    /**
+     * Metodo que compara 2 fechas para verificar si faltan menos de 24 horas
+     * para la cita. Regresa true si la fecha esta a menos de 24 horas. Regresa
+     * false si la fecha esta a mas de 24 horas de la fecha.
+     *
+     * @param fecha
+     * @return
+     */
+    public boolean compararFechas(LocalDateTime fecha) {
+        return this.citaDAO.CompararFechas(fecha);
+    }
 }
