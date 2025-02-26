@@ -22,6 +22,11 @@ import entidades.Medico;
 import entidades.Cita;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
+import java.sql.Connection;
+import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -35,6 +40,8 @@ import java.util.TimerTask;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -352,5 +359,50 @@ public class CitaBO {
          }
             
         }
+        /**
+     * Metodo para obtener las consultas previas del Paciente.
+     * @param tabla
+     * @param id
+     * @return
+     * @throws PersistenciaException 
+     */
+    public DefaultTableModel ObtenerConsultasPrevias(JTable tabla, int id) throws PersistenciaException {
+        try {
+           return this.citaDAO.ObtenerConsultasPrevias(tabla, id);
+
+        } catch (PersistenciaException pe) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, pe);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+            
+        }
     }
+            /**
+     * Metodo para obtener las consultas previas del Paciente.
+     * @param tabla
+     * @param id
+     * @param fechaDesde
+     * @param fechaHasta
+     * @param especialidad
+     * @return
+     * @throws PersistenciaException 
+     */
+    public DefaultTableModel ObtenerConsultasPreviasFiltro(JTable tabla, int id, LocalDate fechaDesde, LocalDate fechaHasta,String especialidad) throws PersistenciaException {
+        try {
+           return this.citaDAO.ObtenerConsultasPreviasFiltro(tabla, id, fechaDesde, fechaHasta, especialidad);
+
+        } catch (PersistenciaException pe) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, pe);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+            
+        }
+    }
+    public List<String> obtenerEspecialidades() throws PersistenciaException{
+        try {
+            return this.citaDAO.ObtenerEspecialidadesCitas();
+        } catch (PersistenciaException ex) {
+            Logger.getLogger(CitaBO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al conseguir las especialidades");
+        }
+    }
+}
 
