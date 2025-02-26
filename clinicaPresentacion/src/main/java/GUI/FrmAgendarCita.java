@@ -236,11 +236,6 @@ public class FrmAgendarCita extends javax.swing.JFrame {
 //            }
 //        });
 //    }
-    
-    /**
-    * Agenda una cita para el paciente con los datos proporcionados en los formularios.
-    * Verifica si la cita se ha agendado correctamente y muestra un mensaje de éxito o error.
-    */
     private void agendarCita() {
         try {
             LocalDate fecha = dtPkrFecha.getDate();
@@ -262,10 +257,7 @@ public class FrmAgendarCita extends javax.swing.JFrame {
 
         }
     }
-    /**
-    * Agrega los listeners a los componentes de la interfaz de usuario para gestionar interacciones.
-    * Establece la lógica para habilitar o deshabilitar los componentes según las selecciones del usuario.
-    */
+
     private void agregarListeners() {
         // Listener para fecha
         dtPkrFecha.addDateChangeListener(new DateChangeListener() {
@@ -306,10 +298,7 @@ public class FrmAgendarCita extends javax.swing.JFrame {
                     && dtPkrFecha.getDate() != null);
         });
     }
-    /**
-    * Llena el combo de especialidades con los valores obtenidos desde la base de datos.
-    * Muestra un mensaje si no hay especialidades disponibles.
-    */
+
     private void llenarComboEspecialidad() {
         try {
             cBoxEspecialidad.removeAllItems();
@@ -328,10 +317,7 @@ public class FrmAgendarCita extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    /**
-    * Llena el combo de médicos con los médicos disponibles según la especialidad seleccionada.
-    * Muestra un mensaje si no hay médicos disponibles para la especialidad seleccionada.
-    */
+
     private void llenarComboMedicos() {
         try {
             cBoxMedico.removeAllItems();
@@ -355,10 +341,7 @@ public class FrmAgendarCita extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Información", JOptionPane.INFORMATION_MESSAGE);
         }
     }
-    /**
-    * Llena el combo de horas con los horarios disponibles para el médico y la fecha seleccionada.
-    * Muestra un mensaje si no hay horarios disponibles para el médico en la fecha seleccionada.
-    */
+
     private void llenarComboHoras() {
         try {
             cBoxHora.removeAllItems();
@@ -377,9 +360,7 @@ public class FrmAgendarCita extends javax.swing.JFrame {
             cBoxHora.setEnabled(false);
         }
     }
-    /**
-    * Actualiza los datos (médicos y horas) según la fecha seleccionada y la especialidad elegida.
-    */
+
     private void actualizarDatosPorFecha() {
         if (cBoxEspecialidad.getSelectedIndex() != -1) {
             llenarComboMedicos();
@@ -388,9 +369,7 @@ public class FrmAgendarCita extends javax.swing.JFrame {
             llenarComboHoras();
         }
     }
-    /**
-    * Reinicia el formulario deshabilitando todos los componentes y limpiando las selecciones.
-    */
+
     private void reiniciarFormulario() {
         cBoxEspecialidad.setEnabled(false);
         cBoxMedico.setEnabled(false);
@@ -401,9 +380,7 @@ public class FrmAgendarCita extends javax.swing.JFrame {
         cBoxMedico.setSelectedIndex(-1);
         cBoxMedico.setSelectedIndex(-1);
     }
-    /**
-    * Regresa a la pantalla principal de citas del paciente.
-    */
+
     private void regresar() {
         FrmCitasPaciente frmCitasPaciente = new FrmCitasPaciente();
         frmCitasPaciente.setVisible(true);
