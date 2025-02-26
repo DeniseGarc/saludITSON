@@ -8,8 +8,11 @@ import entidades.Cita;
 import entidades.Consulta;
 import excepciones.PersistenciaException;
 import java.sql.Date;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -30,8 +33,14 @@ public interface ICitaDAO {
     public Cita consultarCitaPorId(int id) throws PersistenciaException;
 
     public List<Cita> consultarCitasActivas() throws PersistenciaException;
-    
-    public boolean registrarConsulta(Consulta consulta)throws PersistenciaException;
-    
-        public boolean ActualizarEstadoCancelarCita(int idMedico, LocalDateTime fechaHora ) throws PersistenciaException;
+
+    public boolean registrarConsulta(Consulta consulta) throws PersistenciaException;
+
+    public boolean ActualizarEstadoCancelarCita(int idMedico, LocalDateTime fechaHora) throws PersistenciaException;
+
+    public DefaultTableModel ObtenerConsultasPrevias(JTable tabla, int id) throws PersistenciaException;
+
+    public DefaultTableModel ObtenerConsultasPreviasFiltro(JTable tabla, int id, LocalDate fechaDesde, LocalDate fechaHasta, String especialidad) throws PersistenciaException;
+
+    public List<String> ObtenerEspecialidadesCitas() throws PersistenciaException;
 }

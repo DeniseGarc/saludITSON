@@ -8,17 +8,22 @@ import entidades.Medico;
 import entidades.Paciente;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.sql.Types;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -205,10 +210,10 @@ public class CitaDAO implements ICitaDAO {
     }
 
     @Override
-    public boolean registrarConsulta(Consulta consulta) throws PersistenciaException{
+    public boolean registrarConsulta(Consulta consulta) throws PersistenciaException {
         String sentenciaSQL = "INSERT INTO consultas(diagnostico, tratamiento, observaciones, idCita) VALUES (?,?,?,?)";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
-            ps.setString(1,consulta.getDiagnostico());
+            ps.setString(1, consulta.getDiagnostico());
             ps.setString(2, consulta.getTratamiento());
             ps.setString(3, consulta.getObservaciones());
             ps.setInt(4, consulta.getCita().getIDCita());
@@ -218,30 +223,158 @@ public class CitaDAO implements ICitaDAO {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("No fue posible registrar la consulta");
         }
-        
+
     }
+
     /**
-     * Metodo para actualizar el estado de la cita a cancelada cuando se cancela una cita.
-     * 
+     * Metodo para actualizar el estado de la cita a cancelada cuando se cancela
+     * una cita.
+     *
      * @param idMedico
      * @param fechaHora
      * @return
-     * @throws PersistenciaException 
+     * @throws PersistenciaException
      */
     @Override
-    public boolean ActualizarEstadoCancelarCita(int idMedico, LocalDateTime fechaHora ) throws PersistenciaException{
+    public boolean ActualizarEstadoCancelarCita(int idMedico, LocalDateTime fechaHora) throws PersistenciaException {
         String sentenciaSQL = "UPDATE citas SET estadoCita = 'cancelada' WHERE idMedico = ? AND fechaHora = ?";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
-            ps.setInt(1,idMedico);
+            ps.setInt(1, idMedico);
             ps.setTimestamp(2, Timestamp.valueOf(fechaHora));
             ps.executeUpdate();
             return true;
         } catch (SQLException ex) {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null,"Error: error al eliminar la consulta");
+            JOptionPane.showMessageDialog(null, "Error: error al eliminar la consulta");
             return false;
         }
     }
-   
-}
 
+    /**
+     * Metodo que devuelve una tabla con las consultas previas del Paciente.
+     *
+     * @param tabla
+     * @param id
+     * @return
+     * @throws PersistenciaException
+     */
+    @Override
+    public DefaultTableModel ObtenerConsultasPrevias(JTable tabla, int id) throws PersistenciaException {
+        // Obtener el modelo de la tabla y limpiar cualquier dato previo
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+
+        String sentenciaSQL = "SELECT ci.fechaHora,m.especialidad,m.nombresMedico,c.diagnostico, c.tratamiento, ci.estadoCita FROM consultas as c INNER JOIN citas as ci ON ci.idCita = c.idCita    INNER JOIN medicos as m ON m.idMedico = ci.idMedico WHERE fechaHora<CURDATE() AND idPaciente=?";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            // Obtener la lista de Citas desde la capa de negocio (BO)
+
+            // Recorre el resultSet hasta que ya no encuentre
+            while (rs.next()) {
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                modelo.addRow(new Object[]{ // Añade los datos a la tabla
+                    fechaHora.toLocalDate(),
+                    fechaHora.toLocalTime(),
+                    rs.getString("especialidad"),
+                    rs.getString("nombresMedico"),
+                    rs.getString("diagnostico"),
+                    rs.getString("Tratamiento"),
+                    rs.getString("estadoCita")
+                });
+            } 
+            return modelo;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+
+        }
+    }
+
+    /**
+     * Metodo que devuelve la tabla lista con las consultas previas del Paciente con el filtro
+     * seleccionado.
+     * 
+     * @param tabla
+     * @param id
+     * @return
+     * @throws PersistenciaException
+     */
+    @Override
+    public DefaultTableModel ObtenerConsultasPreviasFiltro(JTable tabla, int id, LocalDate fechaDesde, LocalDate fechaHasta, String especialidad) throws PersistenciaException {
+        // Obtener el modelo de la tabla y limpiar cualquier dato previo
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+//         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+//         DateTimeFormatter formatterLocal = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+//        String fechaComoString = fechaDesde.format(formatter) + " 01:00:00";
+//        LocalDateTime fechaHoraDesde = LocalDateTime.parse(fechaComoString,formatterLocal);
+        
+        String sentenciaSQL = "SELECT ci.fechaHora,m.especialidad,m.nombresMedico,c.diagnostico, c.tratamiento, ci.estadoCita FROM consultas as c INNER JOIN citas as ci ON ci.idCita = c.idCita    INNER JOIN medicos as m ON m.idMedico = ci.idMedico WHERE fechaHora between ? AND ? AND  idPaciente=?";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+            ps.setObject(1, fechaDesde);
+            ps.setObject(2, fechaHasta);
+            ps.setInt(3, id);
+            ResultSet rs = ps.executeQuery();
+            // Obtener la lista de Citas desde la capa de negocio (BO)
+
+            // Recorre el resultSet hasta que ya no encuentre
+            while (rs.next()) {
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                // Toma los valores de los filtros e introduce los datos que cumplan los requerimientos en la tabla.
+                    modelo.addRow(new Object[]{ // Añade los datos a la tabla
+                        fechaHora.toLocalDate(),
+                        fechaHora.toLocalTime(),
+                        rs.getString("especialidad"),
+                        rs.getString("nombresMedico"),
+                        rs.getString("diagnostico"),
+                        rs.getString("Tratamiento"),
+                        rs.getString("estadoCita")
+                    });
+                
+
+            } 
+            return modelo;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+
+        }
+    }
+
+    /**
+     * Metodo que devuelve una lista para obtener las consultas previas del Paciente con el filtro
+     * seleccionado.
+     *
+     * @param tabla
+     * @param id
+     * @return
+     * @throws PersistenciaException
+     */
+    @Override
+    public List<String> ObtenerEspecialidadesCitas() throws PersistenciaException {
+        List<String> especialidades = new ArrayList<>();
+        String sentenciaSQL = "SELECT m.especialidad FROM consultas as c INNER JOIN citas as ci ON ci.idCita = c.idCita INNER JOIN medicos as m ON m.idMedico = ci.idMedico GROUP BY especialidad";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+            ResultSet rs = ps.executeQuery();
+            // Obtener la lista de Citas desde la capa de negocio (BO)
+
+            // Recorre el resultSet hasta que ya no encuentre
+            if (rs.next()) {
+                // Toma las especialidades y los introduce en la lista.
+                especialidades.add(rs.getString("especialidad"));
+
+            } else {
+
+            }
+            return especialidades;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al conseguir las especialidades");
+
+        }
+    }
+}
