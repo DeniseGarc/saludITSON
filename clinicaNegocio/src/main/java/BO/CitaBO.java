@@ -404,5 +404,23 @@ public class CitaBO {
             throw new PersistenciaException("Error al conseguir las especialidades");
         }
     }
+    /**
+     * Metodo que devuelve una tabla con las consultas previas del Medico.
+     *
+     * @param tabla
+     * @param id del Medico.
+     * @return
+     * @throws PersistenciaException
+     */
+    public DefaultTableModel ObtenerConsultasPreviasMedico(JTable tabla, int id) throws PersistenciaException {
+        try{
+            return this.citaDAO.ObtenerConsultasPreviasMedico(tabla, id);
+
+        } catch (PersistenciaException pe) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, pe);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+
+        }
+    }
 }
 
