@@ -9,6 +9,7 @@ import DTO.CitaDTO;
 import configuracion.DependencyInjector;
 import excepciones.NegocioException;
 import excepciones.PersistenciaException;
+import java.awt.Color;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -289,8 +290,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
     }//GEN-LAST:event_btnCancelarCitaActionPerformed
 
     private void tablaCitasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablaCitasMouseClicked
-        this.citaSeleccionada = this.tablaCitas.getSelectedRow();
-
+        this.SeleccionarCampoTabla();
     }//GEN-LAST:event_tablaCitasMouseClicked
 
 //    /**
@@ -386,6 +386,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
         if (this.citaSeleccionada < 0) {
             JOptionPane.showMessageDialog(null, "Error: No ha seleccionado una cita para eliminar");
         } else {
+
             // Crear variables para tomar los valores de la cita seleccionada para posteriormente usarlos.    
             String nombreMedico = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 3));
             String fecha = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 0));
@@ -394,6 +395,7 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
             DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
             LocalDateTime fechaHoraConvertido = LocalDateTime.parse(fechaHora, formato); //Convierte el string con al fecha y hora en localdatetime.
             try {
+
                 int idMedico = this.citaBO.ObtenerMedicoPorNombre(nombreMedico); //Obtiene el id del medico de la cita seleccionada.
                 this.citaBO.ActualizarEstadoCancelarCita(idMedico, fechaHoraConvertido); //Posteriormente toma el id del medico y busca la cita seleccionada 
                 this.cargarCitas();// Despues de eliminar la cita, actualiza la tabla. // para eliminarla
@@ -401,6 +403,23 @@ public class FrmCitasPaciente extends javax.swing.JFrame {
                 Logger.getLogger(FrmCitasPaciente.class.getName()).log(Level.SEVERE, null, ex);
                 JOptionPane.showMessageDialog(null, "Error: error al obtener los datos de la tabla");
             }
+        }
+    }
+
+    public void SeleccionarCampoTabla() {
+        this.citaSeleccionada = this.tablaCitas.getSelectedRow();
+        String fecha = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 0));
+        String hora = String.valueOf(this.tablaCitas.getValueAt(this.citaSeleccionada, 1));
+        String fechaHora = fecha + " " + hora + ":00"; // Separa la fecha y la hora debido a un problema con el formato.
+        DateTimeFormatter formato = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime fechaHoraConvertido = LocalDateTime.parse(fechaHora, formato); //Convierte el string con al fecha y hora en localdatetime.
+        if (this.citaBO.compararFechas(fechaHoraConvertido) == true) {
+            //Al faltar 24 horas para la cita el boton se deshabilita y se colorea de gris.
+            this.btnCancelarCita.setBackground(Color.GRAY);
+            this.btnCancelarCita.setEnabled(false);
+        } else {
+            this.btnCancelarCita.setBackground(Color.RED);
+            this.btnCancelarCita.setEnabled(true);
         }
     }
 

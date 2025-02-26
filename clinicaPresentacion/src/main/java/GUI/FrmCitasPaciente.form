@@ -298,13 +298,13 @@
         </Component>
         <Component class="javax.swing.JButton" name="btnCancelarCita">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Cancelar cita"/>
             <Property name="background" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="1d" green="36" red="c3" type="rgb"/>
             </Property>
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
+            <Property name="text" type="java.lang.String" value="Cancelar cita"/>
           </Properties>
           <Events>
             <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnCancelarCitaActionPerformed"/>
