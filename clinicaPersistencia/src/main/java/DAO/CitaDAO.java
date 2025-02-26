@@ -15,6 +15,7 @@ import java.sql.Timestamp;
 import java.sql.Types;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -372,13 +373,6 @@ public class CitaDAO implements ICitaDAO {
         // Obtener el modelo de la tabla y limpiar cualquier dato previo
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
-        // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        // DateTimeFormatter formatterLocal = DateTimeFormatter.ofPattern("yyyy-MM-dd
-        // HH:mm:ss");
-        // String fechaComoString = fechaDesde.format(formatter) + " 01:00:00";
-        // LocalDateTime fechaHoraDesde =
-        // LocalDateTime.parse(fechaComoString,formatterLocal);
-
         String sentenciaSQL = "SELECT ci.fechaHora,m.especialidad,m.nombresMedico,c.diagnostico, c.tratamiento, ci.estadoCita FROM consultas as c INNER JOIN citas as ci ON ci.idCita = c.idCita    INNER JOIN medicos as m ON m.idMedico = ci.idMedico WHERE fechaHora between ? AND ? AND  idPaciente=?";
         try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
             ps.setObject(1, fechaDesde);
@@ -441,6 +435,65 @@ public class CitaDAO implements ICitaDAO {
             Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
             throw new PersistenciaException("Error al conseguir las especialidades");
 
+        }
+    }
+
+    /**
+     * Metodo que devuelve una tabla con las consultas previas del Medico.
+     *
+     * @param tabla
+     * @param id del Medico.
+     * @return
+     * @throws PersistenciaException
+     */
+    @Override
+    public DefaultTableModel ObtenerConsultasPreviasMedico(JTable tabla, int id) throws PersistenciaException {
+        // Obtener el modelo de la tabla y limpiar cualquier dato previo
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        modelo.setRowCount(0); // Limpiar todas las filas existentes en la tabla
+
+        String sentenciaSQL = "SELECT ci.fechaHora,p.nombresPaciente,c.diagnostico,c.observaciones, c.tratamiento, ci.estadoCita FROM consultas as c INNER JOIN citas as ci ON ci.idCita = c.idCita  INNER JOIN pacientes as p ON p.idPaciente = ci.idPaciente WHERE fechaHora<CURDATE() AND ci.idMedico = ?";
+        try (Connection con = conexion.crearConexion(); PreparedStatement ps = con.prepareStatement(sentenciaSQL);) {
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            // Recorre el resultSet hasta que ya no encuentre
+            while (rs.next()) {
+                LocalDateTime fechaHora = rs.getTimestamp("fechaHora").toLocalDateTime();
+                modelo.addRow(new Object[]{ // Añade los datos a la tabla
+                    fechaHora.toLocalDate(), // Fecha
+                    fechaHora.toLocalTime(), // Hora
+                    rs.getString("nombresPaciente"),
+                    rs.getString("diagnostico"),
+                    rs.getString("observaciones"),
+                    rs.getString("Tratamiento"),
+                    rs.getString("estadoCita")
+                });
+            }
+            return modelo;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CitaDAO.class.getName()).log(Level.SEVERE, null, ex);
+            throw new PersistenciaException("Error al conseguir las citas registradas");
+
+        }
+    }
+
+    /**
+     * Metodo que compara 2 fechas para verificar si faltan menos de 24 horas
+     * para la cita. Regresa true si la fecha esta a menos de 24 horas. Regresa
+     * false si la fecha esta a mas de 24 horas de la fecha.
+     *
+     * @param fecha
+     * @return
+     */
+    public boolean CompararFechas(LocalDateTime fecha) {
+        LocalDateTime actual = LocalDateTime.now(); //Fecha y hora actual
+        Long horasTranscurridas = ChronoUnit.HOURS.between(actual, fecha); //Calcula las horas desde hoy hasta la fecha introducida.
+        if (horasTranscurridas <= 24) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
